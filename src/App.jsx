@@ -3,7 +3,7 @@ function App() {
 
   return (
     <>
-    <h1 className="align-middle">Welcome To Yocial</h1>
+    <h1 className="align-middle">Welcome</h1>
     </>
   )
 }
