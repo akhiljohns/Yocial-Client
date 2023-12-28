@@ -1,21 +1,36 @@
-import React from 'react'
+import React, { useState } from "react";
+import "./login.css";
 
-function Login() {
+const Login = ()=> {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
   return (
- <>
-        <div>
-      <div >
-        <h1>Log In</h1>
-        <form>
-        <input type="email" id="credential" name="credential" label="Email/Username" placeholder="email/username" autofocus={true}/>
-        <input type="password" id="password" name="password" label="Password" placeholder="••••••••••" />
-        <button value="Submit" />
-          
+    <>
+      <div className="login">
+        <form action="" className="login_form">
+          <h1>Login Page </h1>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value.trim())}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value.trim())}
+          />
+          <button>SUBMIT</button>
+        
         </form>
+
+        <h1>{email}</h1>
+        <h1>{password}</h1>
       </div>
-    </div>
- </>
-  )
+    </>
+  );
 }
 
-export default Login
+export default Login;
