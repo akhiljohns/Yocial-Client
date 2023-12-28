@@ -1,5 +1,5 @@
 import React from 'react';
-
+import {clearUser} from '../../../services/User/apiCalls.js'
 const Navbar = () => {
   return (
     <nav className="bg-gray-800 p-4 text-white">
@@ -23,10 +23,10 @@ const Header = ({ onLogout }) => {
 };
 
 const Home = () => {
+
   return (
     <div>
-      <Navbar />
-      <Header onLogout={() => console.log('Logout clicked')} />
+      <Header onLogout={() =>clearUser()} />
       <div className="container mx-auto p-4">
         {/* Page content goes here */}
         <div>Home</div>
