@@ -2,17 +2,16 @@ import { api } from "./api";
 import { refreshToken, userAuth } from "../../const/localStorage";
 import axios from "axios";
 import { BASE_URL } from "../../const/url";
-import { persistor } from "../../utils/store";
 
 
 
 
-export const clearUser = () => {
-  localStorage.removeItem(userAuth);
-  localStorage.removeItem(refreshToken);
-  persistor.purge();
-  window.location.reload("/login");
-};
+// export const clearUser = () => {
+//   localStorage.removeItem(userAuth);
+//   localStorage.removeItem(refreshToken);
+//   persistor.purge();
+//   window.location.reload("/login");
+// };
 
 
 
