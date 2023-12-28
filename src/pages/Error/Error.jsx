@@ -20,7 +20,7 @@ function Error() {
                 navigate("/");
               }}
             >
-              <p>Go Home</p>
+              <p>Error page go Home</p>
             </button>
           </div>
         </div>
@@ -28,5 +28,6 @@ function Error() {
     </>
   );
 }
+
 
 export default Error

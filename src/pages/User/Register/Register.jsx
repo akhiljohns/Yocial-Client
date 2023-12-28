@@ -1,10 +1,10 @@
-import React, { useState } from "react";
-import { passwordValidate, regValidate } from "../../../hooks/regValidation";
+import React, { useEffect, useState } from "react";
+import {  regValidate } from "../../../hooks/regValidation";
 import { postRegister } from "../../../services/User/apiMethods";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 function Register() {
-  const navigate = useNavigate();
 
   const [fName, setFname] = useState("");
   const [lName, setLname] = useState("");
@@ -13,6 +13,18 @@ function Register() {
   const [password, setpassword] = useState("");
   const [password2, setPassword2] = useState("");
   const [error, setError] = useState("");
+
+
+
+  const navigate = useNavigate();
+  const user = useSelector((state)=>state?.user?.validUser);
+
+  useEffect(()=>{
+    if(user){
+      navigate('/')
+    }
+  }, [navigate, user])
+
 
   const handleSubmit = async () => {
     try {

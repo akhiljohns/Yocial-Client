@@ -2,17 +2,26 @@ import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import Login from "../pages/User/Login/Login";
-import App from "../App";
 import Error from "../pages/Error/Error";
 import Register from "../pages/User/Register/Register";
+import Home from "../pages/User/Home/Home";
+import Protect from "../components/protect/Protect";
+
 const AppRouter = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/home" element={<App />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="*" element={<Error />} />
+        <Route
+          path="/"
+          element={
+            <Protect>
+              <Home />
+            </Protect>
+          }
+        />
       </Routes>
     </Router>
   );
