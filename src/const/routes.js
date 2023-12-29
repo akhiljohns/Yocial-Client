@@ -111,6 +111,8 @@ export const authUrl = {
 
     sendOtp: "/auth/sent-verification",
     verifyOtp: "/auth/verify-otpToken",
+
+    sendMail:"/auth/send-verification"
     
 };
 

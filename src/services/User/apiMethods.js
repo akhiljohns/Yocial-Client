@@ -35,7 +35,23 @@ export const postLogin = (userData) => {
                 reject(err);
             })
         } catch (error) {
-            resolve({ status: 500, message: error?.message });
+            reject({ status: error?.status, message: error?.message });
+        }
+    })
+
+}
+//@dec      Send Verify Mail
+//method    POST
+export const postMail = (credential) => {
+    return new Promise((resolve, reject) => {
+        try {
+            apiCall('post', authUrl.sendMail, credential).then((response)=>{
+                resolve(response);
+            }).catch((err)=>{
+                reject(err);
+            })
+        } catch (error) {
+            reject({ status: error?.status, message: error?.message });
         }
     })
 
@@ -69,7 +85,6 @@ export const postRegister = (userData) => {
                 resolve(response);
             })
         } catch (error) {
-            console.log("error in reg",error)
             resolve({status:500, message: "Somethings wrong."})
         }
     })
