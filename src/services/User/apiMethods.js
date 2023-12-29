@@ -233,11 +233,13 @@ export const verifyOtp = (email, otpToken) => {
 
 //@dec      Fetch a user posts
 //method    GET
-export const fetchUserPosts = (userId) => {
+export const fetchUserDetails = (userId) => {
     return new Promise((resolve, reject) => {
         try {
-            apiCall("get", `${postUrl.getUserPosts}?userId=${userId}`)
+            apiCall("get", `${postUrl.getUserDetails}?userId=${userId}`)
               .then((response) => {
+                console.log("response from fetch user by username", response);
+
                 resolve(response);
               })
               .catch((error) => reject(error));

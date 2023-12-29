@@ -1,23 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import {
-  fetchUserByUsername,
-  fetchUserPosts,
-} from "../../..//services/User/apiMethods.js";
-
-// import EditProfile from "../../components/modal/EditProfile";
+import { fetchUserByUsername, fetchUserDetails } from "../../..//services/User/apiMethods.js";
 
 const Profile = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
-
+  const [followersCount, setFollowersCount] = useState(0);
+  const [followingCount, setFollowingCount] = useState(0);
   const { validUser, userData } = useSelector((state) => state?.user);
-
-  // const [isEdit, setIsEdit] = useState(false);
-
   const { username } = useParams();
 
   useEffect(() => {
@@ -29,24 +22,20 @@ const Profile = () => {
   useEffect(() => {
     if (username) {
       fetchUserByUsername(username)
-        .then((response) => {
-          setUser(response);
-        })
-        .catch((error) => {
-          setError(error?.message);
-        });
+        .then((response) => setUser(response))
+        .catch((error) => setError(error?.message));
     }
   }, [username]);
 
   useEffect(() => {
     if (user) {
-      fetchUserPosts(user?._id)
+      fetchUserDetails(user?._id)
         .then((response) => {
           setPosts(response.posts);
+          setFollowersCount(response.followers);
+          setFollowingCount(response.followings);
         })
-        .catch((error) => {
-          setError(error?.message);
-        });
+        .catch((error) => setError(error?.message));
     }
   }, [user]);
 
@@ -69,15 +58,15 @@ const Profile = () => {
           <div className="flex justify-center items-center py-1">
             <div>
               <p className="small text-muted mb-0">Posts</p>
-              <p className="mb-1 h5">253</p>
+              <p className="mb-1 h5">{posts.length}</p>
             </div>
             <div className="px-3">
               <p className="small text-muted mb-0">Followers</p>
-              <p className="mb-1 h5">1026</p>
+              <p className="mb-1 h5">{followersCount}</p>
             </div>
             <div>
               <p className="small text-muted mb-0">Following</p>
-              <p className="mb-1 h5">478</p>
+              <p className="mb-1 h5">{followingCount}</p>
             </div>
           </div>
         </div>

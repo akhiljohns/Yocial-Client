@@ -78,7 +78,7 @@ export const postUrl = {
 
   getSinglePost: (postId) => `/post/fetch-single-post/${postId}`,
 
-  getUserPosts: "/post/fetchUserPosts",
+  getUserDetails: "/post/fetchUserDetails",
 
   //delete post
   deletePost: (postId) => `/post/delete/post/${postId}`,
