@@ -1,14 +1,15 @@
 import React from 'react';
 import { clearUser } from '../../../services/User/apiCalls.js';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 
-
-const Header = ({ onLogout, name }) => {
+export const Header = ({ onLogout, userData }) => {
+  const navigate = useNavigate()
   return (
     <header className="bg-orange-500 p-4 text-white">
       <div className="container mx-auto flex justify-between items-center">
-        <div>Welcome, {name}</div>
+        <div onClick={()=> navigate(`/profile/${userData.username}`)} >Welcome, {userData.name}</div>
         <button onClick={onLogout} className="bg-black px-4 py-2 rounded">
           Logout
         </button>
@@ -24,7 +25,7 @@ const Home = () => {
     <div>
       {userData && (
         <>
-          <Header onLogout={() => clearUser()} name={userData.name} />
+          <Header onLogout={() => clearUser()} userData={userData} />
           <div className="container mx-auto p-4">
             {/* Page content goes here */}
             <div id='homediv' className='flex flex-col items-center justify-center h-screen'>

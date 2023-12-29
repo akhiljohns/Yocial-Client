@@ -202,6 +202,7 @@ export const sentOtp = (email) => {
             apiCall("post", authUrl.sendOtp, {email: email}).then((response) => {
                 resolve(response);
             }).catch((error) => {
+                //@dec      Fetch username/email
                 reject(error);
             })
         } catch (error) {
