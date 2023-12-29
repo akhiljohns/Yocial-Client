@@ -173,6 +173,14 @@
           >
             Register
           </button>
+
+
+          <button
+          onClick={() => navigate("/login")}
+          className="w-full mb-4 text-white p-2 mt-3 rounded hover:bg-green-700"
+        >
+          Already have an account? Login
+        </button>
         </div>
       </div>
     );

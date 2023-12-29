@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { setReduxUser } from "../../../utils/reducers/userReducer";
 import { Spinner } from "flowbite-react";
 
-
 function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -137,21 +136,19 @@ function Login() {
               {error}
             </div>
           )}
-          {/* <div className="aspect-square w-10 border-white rounded-full border-2 animate-bounce">
-
-</div> */}
           <button
             onClick={handleSubmit}
             className="w-full mb-4 bg-blue-500 text-white p-2 rounded hover:bg-blue-700"
           >
             Login
           </button>
+
           {verify && (
             <button
               onClick={sendMail}
               className="w-1/2 mx-auto bg-black text-white p-1 rounded hover:bg-blue-700 block"
             >
-              Send Mail
+              Send Verification Mail
             </button>
           )}
           {loading && (
@@ -163,6 +160,12 @@ function Login() {
               />
             </div>
           )}
+          <button
+          onClick={() => navigate("/register")}
+          className="w-full mb-4 text-white p-2 rounded hover:bg-green-700"
+        >
+          Dont have an account? Register
+        </button>
         </div>
       </div>
     </>
