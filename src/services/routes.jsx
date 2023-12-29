@@ -6,6 +6,8 @@ import Error from "../pages/Error/Error";
 import Register from "../pages/User/Register/Register";
 import Home from "../pages/User/Home/Home";
 import Protect from "../components/protect/Protect";
+import Profile from "../pages/User/Profile/Profile";
+
 
 const AppRouter = () => {
   return (
@@ -13,6 +15,7 @@ const AppRouter = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/Profile" element={<Profile />} />
         <Route path="*" element={<Error />} />
         <Route
           path="/"
