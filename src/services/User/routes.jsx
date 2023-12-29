@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
-import Login from "../pages/User/Login/Login";
-import Error from "../pages/Error/Error";
-import Register from "../pages/User/Register/Register";
-import Home from "../pages/User/Home/Home";
-import Protect from "../components/protect/Protect";
-import Profile from "../pages/User/Profile/Profile";
+import Login from "../../pages/User/Login/Login";
+import Error from "../../pages/Error/Error";
+import Register from "../../pages/User/Register/Register";
+import Home from "../../pages/User/Home/Home";
+import Protect from "../../components/protect/Protect";
+import Profile from "../../pages/User/Profile/Profile";
 
 
 const AppRouter = () => {
