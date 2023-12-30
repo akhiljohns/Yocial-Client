@@ -42,6 +42,22 @@ export const fetchSinglePost = (postId) => {
 
 //@dec      Fetch user data
 //method    GET
+export const fetchAllUsers = () => {
+    return new Promise((resolve, reject) => {
+        try {
+            adminApiCalls("get", `${adminUrl.getUsers}`).then((response) => {
+                resolve(response);
+            }).catch((err) => {
+                reject(err);
+            })
+        } catch (error) {
+            reject(error);
+        }
+    })
+}
+
+//@dec      Fetch user data
+//method    GET
 export const adminFetchUsers = (currentPage, perPage, searchTerm) => {
     return new Promise((resolve, reject) => {
         try {
