@@ -12,6 +12,7 @@ import Profile from "../pages/User/Profile/Profile";
 /////////////////////////ADMIN PAGES/////////////////////////
 import AdminLogin from "../pages/Admin/Login/AdminLogin";
 import AdminHome from "../pages/Admin/Home/AdminHome";
+import AdminProtect from "../components/protect/AdminProtect";
 
 const AppRouter = () => {
   return (
@@ -31,7 +32,7 @@ const AppRouter = () => {
         />
 
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admin/home" element={<AdminProtect><AdminHome /></AdminProtect>} />
       </Routes>
     </Router>
   );

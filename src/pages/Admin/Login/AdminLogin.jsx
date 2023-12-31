@@ -19,8 +19,8 @@ function AdminLogin() {
   const isValid = useSelector((state) => state?.admin?.validAdmin);
 
   useEffect(() => {
-    if (isValid && adminData) {
-      navigate("/admin");
+    if (isValid || adminData) {
+      navigate("/admin/home");
     }
   }, [isValid, adminData, navigate]);
 

@@ -44,11 +44,8 @@ const AdminHome = () => {
   const adminData = useSelector((state) => state?.admin?.adminData);
   const isValid = useSelector((state) => state?.admin?.validAdmin);
 
-  useEffect(() => {
-    if (isValid && adminData) {
-      navigate("/admin");
-    }
-  }, [isValid, adminData, navigate]);
+
+
   useEffect(() => {
     fetchAllUsers()
       .then((response) => {
