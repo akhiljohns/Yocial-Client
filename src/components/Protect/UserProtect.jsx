@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-function Protect({ children }) {
+function UserProtect({ children }) {
   const navigate = useNavigate();
   const user = useSelector((state) => state?.user?.validUser);
 
@@ -17,4 +17,4 @@ function Protect({ children }) {
     return children
 }
 
-export default Protect;
+export default UserProtect;

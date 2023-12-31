@@ -6,13 +6,13 @@ import Login from "../pages/User/Login/Login";
 import Error from "../pages/Error/Error";
 import Register from "../pages/User/Register/Register";
 import Home from "../pages/User/Home/Home";
-import Protect from "../components/protect/Protect";
+import Protect from "../components/Protect/UserProtect";
 import Profile from "../pages/User/Profile/Profile";
 
 /////////////////////////ADMIN PAGES/////////////////////////
 import AdminLogin from "../pages/Admin/Login/AdminLogin";
 import AdminHome from "../pages/Admin/Home/AdminHome";
-import AdminProtect from "../components/protect/AdminProtect";
+import AdminProtect from "../components/Protect/AdminProtect";
 
 const AppRouter = () => {
   return (
@@ -20,7 +20,14 @@ const AppRouter = () => {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/profile/:username" element={<Profile />} />
+        <Route
+          path="/profile/:username"
+          element={
+            <Protect>
+              <Profile />
+            </Protect>
+          }
+        />
         <Route path="*" element={<Error />} />
         <Route
           path="/"
@@ -32,7 +39,14 @@ const AppRouter = () => {
         />
 
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/home" element={<AdminProtect><AdminHome /></AdminProtect>} />
+        <Route
+          path="/admin/home"
+          element={
+            <AdminProtect>
+              <AdminHome />
+            </AdminProtect>
+          }
+        />
       </Routes>
     </Router>
   );
