@@ -3,17 +3,16 @@ import { refreshToken, userAuth } from "../../const/localStorage";
 import axios from "axios";
 import { BASE_URL } from "../../const/url";
 import {persistor} from "../../utils/store"
+import { Navigate } from "react-router-dom";
 
 
 
 export const clearUser = () => {
-  localStorage.removeItem(userAuth);
-  localStorage.removeItem(refreshToken);
-  persistor.purge();
-  window.location.reload("/login");
+ localStorage.removeItem('userAuth');
+ localStorage.removeItem('refreshToken');
+ persistor.purge(); 
+window.location.reload("/login")
 };
-
-
 
 export const apiCall = async (method, url, data) => {
   return await new Promise(async (resolve, reject) => {
@@ -74,7 +73,6 @@ export const apiCall = async (method, url, data) => {
 
 
 
-
 const refreshAccessToken = async (error) => {
   try {
     if (error.response?.status === 401) {
@@ -85,27 +83,25 @@ const refreshAccessToken = async (error) => {
 
         return new Promise(async (resolve, reject) => {
           try {
-            //refreshing the access token
-            const response = await axios
-              .post(
-                `${BASE_URL}/api/auth/user/refresh-token`,
-                null,
-                {
-                  headers: {
-                    Authorization: tokenRefresh,
-                  },
-                }
-              )
-              .catch((err) => {
-                reject(err);
-              });
-            if(response){
+            // refreshing the access token
+            const response = await axios.post(
+              `${BASE_URL}/api/auth/user/refresh-token`,
+              null,
+              {
+                headers: {
+                  Authorization: tokenRefresh,
+                },
+              }
+            ).catch((err) => {
+              reject(err);
+            });
+
+            if (response) {
               const newAccessToken = response.data.newToken;
               localStorage.setItem(userAuth, newAccessToken);
 
-              //calling the original request
-              error.config.headers["Authorization"] = newAccessToken;
-
+              // calling the original request
+              error.config.headers['Authorization'] = newAccessToken;
 
               axios(error.config)
                 .then((response) => {
@@ -115,17 +111,17 @@ const refreshAccessToken = async (error) => {
                   reject(error);
                 });
             }
+            // Navigate to login after refreshing the token
+            navigate('/login');
           } catch (refreshError) {
             reject(refreshError);
           }
-        })
+        });
       } else {
         clearUser();
       }
     }
   } catch (error) {
-    clearUser()
+    clearUser();
   }
-}
-
-
+};
