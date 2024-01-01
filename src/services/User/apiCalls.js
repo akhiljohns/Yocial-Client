@@ -48,18 +48,17 @@ export const apiCall = async (method, url, data) => {
           localStorage.setItem(userAuth, "");
           localStorage.setItem(refreshToken, "");
           clearUser();
-          window.location.reload("/login");
         }
         
         if(error?.response?.status === 401){
           refreshAccessToken(error).then((response)=> {
-              resolve(response?.data);
-          }).catch((error)=>{
-            if(error.response?.status === 401){
-              clearUser()
+            if(response?.success){
+              resolve(response?.success?.data)
             } else {
-              reject(error);
+              reject(response?.failed?.response?.data)
             }
+          }).catch((error)=>{
+              clearUser()
           })
         } else {
           resolve(error?.response?.data);
@@ -105,14 +104,13 @@ const refreshAccessToken = async (error) => {
 
               axios(error.config)
                 .then((response) => {
-                  resolve(response);
+                  resolve({success: response});
                 })
                 .catch((error) => {
-                  reject(error);
+                  resolve({failed: error});
                 });
             }
-            // Navigate to login after refreshing the token
-            navigate('/login');
+
           } catch (refreshError) {
             reject(refreshError);
           }
