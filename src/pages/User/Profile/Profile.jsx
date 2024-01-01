@@ -39,7 +39,7 @@ const Profile = () => {
 
   return (
     <>
-      <Header />
+      <Header choice={"home"}/>
       <div className="gradient-custom-2 bg-black text-white min-h-screen flex items-center justify-center">
         <div className="container mx-auto py-5">
           <div className="flex items-center justify-center">

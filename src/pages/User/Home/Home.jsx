@@ -84,7 +84,7 @@ const UserHome = () => {
   return (
   <>
   
-    <Header/>
+    <Header choice={"profile"} />
     <div className="flex items-center justify-center h-screen">
       <div className="w-full max-w-4xl">
         <div className="main-box bg-white p-6 rounded shadow-md">
