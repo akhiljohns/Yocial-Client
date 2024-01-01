@@ -52,6 +52,13 @@ const UserHome = () => {
       });
   };
 
+  const buttonStyles = {
+    padding: "8px 16px",
+    borderRadius: "4px",
+    cursor: "pointer",
+    transition: "background-color 0.3s ease",
+  };
+
   const UserRow = ({ user }) => (
     <tr key={user._id}>
       <td>
@@ -64,54 +71,54 @@ const UserHome = () => {
             <span className="user-subhead block">{user.role}</span>
           </div>
         </div>
-      </td>
-      <td>{user.username}</td>
-      <td>
-        <div className="flex justify-around">
-          {
-            !following?.includes(user?._id) ? (
-              <button onClick={() => follow(user)}>Follow</button>
-            ) : (
-              <button onClick={() => unfollow(user)}>Unfollow</button>
-            )
-          }
-        </div>
-      </td>
-    </tr>
-  );
+        </td>
+    <td>{user.username}</td>
+    <td>
+      <div className="flex justify-around">
+        {
+          !following?.includes(user?._id) ? (
+            <button style={{ ...buttonStyles, background: "#4CAF50", color: "#fff" }} onClick={() => follow(user)}>Follow</button>
+          ) : (
+            <button style={{ ...buttonStyles, background: "#f44336", color: "#fff" }} onClick={() => unfollow(user)}>Unfollow</button>
+          )
+        }
+      </div>
+    </td>
+  </tr>
+);
 
   const filteredUsers = users.filter(user => user._id !== currentUser?._id);
   return (
   <>
   
-    <Header choice={"profile"} />
-    <div className="flex items-center justify-center h-screen">
-      <div className="w-full max-w-4xl">
-        <div className="main-box bg-white p-6 rounded shadow-md">
-          <div className="table-responsive">
-            <table className="table user-list w-full">
-              <thead>
-                <tr>
-                  <th className="py-2">
-                    <span>Name</span>
-                  </th>
-                  <th className="py-2">
-                    <span>Username</span>
-                  </th>
-                  <th className="py-2">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredUsers.map((user) => (
-                  <UserRow key={user._id} user={user} />
-                ))}
-              </tbody>
-            </table>
+  <Header choice={"profile"} />
+      <div className="flex items-center justify-center h-screen">
+        <div className="w-full max-w-4xl">
+          <div className="main-box bg-white p-6 rounded shadow-md">
+            <div className="table-responsive">
+              <table className="table user-list w-full">
+                <thead>
+                  <tr>
+                    <th className="py-2">
+                      <span>Name</span>
+                    </th>
+                    <th className="py-2">
+                      <span>Username</span>
+                    </th>
+                    <th className="py-2">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {filteredUsers.map((user) => (
+                    <UserRow key={user._id} user={user} />
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
+        <ToastContainer />
       </div>
-      <ToastContainer />
-    </div>
     </>
   );
 };
