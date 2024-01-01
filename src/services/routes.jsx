@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Login from "../pages/User/Login/Login";
 import Error from "../pages/Error/Error";
 import Register from "../pages/User/Register/Register";
-import Home from "../pages/User/Home/Home";
+import UserHome from "../pages/User/Home/Home";
 import Protect from "../components/Protect/UserProtect";
 import Profile from "../pages/User/Profile/Profile";
 
@@ -33,7 +33,7 @@ const AppRouter = () => {
           path="/"
           element={
             <Protect>
-              <Home />
+              <UserHome />
             </Protect>
           }
         />

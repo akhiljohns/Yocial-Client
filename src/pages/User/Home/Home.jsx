@@ -16,6 +16,7 @@ const UserHome = () => {
   const [error, setError] = useState("");
   const { validUser, userData } = useSelector((state) => state?.user);
 
+
   useEffect(() => {
     fetchAllUsers()
       .then((response) => {
@@ -26,20 +27,20 @@ const UserHome = () => {
       });
   }, []);
 
-  useEffect(()=> {
-    getConnections(currentUser?._id).then((connection)=>{
-        setFollowing(connection.following);
+  // useEffect(()=> {
+  //   getConnections(currentUser?._id).then((connection)=>{
+  //       setFollowing(connection.following);
 
-    }).catch((error)=>{
-        setError(error?.message);
-    })
-  }, [currentUser,following]);
+  //   }).catch((error)=>{
+  //       setError(error?.message);
+  //   })
+  // }, [currentUser,following]);
 
   const follow = (user) => {
     followUser(currentUser?._id, user?._id)
       .then((response)=> {
         setFollowing(response.userConnection.following);
-        console.log(following);
+        console.log(response.userConnection.following);
       })
       .catch((error) => {
         setError(error?.message);

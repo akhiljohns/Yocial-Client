@@ -3,15 +3,15 @@ import { userAuth } from "../../const/localStorage";
 import { authUrl } from "../../const/routes";
 import { apiCall } from "../../services/User/apiCalls";
 
-
 let token, isValidUser, userData, currentRoom;
-
 
 const userSlice = createSlice({
   name: "user",
   initialState: {
     userData: userData,
     validUser: isValidUser,
+    following: [],
+    followers: [],
   },
   reducers: {
     setReduxUser: (state, action) => {
@@ -25,12 +25,16 @@ const userSlice = createSlice({
       state.userData = null;
       state.validUser = false;
       localStorage.removeItem(userAuth);
-    }
+    },
+    setFollowing: (state, action) => {
+      state.following = action.payload;
+    },
 
-  }
- 
+    setFollowers: (state, action) => {
+      state.followers = action.payload;
+    },
+  },
 });
-
 
 export const userAuthenticator = () => async (dispatch) => {
   try {
@@ -41,27 +45,37 @@ export const userAuthenticator = () => async (dispatch) => {
           Authorization: token,
         },
       };
-      apiCall("get", authUrl.authUser, data).then((response) => {
-        isValidUser = response.valid;
-        userData = response.user;
-        dispatch(setReduxUser({ userData, validUser: isValidUser}));
-      }).catch((error) => {
-        dispatch(setReduxUser({userData: null, validUser: false}));
-      })
+      apiCall("get", authUrl.authUser, data)
+        .then((response) => {
+          isValidUser = response.valid;
+          userData = response.user;
+          dispatch(setReduxUser({ userData, validUser: isValidUser }));
+        })
+        .catch((error) => {
+          dispatch(setReduxUser({ userData: null, validUser: false }));
+        });
     } else {
-      dispatch(removeReduxUser())
+      dispatch(removeReduxUser());
     }
   } catch (e) {
     dispatch(removeReduxUser());
   }
 };
 
-
 export const removeUser = () => async (dispatch) => {
   dispatch(removeReduxUser());
-}
+};
 
-
-export const { setReduxUser, updateReduxUser, removeReduxUser, setReduxChatRoom, updateReduxChatRoom, setCurrentRoom, updateCurrentRoom } = userSlice.actions;
+export const {
+  setReduxUser,
+  updateReduxUser,
+  removeReduxUser,
+  setReduxChatRoom,
+  updateReduxChatRoom,
+  setCurrentRoom,
+  updateCurrentRoom,
+  setFollowing,
+  setFollowers,
+} = userSlice.actions;
 
 export default userSlice.reducer;

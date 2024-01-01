@@ -23,7 +23,7 @@ const Header = () => {
     <header className="bg-orange-500 p-4 text-white">
       <div className="container mx-auto flex justify-between items-center">
         <div onClick={() => navigate(`/profile/${userData.username}`)}>
-          Welcome, {userData.name}
+          Welcome, {userData?.name}
         </div>
         <button onClick={handleLogout} className="bg-black px-4 py-2 rounded">
           Logout

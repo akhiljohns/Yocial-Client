@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { postLogin, postMail } from "../../../services/User/apiMethods";
+import { getConnections, postLogin, postMail } from "../../../services/User/apiMethods";
 import { useNavigate } from "react-router-dom";
 import { loginValidate } from "../../../hooks/loginValidate";
 import { refreshToken, userAuth } from "../../../const/localStorage";
@@ -74,7 +74,11 @@ function Login() {
           localStorage.setItem(userAuth, response.tokens.accessToken);
           localStorage.setItem(refreshToken, response.tokens.refreshToken);
           dispatch(setReduxUser({ userData: response.user, validUser: true }));
-          navigate("/");
+
+//           getConnections(response.user._id).then((response) => {
+// console.log("ffff",response)
+// })
+navigate("/");
         } else if (response.userVerified == false) {
           setVerify(true);
           setError(response.message);
