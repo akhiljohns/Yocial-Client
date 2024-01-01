@@ -1,23 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { fetchAllUsers } from "../../../services/Admin/apiMethods";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { followUser, getConnections, unfollowUser } from "../../../services/User/apiMethods";
 import Header from "../../../components/user/Header/Header";
+import { setFollowing } from "../../../utils/reducers/userReducer";
 
 const UserHome = () => {
   const navigate = useNavigate();
   const currentUser = useSelector((state)=> state?.user?.userData);
-  const [following, setFollowing] = useState([]);
   const [users, setUsers] = useState([]);
   const [error, setError] = useState("");
-  const { validUser, userData } = useSelector((state) => state?.user);
+  const { validUser, userData,followers,following } = useSelector((state) => state?.user);
+
+  const dispatch = useDispatch()
 
 
   useEffect(() => {
+    console.log(following);
     fetchAllUsers()
       .then((response) => {
         setUsers(response.users);
@@ -27,30 +30,22 @@ const UserHome = () => {
       });
   }, []);
 
-  // useEffect(()=> {
-  //   getConnections(currentUser?._id).then((connection)=>{
-  //       setFollowing(connection.following);
-
-  //   }).catch((error)=>{
-  //       setError(error?.message);
-  //   })
-  // }, [currentUser,following]);
 
   const follow = (user) => {
     followUser(currentUser?._id, user?._id)
       .then((response)=> {
-        setFollowing(response.userConnection.following);
-        console.log(response.userConnection.following);
-      })
-      .catch((error) => {
-        setError(error?.message);
-      });
+      dispatch(setFollowing(response.userConnection.following))
+      console.log(response.userConnection.following);
+    })
+    .catch((error) => {
+      setError(error?.message);
+    });
   }
-
+  
   const unfollow = (user) => {
     unfollowUser(currentUser?._id, user?._id)
-      .then((response) => {
-        setFollowing(response.userConnection.following);
+    .then((response) => {
+        dispatch(setFollowing(response.userConnection.following))
       })
       .catch((error) => {
         setError(error?.message);
@@ -74,7 +69,7 @@ const UserHome = () => {
       <td>
         <div className="flex justify-around">
           {
-            following?.includes(user?._id) ? (
+            !following?.includes(user?._id) ? (
               <button onClick={() => follow(user)}>Follow</button>
             ) : (
               <button onClick={() => unfollow(user)}>Unfollow</button>

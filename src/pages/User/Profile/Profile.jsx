@@ -30,8 +30,8 @@ const Profile = () => {
       fetchUserDetails(user?._id)
         .then((response) => {
           setPosts(response.posts);
-          setFollowersCount(response.followers);
-          setFollowingCount(response.followings);
+          setFollowersCount(response.followers.length);
+          setFollowingCount(response.followings.length);
         })
         .catch((error) => setError(error?.message));
     }

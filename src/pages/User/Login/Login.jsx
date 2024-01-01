@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { loginValidate } from "../../../hooks/loginValidate";
 import { refreshToken, userAuth } from "../../../const/localStorage";
 import { useDispatch, useSelector } from "react-redux";
-import { setReduxUser } from "../../../utils/reducers/userReducer";
+import { setFollowers, setFollowing, setReduxUser } from "../../../utils/reducers/userReducer";
 import { Spinner } from "flowbite-react";
 
 function Login() {
@@ -75,10 +75,12 @@ function Login() {
           localStorage.setItem(refreshToken, response.tokens.refreshToken);
           dispatch(setReduxUser({ userData: response.user, validUser: true }));
 
-//           getConnections(response.user._id).then((response) => {
-// console.log("ffff",response)
-// })
+          getConnections(response.user._id).then((response) => {
+console.log("ffff",response)
+dispatch(setFollowers(response.connection.followersCount))
+dispatch(setFollowing(response.connection.followingCount))
 navigate("/");
+})
         } else if (response.userVerified == false) {
           setVerify(true);
           setError(response.message);
