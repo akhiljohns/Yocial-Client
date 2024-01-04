@@ -44,14 +44,13 @@ export const apiCall = async (method, url, data) => {
       if(response){
         resolve(response.data);
       } else if (error) { 
+
         if(error?.response?.status === 403 || 422){
 
           if(error?.response?.data?.error_code === "FORBIDDEN_LOGIN" || "Unauthorized_verify"){
            reject(error.response.data)
           }
-        }
-        
-        if(error?.response?.status === 401){
+        } else if(error?.response?.status === 401){
           refreshAccessToken(error).then((response)=> {
             if(response?.success){
               resolve(response?.success?.data)
@@ -61,9 +60,10 @@ export const apiCall = async (method, url, data) => {
           }).catch((error)=>{
               clearUser()
           })
-        } else {
-          resolve(error?.response?.data);
         }
+        
+          reject(error?.response?.data);
+        
       }
     } catch (err) {
         reject(err);

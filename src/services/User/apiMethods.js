@@ -14,10 +14,10 @@ export const getCredentials = () => {
               resolve(response);
             })
             .catch((error) => {
-              resolve({ status: 500, message: error.response });
+              reject({ status: 500, message: error.response });
             });
         } catch (error) {
-          resolve({ status: 500, message: error?.message });
+          reject({ status: 500, message: error?.message });
         }
     })
 }
@@ -30,7 +30,6 @@ export const postLogin = (userData) => {
     return new Promise((resolve, reject) => {
         try {
             apiCall('post', userUrl.login, userData).then((response)=>{
-                console.log(response,"psot login res");
                 resolve(response);
             }).catch((err)=>{
                 reject(err);
@@ -84,9 +83,11 @@ export const postRegister = (userData) => {
             apiCall("post", userUrl.register, userData).then((response)=>{
 
                 resolve(response);
+            }).catch((err)=> {
+                reject(err)
             })
         } catch (error) {
-            resolve({status:500, message: "Somethings wrong."})
+            reject({status:500, message: "Somethings wrong."})
         }
     })
 }
@@ -132,7 +133,7 @@ export const postCreatePost = (postData) => {
                 resolve({ status: 500, message: error.response });
             })
         } catch (error) {
-            resolve({status:500, message:error.response})
+            reject({status:500, message:error.response})
         }
     })
 }

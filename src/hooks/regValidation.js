@@ -52,6 +52,7 @@ export const regValidate = async ({
   password,
   password2,
   setErr,
+  
 }) => {
   return new Promise(async (resolve, reject) => {
     try {
@@ -77,7 +78,7 @@ export const regValidate = async ({
             }
           } else {
             setErr(
-              "Invalid username. Username should only contain\nletters, numbers, and '_', and should not start with a number."
+              "Invalid Username. Username should only contain\nletters, numbers, and '_', and should not start with a number."
             );
           }
         } else {
