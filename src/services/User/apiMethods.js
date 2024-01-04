@@ -30,6 +30,7 @@ export const postLogin = (userData) => {
     return new Promise((resolve, reject) => {
         try {
             apiCall('post', userUrl.login, userData).then((response)=>{
+                console.log(response,"psot login res");
                 resolve(response);
             }).catch((err)=>{
                 reject(err);

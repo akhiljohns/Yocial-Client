@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { getConnections, postLogin, postMail } from "../../../services/User/apiMethods";
+import {
+  getConnections,
+  postLogin,
+  postMail,
+} from "../../../services/User/apiMethods";
 import { useNavigate } from "react-router-dom";
 import { loginValidate } from "../../../hooks/loginValidate";
 import { refreshToken, userAuth } from "../../../const/localStorage";
 import { useDispatch, useSelector } from "react-redux";
-import { setFollowers, setFollowing, setReduxUser } from "../../../utils/reducers/userReducer";
+import {
+  setFollowers,
+  setFollowing,
+  setReduxUser,
+} from "../../../utils/reducers/userReducer";
 import { Spinner } from "flowbite-react";
 
 function Login() {
@@ -26,12 +34,12 @@ function Login() {
 
   const setCredentials = () => {
     if (!credential) {
-      setLoading(false)
+      setLoading(false);
       setError("Please enter a username or email");
       return false;
     }
     if (!password) {
-      setLoading(false)
+      setLoading(false);
       setError("Please enter a password");
       return false;
     }
@@ -78,13 +86,13 @@ function Login() {
           dispatch(setReduxUser({ userData: response.user, validUser: true }));
 
           getConnections(response.user._id).then((response) => {
-dispatch(setFollowers(response.connection.followersCount))
-dispatch(setFollowing(response.connection.followingCount))
-navigate("/");
-})
-        } else if (response.userVerified == false) {
-          setVerify(true);
+            dispatch(setFollowers(response.connection.followersCount));
+            dispatch(setFollowing(response.connection.followingCount));
+            navigate("/");
+          });
+        } else if (response?.userVerified === false) {
           setError(response.message);
+          setVerify(true);
         } else {
           setError(response.message);
         }
@@ -168,11 +176,11 @@ navigate("/");
             </div>
           )}
           <button
-          onClick={() => navigate("/register")}
-          className="w-full mb-4 text-white p-2 rounded hover:bg-green-700"
-        >
-          Dont have an account? Register
-        </button>
+            onClick={() => navigate("/register")}
+            className="w-full mb-4 text-white p-2 rounded hover:bg-green-700"
+          >
+            Dont have an account? Register
+          </button>
         </div>
       </div>
     </>
