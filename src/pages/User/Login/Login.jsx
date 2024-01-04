@@ -26,10 +26,12 @@ function Login() {
 
   const setCredentials = () => {
     if (!credential) {
+      setLoading(false)
       setError("Please enter a username or email");
       return false;
     }
     if (!password) {
+      setLoading(false)
       setError("Please enter a password");
       return false;
     }
