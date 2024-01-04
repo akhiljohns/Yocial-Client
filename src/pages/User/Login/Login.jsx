@@ -76,7 +76,6 @@ function Login() {
           dispatch(setReduxUser({ userData: response.user, validUser: true }));
 
           getConnections(response.user._id).then((response) => {
-console.log("ffff",response)
 dispatch(setFollowers(response.connection.followersCount))
 dispatch(setFollowing(response.connection.followingCount))
 navigate("/");

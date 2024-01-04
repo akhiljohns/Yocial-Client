@@ -238,7 +238,6 @@ export const fetchUserDetails = (userId) => {
         try {
             apiCall("get", `${postUrl.getUserDetails}?userId=${userId}`)
               .then((response) => {
-                console.log("response from fetch user by username", response);
 
                 resolve(response);
               })

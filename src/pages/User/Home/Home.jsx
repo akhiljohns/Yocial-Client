@@ -20,7 +20,6 @@ const UserHome = () => {
 
 
   useEffect(() => {
-    console.log(following);
     fetchAllUsers()
       .then((response) => {
         setUsers(response.users);
@@ -35,7 +34,6 @@ const UserHome = () => {
     followUser(currentUser?._id, user?._id)
       .then((response)=> {
       dispatch(setFollowing(response.userConnection.following))
-      console.log(response.userConnection.following);
     })
     .catch((error) => {
       setError(error?.message);
