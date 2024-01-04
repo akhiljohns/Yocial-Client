@@ -90,19 +90,17 @@ function Login() {
             dispatch(setFollowing(response.connection.followingCount));
             navigate("/");
           });
-        } else if (response?.userVerified === false) {
-          setError(response.message);
-          setVerify(true);
-        } else {
-          setError(response.message);
         }
       })
-      .catch((error) => {
-        setError(
-          error?.response?.message ||
-            error?.message ||
-            "SOMETHING WENT WRONG, TRY AGAIN LATER"
-        );
+      .catch( (error) => {
+         setLoading(false);
+         setVerify(false);
+        if (error?.userVerified === false) {
+           setVerify(true);
+           setError(error.message);
+          } else {
+          setError(error.message);
+        }
       });
   };
 

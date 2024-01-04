@@ -43,13 +43,11 @@ export const apiCall = async (method, url, data) => {
       
       if(response){
         resolve(response.data);
-      } else if (error) {
-        if(error?.response?.status === 403){
+      } else if (error) { 
+        if(error?.response?.status === 403 || 422){
 
-          if(error?.response?.data?.error_code === "FORBIDDEN_LOGIN"){
-            localStorage.setItem(userAuth, "");
-            localStorage.setItem(refreshToken, "");
-            clearUser();
+          if(error?.response?.data?.error_code === "FORBIDDEN_LOGIN" || "Unauthorized_verify"){
+           reject(error.response.data)
           }
         }
         
