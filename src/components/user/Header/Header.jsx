@@ -20,7 +20,7 @@ const Header = ({ choice }) => {
   };
 
   return (
-    <header className="bg-orange-500 p-4 text-white">
+    <header className="bg-orange-500 p-4 z-30 text-white absolute w-screen">
       <div className="container mx-auto flex justify-between items-center">
         {choice === "profile" ? (
           <div onClick={() => navigate(`/profile/${userData?.username}`)}>

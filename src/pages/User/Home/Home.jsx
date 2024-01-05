@@ -4,10 +4,12 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-import { followUser, getConnections, unfollowUser } from "../../../services/User/apiMethods";
-import Header from "../../../components/user/Header/Header";
 import { setFollowing } from "../../../utils/reducers/userReducer";
+import { followUser, getConnections, unfollowUser } from "../../../services/User/apiMethods";
+
+// IMPORTING COMPONENTS 
+import Header from "../../../components/user/Header/Header";
+import UserSideBar from "../../../components/user/Sidebar/UserSideBar";
 
 const UserHome = () => {
   const navigate = useNavigate();
@@ -87,37 +89,39 @@ const UserHome = () => {
 
   const filteredUsers = users.filter(user => user._id !== currentUser?._id);
   return (
-  <>
-  
-  <Header choice={"profile"} />
-      <div className="flex items-center justify-center h-screen">
-        <div className="w-full max-w-4xl">
-          <div className="main-box bg-white p-6 rounded shadow-md">
-            <div className="table-responsive">
-              <table className="table user-list w-full">
-                <thead>
-                  <tr>
-                    <th className="py-2">
-                      <span>Name</span>
-                    </th>
-                    <th className="py-2">
-                      <span>Username</span>
-                    </th>
-                    <th className="py-2">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredUsers.map((user) => (
-                    <UserRow key={user._id} user={user} />
-                  ))}
-                </tbody>
-              </table>
+    <div className="flex overflow-x-hidden">
+      <div className="flex-1 relative">
+        <Header choice={"profile"} />
+        <UserSideBar />
+        <div className="flex items-center justify-center h-screen">
+          <div className="w-full max-w-4xl">
+            <div className="main-box bg-white p-6 rounded shadow-md">
+              <div className="table-responsive">
+                <table className="table user-list w-full">
+                  <thead>
+                    <tr>
+                      <th className="py-2">
+                        <span>Name</span>
+                      </th>
+                      <th className="py-2">
+                        <span>Username</span>
+                      </th>
+                      <th className="py-2">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredUsers.map((user) => (
+                      <UserRow key={user._id} user={user} />
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
+          <ToastContainer />
         </div>
-        <ToastContainer />
       </div>
-    </>
+    </div>
   );
 };
 
