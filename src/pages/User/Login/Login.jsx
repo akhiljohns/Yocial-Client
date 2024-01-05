@@ -79,15 +79,15 @@ function Login() {
     }
     postLogin(userData)
       .then((response) => {
-        setLoading(false);
         if (response.status === 200) {
           localStorage.setItem(userAuth, response.tokens.accessToken);
           localStorage.setItem(refreshToken, response.tokens.refreshToken);
           dispatch(setReduxUser({ userData: response.user, validUser: true }));
-
+          
           getConnections(response.user._id).then((response) => {
             dispatch(setFollowers(response.connection.followersCount));
             dispatch(setFollowing(response.connection.followingCount));
+            setLoading(false);
             navigate("/");
           });
         }
