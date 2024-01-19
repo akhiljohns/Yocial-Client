@@ -31,7 +31,6 @@ const UserSideBar = () => {
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
     setImagePreview(URL.createObjectURL(e.target.files[0]));
-
   };
 
   const handleSubmit = async () => {
@@ -40,7 +39,7 @@ const UserSideBar = () => {
       return;
     }
 
-    const data1 = await uploadCloudinary(imagePreview, setErr);
+    const data1 = await uploadCloudinary(imagePreview, image, setErr);
 
     if (data1) {
       const postData = {

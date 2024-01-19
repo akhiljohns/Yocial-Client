@@ -2,11 +2,12 @@
 
 import axios from "axios";
 
-const uploadCloudinary = async (imgData, setErr) => {
+const uploadCloudinary = async (imgData, imageFile, setErr) => {
   try {
+
     const image = await fetch(imgData);
     const blob = await image.blob();
-    const file = new File([blob], "filename.png", { type: blob.type });
+    const file = new File([blob], `${imageFile.name}.png`, { type: blob.type });
 
     const formData = new FormData();
     formData.append("file", file);
