@@ -130,7 +130,7 @@ export const postCreatePost = (postData) => {
             apiCall("post", postUrl.create, postData).then((response) => {
                 resolve(response);
             }).catch((error) => {
-                resolve({ status: 500, message: error.response });
+                reject({ status: 500, message: error.response });
             })
         } catch (error) {
             reject({status:500, message:error.response})

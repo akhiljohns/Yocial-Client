@@ -1,13 +1,21 @@
 import React, { useState } from "react";
 import "./UserSideBar.css";
 import Modal from "react-modal";
+import uploadCloudinary from "../../../hooks/cloudinary";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { postCreatePost } from "../../../services/User/apiMethods";
 
 const UserSideBar = () => {
-  const [image, setImage] = useState(false);
-  const [caption, setCaption] = useState(false);
-  const [imagePreview,setImagePreview] = useState(null);
+  const [image, setImage] = useState(null);
+  const [caption, setCaption] = useState("");
+  const [imagePreview, setImagePreview] = useState(null);
   const [err, setErr] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const userData = useSelector((state) => state?.user?.userData);
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -15,19 +23,44 @@ const UserSideBar = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setImagePreview(null)
+    setImagePreview(null);
+    setImage(null);
+    setErr(false);
   };
 
-
-const handleImageChange = (e) => {
- 
+  const handleImageChange = (e) => {
     setImage(e.target.files[0]);
     setImagePreview(URL.createObjectURL(e.target.files[0]));
-}
 
-  const handleSubmit = () => {
+  };
+
+  const handleSubmit = async () => {
     if (!image) {
       setErr("Please select an image");
+      return;
+    }
+
+    const data1 = await uploadCloudinary(imagePreview, setErr);
+
+    if (data1) {
+      const postData = {
+        userId: userData._id,
+        image: data1.secure_url,
+        description: caption,
+      };
+      postCreatePost(postData)
+      .then((response) => {
+        if (response.status === 200) {
+            console.log(postData)
+            closeModal();
+          } else if (response.status === 401) {
+            closeModal();
+            navigate("/login");
+          } else {
+            setErr(response.message);
+          }
+        })
+        
     }
   };
 
@@ -97,16 +130,15 @@ const handleImageChange = (e) => {
           </div>
           <div className="mb-4">
             <input
-              htmlFor="image"
-              id="image"
-              name="image"
-              placeholder="Write something ...."
+              type="text"
+              id="caption"
+              placeholder="Write something ..."
+              value={caption}
               onChange={(e) => {
                 setCaption(e.target.value);
               }}
-              className="block text-gray-700 font-bold mb-2"
-            ></input>
-
+              className="block text-gray-700 font-bold mb-2 w-full"
+            />
             <input
               type="text"
               id="caption"
