@@ -3,6 +3,10 @@ import "./UserSideBar.css";
 import Modal from "react-modal";
 
 const UserSideBar = () => {
+  const [image, setImage] = useState(false);
+  const [caption, setCaption] = useState(false);
+  const [imagePreview,setImagePreview] = useState(null);
+  const [err, setErr] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
@@ -11,6 +15,20 @@ const UserSideBar = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
+    setImagePreview(null)
+  };
+
+
+const handleImageChange = (e) => {
+ 
+    setImage(e.target.files[0]);
+    setImagePreview(URL.createObjectURL(e.target.files[0]));
+}
+
+  const handleSubmit = () => {
+    if (!image) {
+      setErr("Please select an image");
+    }
   };
 
   return (
@@ -29,6 +47,8 @@ const UserSideBar = () => {
           Search
         </button>
       </div>
+
+      {/* MODAL STARTING */}
       <Modal
         isOpen={isModalOpen}
         onRequestClose={closeModal}
@@ -41,7 +61,6 @@ const UserSideBar = () => {
           content: {
             backgroundColor: "white",
             padding: "20px",
-            borderRadius: "10px",
             color: "#333",
             maxWidth: "800px",
             margin: "0 auto",
@@ -71,19 +90,22 @@ const UserSideBar = () => {
               type="file"
               id="image"
               name="image"
-              onChange={handleImage}
+              onChange={handleImageChange}
               accept="image/jpeg, image/png, image/webp, image/jpg"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
           <div className="mb-4">
             <input
-              htmlFor="caption"
-              id="caption"
-              name="caption"
+              htmlFor="image"
+              id="image"
+              name="image"
               placeholder="Write something ...."
-              onChange={(e) => { setDescription(e.target.value); }}
-              className="block text-gray-700 font-bold mb-2" > Caption: </input>
+              onChange={(e) => {
+                setCaption(e.target.value);
+              }}
+              className="block text-gray-700 font-bold mb-2"
+            ></input>
 
             <input
               type="text"
@@ -91,21 +113,33 @@ const UserSideBar = () => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
+          {/* Submit button start */}
           <button
             className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            onClick={closeModal}
+            onClick={handleSubmit}
           >
             Submit
           </button>
+          {/* Submit button end */}
           <br />
+          {/* close button start */}
           <button
             className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             onClick={closeModal}
           >
             Cancel
           </button>
+          {/* close button end */}
+
+          {/* Error  */}
+          {err && <p className="text-red-500 text-center">{err}</p>}
+          {/* Error end */}
+        </div>
+        <div className="image-preview">
+          {imagePreview && ( <img src={imagePreview && imagePreview} alt="preview" /> )}
         </div>
       </Modal>
+      {/* MODAL END */}
     </div>
   );
 };
