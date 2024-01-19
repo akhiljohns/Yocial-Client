@@ -52,24 +52,56 @@ const UserSideBar = () => {
           },
         }}
       >
-        <button className="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 transition ease-in-out duration-150" onClick={closeModal}>
+        <button
+          className="absolute top-0 right-0 m-4 text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 transition ease-in-out duration-150"
+          onClick={closeModal}
+        >
           &times;
         </button>
         <div className="p-6 text-center">
           <h2 className="text-2xl font-bold text-gray-800 mb-4">Create Post</h2>
           <div className="mb-4">
-            <label htmlFor="image" className="block text-gray-700 font-bold mb-2">Add Image:</label>
-            <input type="file" id="image" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <label
+              htmlFor="image"
+              className="block text-gray-700 font-bold mb-2"
+            >
+              Add Image:
+            </label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              onChange={handleImage}
+              accept="image/jpeg, image/png, image/webp, image/jpg"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
           </div>
           <div className="mb-4">
-            <label htmlFor="caption" className="block text-gray-700 font-bold mb-2">Caption:</label>
-            <input type="text" id="caption" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+            <input
+              htmlFor="caption"
+              id="caption"
+              name="caption"
+              placeholder="Write something ...."
+              onChange={(e) => { setDescription(e.target.value); }}
+              className="block text-gray-700 font-bold mb-2" > Caption: </input>
+
+            <input
+              type="text"
+              id="caption"
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            />
           </div>
-          <button className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={closeModal}>
+          <button
+            className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            onClick={closeModal}
+          >
             Submit
           </button>
           <br />
-          <button className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" onClick={closeModal}>
+          <button
+            className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            onClick={closeModal}
+          >
             Cancel
           </button>
         </div>
