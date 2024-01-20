@@ -51,7 +51,6 @@ export const apiCall = async (method, url, data) => {
             reject(error.response.data)
           }
         } else if(error?.response?.status === 401){
-          console.log(error);
           refreshAccessToken(error).then((response)=> {
             if(response?.success){
               resolve(response?.success?.data)

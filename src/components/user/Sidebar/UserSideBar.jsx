@@ -1,17 +1,21 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./UserSideBar.css";
 import Modal from "react-modal";
 import uploadCloudinary from "../../../hooks/cloudinary";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { postCreatePost } from "../../../services/User/apiMethods";
+import CropImage from "../Options/CropImg";
 
 const UserSideBar = () => {
   const [image, setImage] = useState(null);
   const [caption, setCaption] = useState("");
-  const [imagePreview, setImagePreview] = useState(null);
+  const [imagePreview, setImagePreview] = useState(false);
   const [err, setErr] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedImg, setSelectedImg] = useState(false); //state to set the image selected by client
+  const [croppedImg, setCroppedImg] = useState();
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -28,9 +32,26 @@ const UserSideBar = () => {
     setErr(false);
   };
 
+  const clearComponent = () => {
+    setErr("");
+    setSelectedImg(false);
+    setCaption("");
+    setCroppedImg(null);
+    setImage(null);
+  }
+
+  useEffect(() => {
+    setImagePreview(croppedImg || "Image");
+  }, [croppedImg]);
+
   const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
-    setImagePreview(URL.createObjectURL(e.target.files[0]));
+    const img = e.target.files[0];
+    try {
+      setErr("");
+      setImage(img);
+      setImagePreview(URL.createObjectURL(img));
+      setSelectedImg(true);
+    } catch (error) {}
   };
 
   const handleSubmit = async () => {
@@ -47,19 +68,20 @@ const UserSideBar = () => {
         image: data1.secure_url,
         description: caption,
       };
-      postCreatePost(postData)
-      .then((response) => {
+      setErr("Uploading....")
+      postCreatePost(postData).then((response) => {
         if (response.status === 200) {
-            console.log(postData)
-            closeModal();
-          } else if (response.status === 401) {
-            closeModal();
-            navigate("/login");
-          } else {
-            setErr(response.message);
-          }
-        })
-        
+          clearComponent()
+          closeModal();
+        } else if (response.status === 401) {
+          clearComponent()
+          closeModal();
+          navigate("/login");
+        } else {
+          clearComponent()
+          setErr(response.message);
+        }
+      });
     }
   };
 
@@ -68,6 +90,15 @@ const UserSideBar = () => {
       className="h-screen absolute z-10 bg-black user-sidebar"
       style={{ width: "200px" }}
     >
+      {selectedImg ? (
+        <CropImage
+          imgUrl={imagePreview}
+          aspectInit={{ value: 1 / 1 }}
+          setCroppedImg={setCroppedImg}
+          setimgSelected={setSelectedImg}
+          setErr={setErr}
+        />
+      ) : null}
       <div className="flex flex-col h-full justify-center items-center">
         <button
           className="py-2 px-4 my-2 bg-blue-500 text-white rounded hover:bg-blue-700"
@@ -138,11 +169,6 @@ const UserSideBar = () => {
               }}
               className="block text-gray-700 font-bold mb-2 w-full"
             />
-            <input
-              type="text"
-              id="caption"
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
           </div>
           {/* Submit button start */}
           <button
@@ -167,7 +193,9 @@ const UserSideBar = () => {
           {/* Error end */}
         </div>
         <div className="image-preview">
-          {imagePreview && ( <img src={imagePreview && imagePreview} alt="preview" /> )}
+          {imagePreview && (
+            <img src={imagePreview && imagePreview} alt='' />
+          )}
         </div>
       </Modal>
       {/* MODAL END */}
