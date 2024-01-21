@@ -40,6 +40,7 @@ function CreatePostModal({ isModalOpen, setIsModalOpen }) {
   }, [croppedImg]);
 
   const handleSubmit = async () => {
+    setErr("Uploading....");
     if (!image) {
       setErr("Please select an image");
       return;
@@ -53,7 +54,6 @@ function CreatePostModal({ isModalOpen, setIsModalOpen }) {
         image: data1.secure_url,
         description: caption,
       };
-      setErr("Uploading....");
       postCreatePost(postData).then((response) => {
         if (response.status === 200) {
           clearComponent();
