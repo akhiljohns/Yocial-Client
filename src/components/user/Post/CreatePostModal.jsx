@@ -55,6 +55,7 @@ function CreatePostModal({ isModalOpen, setIsModalOpen }) {
         description: caption,
       };
       postCreatePost(postData).then((response) => {
+    setErr("");
         if (response.status === 200) {
           clearComponent();
           closeModal();
