@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import CropImage from "../Options/CropImg";
 import PostInput from "../Elements/PostInput";
+import { Spinner } from "flowbite-react";
 
 function CreatePostModal({ isModalOpen, setIsModalOpen }) {
   const [croppedImg, setCroppedImg] = useState();
@@ -14,6 +15,7 @@ function CreatePostModal({ isModalOpen, setIsModalOpen }) {
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(false);
   const [selectedImg, setSelectedImg] = useState(false); //state to set the image selected by client
+  const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   //   const dispatch = useDispatch();
@@ -28,6 +30,7 @@ function CreatePostModal({ isModalOpen, setIsModalOpen }) {
   };
 
   const clearComponent = () => {
+    setLoading(false);
     setErr("");
     setSelectedImg(false);
     setCaption("");
@@ -40,13 +43,14 @@ function CreatePostModal({ isModalOpen, setIsModalOpen }) {
   }, [croppedImg]);
 
   const handleSubmit = async () => {
-    setErr("Uploading....");
     if (!image) {
+      setLoading(false);
+
       setErr("Please select an image");
       return;
     }
 
-    const data1 = await uploadCloudinary(imagePreview, image, setErr);
+    const data1 = await uploadCloudinary(imagePreview, image, setErr , setLoading);
 
     if (data1) {
       const postData = {
@@ -55,8 +59,8 @@ function CreatePostModal({ isModalOpen, setIsModalOpen }) {
         description: caption,
       };
       postCreatePost(postData).then((response) => {
-    setErr("");
         if (response.status === 200) {
+          alert("Post created successfully");
           clearComponent();
           closeModal();
         } else if (response.status === 401) {
@@ -120,6 +124,7 @@ function CreatePostModal({ isModalOpen, setIsModalOpen }) {
               setErr={setErr}
               setImagePreview={setImagePreview}
               setSelectedImg={setSelectedImg}
+              disabled={loading}
             />
           </div>
           <div className="mb-4">
@@ -132,12 +137,23 @@ function CreatePostModal({ isModalOpen, setIsModalOpen }) {
                 setCaption(e.target.value);
               }}
               className="block text-gray-700 font-bold mb-2 w-full"
+              disabled={loading}
             />
           </div>
+          {loading && (
+            <div className="w-full flex justify-center items-center">
+              <Spinner
+                color="info"
+                aria-label="Large spinner example"
+                size="lg"
+              />
+            </div>
+          )}
           {/* Submit button start */}
           <button
             className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             onClick={handleSubmit}
+            disabled={loading}
           >
             Submit
           </button>
@@ -147,6 +163,7 @@ function CreatePostModal({ isModalOpen, setIsModalOpen }) {
           <button
             className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             onClick={closeModal}
+            disabled={loading}
           >
             Cancel
           </button>
