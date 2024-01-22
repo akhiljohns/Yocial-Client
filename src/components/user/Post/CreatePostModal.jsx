@@ -43,6 +43,7 @@ function CreatePostModal({ isModalOpen, setIsModalOpen }) {
   }, [croppedImg]);
 
   const handleSubmit = async () => {
+    setLoading(true);
     if (!image) {
       setLoading(false);
 
@@ -59,6 +60,7 @@ function CreatePostModal({ isModalOpen, setIsModalOpen }) {
         description: caption,
       };
       postCreatePost(postData).then((response) => {
+        setErr("");
         if (response.status === 200) {
           alert("Post created successfully");
           clearComponent();
