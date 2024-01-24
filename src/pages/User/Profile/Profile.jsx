@@ -6,6 +6,7 @@ import {
   fetchUserDetails,
 } from "../../..//services/User/apiMethods.js";
 import Header from "../../../components/user/Header/Header.jsx";
+import SinglePostModal from "../../../components/user/Elements/SinglePostModal.jsx";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -16,6 +17,20 @@ const Profile = () => {
   const [followingCount, setFollowingCount] = useState(0);
   const { validUser, userData } = useSelector((state) => state?.user);
   const { username } = useParams();
+
+  const [imageSrc, setImageSrc] = useState("");
+  const [isModalOpen, setModalOpen] = useState(false);
+  const comments = ['Nice!', 'Great photo!', 'Love it!']; // Replace with your comments
+
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
+
+
+const handleImage = (image) => {
+setImageSrc(image);
+openModal()
+
+}
 
   useEffect(() => {
     if (username) {
@@ -53,7 +68,6 @@ const Profile = () => {
               <p className="text-white">{user?.username}</p>
             </div>
           </div>
-
           <div className="mt-6 text-white bg-black p-4">
             <div className="flex justify-center items-center py-1">
               <div>
@@ -79,8 +93,12 @@ const Profile = () => {
                   src={post?.image}
                   alt={post?.caption}
                   className="w-full"
-                />
-              ))}
+                  onClick={(e) => {
+                    handleImage(post?.image)
+                  }}
+                  />
+                  ))}
+                  <SinglePostModal isOpen={isModalOpen} closeModal={closeModal} imageUrl={imageSrc} comments={comments}/>
             </div>
           </div>
         </div>
