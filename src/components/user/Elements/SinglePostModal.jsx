@@ -1,4 +1,3 @@
-// components/Modal.jsx
 import React from 'react';
 
 const SinglePostModal = ({ isOpen, closeModal, imageUrl, comments }) => {
@@ -6,8 +5,8 @@ const SinglePostModal = ({ isOpen, closeModal, imageUrl, comments }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 z-50">
-      <div className="bg-white w-96 p-4 rounded-lg shadow-md flex">
+    <div className="fixed outerdiv top-0 left-0 w-full h-full flex items-center justify-center bg-black bg-opacity-75 z-50" onClick={closeModal}>
+      <div className="bg-white w-96 p-4 rounded-lg shadow-md flex" onClick={(e) => e.stopPropagation()}>
         {/* Left side - Image */}
         <div className="flex-shrink-0">
           <img src={imageUrl} alt="Modal Image" className="w-32 h-32 object-cover rounded" />
@@ -15,10 +14,10 @@ const SinglePostModal = ({ isOpen, closeModal, imageUrl, comments }) => {
 
         {/* Right side - Comments */}
         <div className="flex-grow ml-4">
-          <h2 className="text-xl font-bold mb-2">Random Comments</h2>
+          <h2 className="text-xl font-bold mb-2 text-black">Random Comments</h2>
           <ul>
             {comments.map((comment, index) => (
-              <li key={index} className="mb-2">
+              <li key={index} className="mb-2 text-gray-700">
                 {comment}
               </li>
             ))}
