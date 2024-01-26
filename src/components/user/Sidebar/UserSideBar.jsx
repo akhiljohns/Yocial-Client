@@ -35,6 +35,7 @@ const UserSideBar = () => {
         <CreatePostModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
+          type={"createPost"}
         />
       )}
     </div>
