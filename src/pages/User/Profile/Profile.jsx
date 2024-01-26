@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   fetchUserByUsername,
@@ -7,9 +7,11 @@ import {
 } from "../../..//services/User/apiMethods.js";
 import Header from "../../../components/user/Header/Header.jsx";
 import SinglePostModal from "../../../components/user/Elements/SinglePostModal.jsx";
-
+import { setEditPost } from "../../../utils/reducers/postReducer.js";
 const Profile = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [user, setUser] = useState(null);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
@@ -20,17 +22,16 @@ const Profile = () => {
 
   const [imageSrc, setImageSrc] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
-  const comments = ['Nice!', 'Great photo!', 'Love it!']; // Replace with your comments
+  const comments = ["Nice!", "Great photo!", "Love it!"]; // Replace with your comments
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-
-const handleImage = (image) => {
-setImageSrc(image);
-openModal()
-
-}
+  const handleImage =  (post) => {
+    dispatch(setEditPost({editPost:post}));
+    setImageSrc(post?.image);
+    openModal();
+  };
 
   useEffect(() => {
     if (username) {
@@ -54,7 +55,7 @@ openModal()
 
   return (
     <>
-      <Header choice={"home"}/>
+      <Header choice={"home"} />
       <div className="gradient-custom-2 bg-black text-white min-h-screen flex items-center justify-center">
         <div className="container mx-auto py-5">
           <div className="flex items-center justify-center">
@@ -94,11 +95,16 @@ openModal()
                   alt={post?.caption}
                   className="w-full"
                   onClick={(e) => {
-                    handleImage(post?.image)
+                    handleImage(post);
                   }}
-                  />
-                  ))}
-                  <SinglePostModal isOpen={isModalOpen} closeModal={closeModal} imageUrl={imageSrc} comments={comments}/>
+                />
+              ))}
+              <SinglePostModal
+                isOpen={isModalOpen}
+                closeModal={closeModal}
+                imageUrl={imageSrc}
+                comments={comments}
+              />
             </div>
           </div>
         </div>

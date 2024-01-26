@@ -138,6 +138,22 @@ export const postCreatePost = (postData) => {
     })
 }
 
+//@dec      Update post
+//method    POST
+export const putUpdatePost = (postData) => {
+    return new Promise((resolve, reject) => {
+        try {
+            apiCall("put", postUrl.update, postData).then((response) => {
+                resolve(response);
+            }).catch((error) => {
+                reject({ status: 500, message: error.response });
+            })
+        } catch (error) {
+            reject({status:500, message:error.response})
+        }
+    })
+}
+
 
 
 
