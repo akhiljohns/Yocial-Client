@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { FaEdit } from 'react-icons/fa'; // Assuming you're using react-icons library for icons
 import { useSelector, useDispatch } from 'react-redux';
 import CreatePostModal from '../Post/CreatePostModal';
-const SinglePostModal = ({ isOpen, closeModal, imageUrl, comments }) => {
+const SinglePostModal = ({ isOpen, closeModal, imageUrl, comments, setIsCreatePostModalOpen }) => {
   // Check if the modal is open
   if (!isOpen) return null;
 
-  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
+  // const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
   const dispatch = useDispatch();
 
   const openCreatePostModal = () => {
@@ -17,11 +17,9 @@ const SinglePostModal = ({ isOpen, closeModal, imageUrl, comments }) => {
     setIsCreatePostModalOpen(false);
   };
 
-
-
-  const handleEdit = (closeModal) => {
-    closeModal();
+  const handleEdit = () => {
     openCreatePostModal();
+    closeModal();
   };
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50" onClick={closeModal}>
@@ -57,9 +55,7 @@ const SinglePostModal = ({ isOpen, closeModal, imageUrl, comments }) => {
           &times;
         </button>
       </div>
-      {isCreatePostModalOpen && (
-        <CreatePostModal isModalOpen={isCreatePostModalOpen} setIsModalOpen={setIsCreatePostModalOpen} type={"editPost"} />
-      )}
+      
     </div>
   );
 };

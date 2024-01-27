@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { postCreatePost, putUpdatePost } from "../../../services/User/apiMethods";
+import {
+  postCreatePost,
+  postUpdatePost,
+} from "../../../services/User/apiMethods";
 import Modal from "react-modal";
 import uploadCloudinary from "../../../hooks/cloudinary";
 import { useNavigate } from "react-router-dom";
@@ -34,9 +37,10 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
   const handlePostResponse = (response) => {
     setLoading(false);
     if (response.status === 200) {
-      alert(response.message); // Consider using a more user-friendly notification method
+      alert(response.message);
       clearComponent();
       closeModal();
+      window.location.reload();
     } else if (response.status === 401) {
       clearComponent();
       closeModal();
@@ -55,30 +59,34 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
         return;
       }
 
-      const data1 = await uploadCloudinary(imagePreview, image, setErr, setLoading);
+      const data1 = await uploadCloudinary(
+        imagePreview,
+        image,
+        setErr,
+        setLoading
+      );
 
       if (data1) {
         postData = {
           userId: userData._id,
           image: data1.secure_url,
-          captio: caption,
+          caption: caption,
         };
       }
-
-      if (type === "editPost") {
-        postData = {
-          postId: userPost?._id,
-          caption: userPost?.caption,
-        };
-      }
-
-      (type !== "editPost" ? postCreatePost(postData) : putUpdatePost(postData))
-        .then(handlePostResponse)
-        .catch((error) => {
-          setLoading(false);
-          setErr(error?.message);
-        });
     }
+    if (type === "editPost") {
+      postData = {
+        postId: userPost?._id,
+        caption: caption,
+      };
+    }
+
+    (type !== "editPost" ? postCreatePost(postData) : postUpdatePost(postData))
+      .then(handlePostResponse)
+      .catch((error) => {
+        setLoading(false);
+        setErr(error?.message);
+      });
   };
 
   const closeModal = () => {
@@ -93,10 +101,13 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
     <Modal
       isOpen={isModalOpen}
       onRequestClose={closeModal}
-      className="flex items-center bg-black border-0 rounded-lg shadow-lg transform overflow-hidden sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+      className="flex items-center justify-center"
       overlayClassName="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm transition-opacity"
       style={{
         overlay: {
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
           backgroundColor: "rgba(0, 0, 0, 0.75)",
         },
         content: {
@@ -104,7 +115,6 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
           padding: "20px",
           color: "#333",
           maxWidth: "800px",
-          margin: "0 auto",
           border: "none",
           boxShadow: "0 2px 5px rgba(0, 0, 0, 0.3)",
           borderRadius: "5px",
@@ -112,21 +122,21 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
         },
       }}
     >
-      {/* Modal Content */}
-      {selectedImg ? (
+      {selectedImg && (
         <CropImage
           imgUrl={imagePreview}
           aspectInit={{ value: 1 / 1 }}
           setCroppedImg={setCroppedImg}
           setimgSelected={setSelectedImg}
           setErr={setErr}
-          
         />
-      ) : null}
-
+      )}
       <div className="p-6 text-center">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">Create Post</h2>
-          <div className="mb-4">
+        <h2 className="text-2xl font-bold text-gray-800 mb-4">
+          {type !== "editPost" ? "Create Post" : "Edit Post"}
+        </h2>
+        <div className="mb-4">
+          {type !== "editPost" && (
             <PostInput
               setImage={setImage}
               setErr={setErr}
@@ -134,52 +144,52 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
               setSelectedImg={setSelectedImg}
               disabled={loading}
             />
-          </div>
-          <div className="mb-4">
-            <input
-              type="text"
-              id="caption"
-              placeholder="Write something ..."
-              value={caption}
-              onChange={(e) => {
-                setCaption(e.target.value);
-              }}
-              className="block text-gray-700 font-bold mb-2 w-full"
-              disabled={loading}
+          )}
+        </div>
+        <div className="mb-4">
+          <input
+            type="text"
+            id="caption"
+            placeholder="Write something..."
+            onChange={(e) => setCaption(e.target.value)}
+            className="block text-gray-700 font-bold mb-2 w-full"
+            disabled={loading}
+            defaultValue={type === "editPost" ? userPost?.caption : ""}
+          />
+        </div>
+        {loading && (
+          <div className="w-full flex justify-center items-center">
+            <Spinner
+              color="info"
+              aria-label="Large spinner example"
+              size="lg"
             />
           </div>
-          {loading && (
-            <div className="w-full flex justify-center items-center">
-              <Spinner
-                color="info"
-                aria-label="Large spinner example"
-                size="lg"
-              />
-            </div>
-          )}
-          {/* Submit button start */}
-          <button
-            className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            onClick={handleSubmit}
-            disabled={loading}
-          >
-            Submit
-          </button>
-          {/* Submit button end */}
-          <br />
-          {/* close button start */}
-          <button
-            className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-            onClick={closeModal}
-            disabled={loading}
-          >
-            Cancel
-            </button>
-        {/* Error message */}
+        )}
+        <button
+          className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          Submit
+        </button>
+        <br />
+        <button
+          className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          onClick={closeModal}
+          disabled={loading}
+        >
+          Cancel
+        </button>
         {err && <p className="text-red-500 text-center">{err}</p>}
       </div>
       <div className="image-preview">
-        {imagePreview && <img src={imagePreview} alt="" />}
+        {imagePreview && (
+          <img
+            src={type !== "editPost" ? imagePreview : userPost.image}
+            alt=""
+          />
+        )}
       </div>
     </Modal>
   );

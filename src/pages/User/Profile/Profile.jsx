@@ -8,6 +8,7 @@ import {
 import Header from "../../../components/user/Header/Header.jsx";
 import SinglePostModal from "../../../components/user/Elements/SinglePostModal.jsx";
 import { setEditPost } from "../../../utils/reducers/postReducer.js";
+import CreatePostModal from "../../../components/user/Post/CreatePostModal.jsx";
 const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -23,6 +24,9 @@ const Profile = () => {
   const [imageSrc, setImageSrc] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
   const comments = ["Nice!", "Great photo!", "Love it!"]; // Replace with your comments
+
+  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
+
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
@@ -104,7 +108,16 @@ const Profile = () => {
                 closeModal={closeModal}
                 imageUrl={imageSrc}
                 comments={comments}
+                setIsCreatePostModalOpen={setIsCreatePostModalOpen}
               />
+
+              {isCreatePostModalOpen && (
+                <CreatePostModal
+                  isModalOpen={isCreatePostModalOpen}
+                  setIsModalOpen={setIsCreatePostModalOpen}
+                  type={"editPost"}
+                />
+              )}
             </div>
           </div>
         </div>
