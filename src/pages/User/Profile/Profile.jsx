@@ -7,14 +7,14 @@ import {
 } from "../../..//services/User/apiMethods.js";
 import Header from "../../../components/user/Header/Header.jsx";
 import SinglePostModal from "../../../components/user/Elements/SinglePostModal.jsx";
-import { setEditPost } from "../../../utils/reducers/postReducer.js";
+import { editUserPost, setEditPost, setUserPosts } from "../../../utils/reducers/postReducer.js";
 import CreatePostModal from "../../../components/user/Post/CreatePostModal.jsx";
 const Profile = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [user, setUser] = useState(null);
-  const [posts, setPosts] = useState([]);
+  // const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
   const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
@@ -22,18 +22,21 @@ const Profile = () => {
   const { username } = useParams();
 
   const [imageSrc, setImageSrc] = useState("");
+  const [caption, setCaption] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
   const comments = ["Nice!", "Great photo!", "Love it!"]; // Replace with your comments
 
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
 
-
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-  const handleImage =  (post) => {
-    dispatch(setEditPost({editPost:post}));
+const posts = useSelector((state) => state?.userPosts?.posts);
+
+  const handleImage = (post) => {
+    dispatch(setEditPost({ editPost: post }));
     setImageSrc(post?.image);
+    setCaption(post?.caption);
     openModal();
   };
 
@@ -49,7 +52,9 @@ const Profile = () => {
     if (user) {
       fetchUserDetails(user?._id)
         .then((response) => {
-          setPosts(response.posts);
+
+          dispatch(setUserPosts(response))
+          // setPosts(response.posts);
           setFollowersCount(response.followers.length);
           setFollowingCount(response.followings.length);
         })
@@ -77,7 +82,7 @@ const Profile = () => {
             <div className="flex justify-center items-center py-1">
               <div>
                 <p className="small text-muted mb-0">Posts</p>
-                <p className="mb-1 h5">{posts.length}</p>
+                <p className="mb-1 h5">{posts?.length}</p>
               </div>
               <div className="px-3">
                 <p className="small text-muted mb-0">Followers</p>
@@ -107,7 +112,7 @@ const Profile = () => {
                 isOpen={isModalOpen}
                 closeModal={closeModal}
                 imageUrl={imageSrc}
-                comments={comments}
+                caption={caption}
                 setIsCreatePostModalOpen={setIsCreatePostModalOpen}
               />
 

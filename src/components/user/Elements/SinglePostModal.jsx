@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaEdit } from 'react-icons/fa'; // Assuming you're using react-icons library for icons
 import { useSelector, useDispatch } from 'react-redux';
 import CreatePostModal from '../Post/CreatePostModal';
-const SinglePostModal = ({ isOpen, closeModal, imageUrl, comments, setIsCreatePostModalOpen }) => {
+const SinglePostModal = ({ isOpen, closeModal, imageUrl, caption, setIsCreatePostModalOpen }) => {
   // Check if the modal is open
   if (!isOpen) return null;
 
@@ -32,19 +32,15 @@ const SinglePostModal = ({ isOpen, closeModal, imageUrl, comments, setIsCreatePo
         {/* Right side - Comments */}
         <div className="flex-grow ml-4">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-800">Random Comments</h2>
+            <h2 className="text-xl font-bold text-gray-800">Caption</h2>
             <div>
               <button onClick={handleEdit} className="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 transition ease-in-out duration-150">
                 <FaEdit />
               </button>
             </div>
           </div>
-          <ul>
-            {comments.map((comment, index) => (
-              <li key={index} className="mb-2 text-gray-700">
-                {comment}
-              </li>
-            ))}
+          <ul className='text-black font-bold font-mono'>
+          {caption}
           </ul>
         </div>
           {/* Close button */}
