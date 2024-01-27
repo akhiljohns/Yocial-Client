@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
-import { FaEdit } from 'react-icons/fa'; // Assuming you're using react-icons library for icons
+import { FaEdit, FaTrash } from 'react-icons/fa'; // Assuming you're using react-icons library for icons
 import { useSelector, useDispatch } from 'react-redux';
 import CreatePostModal from '../Post/CreatePostModal';
+import Confirmation from './Confirmation';
 const SinglePostModal = ({ isOpen, closeModal, imageUrl, caption, setIsCreatePostModalOpen }) => {
   // Check if the modal is open
   if (!isOpen) return null;
+
+  // Add a new state variable for delete confirmation
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   // const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
   const dispatch = useDispatch();
@@ -21,6 +25,12 @@ const SinglePostModal = ({ isOpen, closeModal, imageUrl, caption, setIsCreatePos
     openCreatePostModal();
     closeModal();
   };
+
+  const handleDelete = () => {
+    // Add your delete logic here
+    closeModal();
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50" onClick={closeModal}>
       <div className="bg-white w-96 p-8 rounded-lg shadow-md flex" onClick={(e) => e.stopPropagation()}>
@@ -34,11 +44,15 @@ const SinglePostModal = ({ isOpen, closeModal, imageUrl, caption, setIsCreatePos
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-gray-800">Caption</h2>
             <div>
-              <button onClick={handleEdit} className="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 transition ease-in-out duration-150">
+              <button onClick={handleEdit} className="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 transition ease-in-out duration-150 mr-2">
                 <FaEdit />
+              </button>
+              <button onClick={() => setShowDeleteConfirmation(true)} className="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 transition ease-in-out duration-150">
+                <FaTrash />
               </button>
             </div>
           </div>
+          {showDeleteConfirmation&&<Confirmation visible={showDeleteConfirmation} setVisible={setShowDeleteConfirmation} />}
           <ul className='text-black font-bold font-mono'>
           {caption}
           </ul>
