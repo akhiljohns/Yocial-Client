@@ -24,6 +24,12 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
   const userPost = useSelector((state) => state?.userPosts?.editPost);
   let postData;
 
+  useEffect(() => {
+    if (type === "editPost" && !caption) {
+      setCaption(userPost?.caption || "");
+    }
+  }, [type, caption, userPost?.caption]);
+
   const clearComponent = () => {
     setLoading(false);
     setErr("");
