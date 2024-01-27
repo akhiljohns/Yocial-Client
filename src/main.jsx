@@ -6,8 +6,9 @@ import { Provider } from "react-redux";
 import AppRouter from "./services/routes";
 
 
+
 ReactDOM.createRoot(document.getElementById("root")).render(
-    <Provider store={store}>
-        <AppRouter />
-    </Provider> 
+  <Provider store={store}>
+      <AppRouter />
+  </Provider>
 );

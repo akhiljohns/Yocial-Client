@@ -6,12 +6,17 @@ import {
 import Modal from "react-modal";
 import uploadCloudinary from "../../../hooks/cloudinary";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import CropImage from "../Options/CropImg";
 import PostInput from "../Elements/PostInput";
 import { Spinner } from "flowbite-react";
+import { successToast } from "../../../hooks/toast";
+import { editUserPost } from "../../../utils/reducers/postReducer";
 
 function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
+
+  const dispatch = useDispatch();
+
   const [croppedImg, setCroppedImg] = useState(null);
   const [err, setErr] = useState("");
   const [caption, setCaption] = useState("");
@@ -23,6 +28,12 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
   const userData = useSelector((state) => state?.user?.userData);
   const userPost = useSelector((state) => state?.userPosts?.editPost);
   let postData;
+
+  useEffect(() => {
+    if (type === "editPost" && !caption) {
+      setCaption(userPost?.caption || "");
+    }
+  }, [type, caption, userPost?.caption]);
 
   const clearComponent = () => {
     setLoading(false);
@@ -37,10 +48,10 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
   const handlePostResponse = (response) => {
     setLoading(false);
     if (response.status === 200) {
-      alert(response.message);
+      dispatch(editUserPost(response.post))
+      successToast(response.message);
       clearComponent();
       closeModal();
-      window.location.reload();
     } else if (response.status === 401) {
       clearComponent();
       closeModal();
@@ -190,6 +201,7 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
             alt=""
           />
         )}
+
       </div>
     </Modal>
   );

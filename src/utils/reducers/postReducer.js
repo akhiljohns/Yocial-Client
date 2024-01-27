@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
-const posts =[];
+const posts = [];
 let newPost, editPost;
 
 const postSlice = createSlice({
@@ -11,14 +10,14 @@ const postSlice = createSlice({
     newPost: newPost,
     loadedPosts: [],
     lastPost: false,
-    editPost:editPost,
+    editPost: editPost,
   },
   reducers: {
     setUserPosts: (state, action) => {
       state.posts = action.payload.posts;
     },
     updateUserPosts: (state, action) => {
-        state.posts.unshift(action.payload.post);
+      state.posts.unshift(action.payload.post);
     },
     addNewPost: (state, action) => {
       state.newPost = action.payload;
@@ -27,21 +26,28 @@ const postSlice = createSlice({
       state.newPost = null;
     },
     removeUserPosts: (state, action) => {
-        state.posts = [];
+      state.posts = [];
     },
-    setEditPost:(state,action)=>{
+    setEditPost: (state, action) => {
       state.editPost = action.payload.editPost;
     },
-    removeEditPost:(state,action)=>{
-      state.editPost = '';
+    removeEditPost: (state, action) => {
+      state.editPost = "";
+    },
+    editUserPost: (state, action) => {
+      state.posts = state.posts.map((post) => {
+        if (post._id === action.payload?._id) {
+          return action.payload;
+        }
+        return post;
+      });
     },
 
-
-// related to common posts
+    // related to common posts
     setLoadedPosts: (state, action) => {
       state.loadedPosts = [...state.loadedPosts, ...action.payload];
 
-      if(action.payload.length < 5){
+      if (action.payload.length < 5) {
         state.lastPost = true;
       }
     },
@@ -51,9 +57,7 @@ const postSlice = createSlice({
     clearLoadedPosts: (state, action) => {
       state.loadedPosts = [];
       state.lastPost = false;
-    }
-
-
+    },
   },
 });
 
@@ -68,6 +72,7 @@ export const {
   clearLoadedPosts,
   setEditPost,
   removeEditPost,
+  editUserPost
 } = postSlice.actions;
 
 export default postSlice.reducer;
