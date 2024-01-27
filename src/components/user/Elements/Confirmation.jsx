@@ -2,21 +2,13 @@ import React, { useState } from "react";
 import { Button, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
-function Confirmation({
-  visible,
-  setVisible,
-  header,
-  message,
-  accept,
-  reject,
-}) {
+function Confirmation({ visible, setVisible, message, accept, reject }) {
   const handleAccept = () => {
     setVisible(false);
     accept();
   };
   const handleReject = () => {
     setVisible(false);
-    reject();
   };
 
   return (

@@ -23,6 +23,7 @@ const Profile = () => {
 
   const [imageSrc, setImageSrc] = useState("");
   const [caption, setCaption] = useState("");
+  const [postId, setPostId] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
   const comments = ["Nice!", "Great photo!", "Love it!"]; // Replace with your comments
 
@@ -37,6 +38,7 @@ const posts = useSelector((state) => state?.userPosts?.posts);
     dispatch(setEditPost({ editPost: post }));
     setImageSrc(post?.image);
     setCaption(post?.caption);
+    setPostId(post?._id);
     openModal();
   };
 
@@ -113,6 +115,7 @@ const posts = useSelector((state) => state?.userPosts?.posts);
                 closeModal={closeModal}
                 imageUrl={imageSrc}
                 caption={caption}
+                postId={postId}
                 setIsCreatePostModalOpen={setIsCreatePostModalOpen}
               />
 
