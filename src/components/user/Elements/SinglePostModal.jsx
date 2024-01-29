@@ -5,6 +5,7 @@ import CreatePostModal from "../Post/CreatePostModal";
 import Confirmation from "./Confirmation";
 import { deletePost } from "../../../services/User/apiMethods";
 import { errorToast, successToast } from "../../../hooks/toast";
+import { removeDeletedPost } from "../../../utils/reducers/postReducer";
 const SinglePostModal = ({
   isOpen,
   closeModal,
@@ -38,9 +39,12 @@ const SinglePostModal = ({
   const handleDelete = () => {
     deletePost(postId)
       .then((response) => {
+        closeModal()
+        dispatch(removeDeletedPost(postId));
         successToast(response.message);
       })
       .catch((error) => {
+        closeModal()
         errorToast(error.message);
       });
   };
