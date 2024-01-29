@@ -42,6 +42,20 @@ const postSlice = createSlice({
         return post;
       });
     },
+    removeDeletedPost: (state, action) => {
+     const posts = state.posts
+      const postId = action.payload; 
+      const foundPost = posts.find(obj => obj._id === postId);
+      
+      if (foundPost) {
+        const indexToDelete = posts.indexOf(foundPost);
+        posts.splice(indexToDelete, 1);
+      } else {
+        console.log("Post Not Found");
+      }
+      
+      
+    },
 
     // related to common posts
     setLoadedPosts: (state, action) => {
@@ -72,7 +86,8 @@ export const {
   clearLoadedPosts,
   setEditPost,
   removeEditPost,
-  editUserPost
+  editUserPost,
+  removeDeletedPost
 } = postSlice.actions;
 
 export default postSlice.reducer;

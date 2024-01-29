@@ -56,7 +56,6 @@ const posts = useSelector((state) => state?.userPosts?.posts);
         .then((response) => {
 
           dispatch(setUserPosts(response))
-          // setPosts(response.posts);
           setFollowersCount(response.followers.length);
           setFollowingCount(response.followings.length);
         })
