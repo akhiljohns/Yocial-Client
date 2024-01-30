@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { ToastContainer } from 'react-toastify';
+import { Flip, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 /////////////////////////USER PAGES/////////////////////////
@@ -50,7 +50,7 @@ const AppRouter = () => {
           }
         />
       </Routes>
-      <ToastContainer />
+      <ToastContainer pauseOnFocusLoss={false} newestOnTop rtl={false} transition={Flip} />
     </Router>
   );
 };

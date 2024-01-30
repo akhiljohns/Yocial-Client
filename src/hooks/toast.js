@@ -1,4 +1,5 @@
-import { toast } from "react-toastify";
+import { flip } from "lodash";
+import { Flip, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const successToast = (msg) => {
@@ -11,7 +12,6 @@ export const successToast = (msg) => {
     draggable: true,
     progress: undefined,
     theme: "dark",
-    transition: Bounce,
   });
 };
 
@@ -25,7 +25,6 @@ export const errorToast = (msg) => {
     draggable: true,
     progress: undefined,
     theme: "dark",
-    transition: Bounce,
   });
 };
 
@@ -39,7 +38,6 @@ export const warningToast = (msg) => {
     draggable: true,
     progress: undefined,
     theme: "dark",
-    transition: Bounce,
   });
 };
 export const infoToast = (msg) => {
@@ -52,6 +50,5 @@ export const infoToast = (msg) => {
     draggable: true,
     progress: undefined,
     theme: "dark",
-    transition: Bounce,
   });
 };
