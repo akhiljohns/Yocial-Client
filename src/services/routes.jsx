@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Flip, ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { Flip, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 /////////////////////////USER PAGES/////////////////////////
 import Login from "../pages/User/Login/Login";
@@ -15,6 +15,7 @@ import Profile from "../pages/User/Profile/Profile";
 import AdminLogin from "../pages/Admin/Login/AdminLogin";
 import AdminHome from "../pages/Admin/Home/AdminHome";
 import AdminProtect from "../components/Protect/AdminProtect";
+import EditProfile from "../pages/User/EditProfile/EditProfile";
 
 const AppRouter = () => {
   return (
@@ -30,6 +31,8 @@ const AppRouter = () => {
             </Protect>
           }
         />
+        <Route path="/editprofile/:username" element={<EditProfile/>} />
+
         <Route path="*" element={<Error />} />
         <Route
           path="/"
@@ -50,7 +53,12 @@ const AppRouter = () => {
           }
         />
       </Routes>
-      <ToastContainer pauseOnFocusLoss={false} newestOnTop rtl={false} transition={Flip} />
+      <ToastContainer
+        pauseOnFocusLoss={false}
+        newestOnTop
+        rtl={false}
+        transition={Flip}
+      />
     </Router>
   );
 };
