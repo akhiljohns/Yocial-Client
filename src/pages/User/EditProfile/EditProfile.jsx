@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import GeneralDetails from '../../../components/user/EditProfile/GeneralDetails';
 import '../EditProfile/EditProfile.css'
+import Header from '../../../components/user/Header/Header';
 
 function EditProfile() {
   const [loading, setLoading] = useState(false);
@@ -22,6 +23,8 @@ function EditProfile() {
 
   return (
     <div className="flex h-screen dark overflow-hidden">
+      <Header choice={"home"} />
+      
       {/* Left Sidebar with Options */}
       <div className="bg-[rgb(55,65,81)] w-[15%] h-screen ove p-4 text-white flex flex-col items-center justify-center">
         <h2 className="text-3xl mb-4 font-black text-orange-500">Edit Details</h2>
