@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserProfile } from "../../../services/User/apiMethods";
 import { updateReduxUser } from "../../../utils/reducers/userReducer";
+import { Spinner } from "flowbite-react";
+import { errorToast, infoToast, successToast } from "../../../hooks/toast";
 
 function GeneralDetails() {
   const dispatch = useDispatch();
@@ -23,6 +25,8 @@ function GeneralDetails() {
   }, [userData]);
 
   const handleSubmit = async () => {
+    setLoading(true);
+
     const userDetails = {
       name: fName,
       username: username,
@@ -30,17 +34,21 @@ function GeneralDetails() {
       userId: userData?._id,
     };
 
-    updateUserProfile(userDetails).then((response) => {
-      if (response.status === 200) {
-        dispatch(updateReduxUser({ userData: userDetails}));
-        setResponseMessage(response?.message);
-      } else {
-        setResponseMessage(response?.message);
-      }
-    }).catch((err) => {
-
-      setResponseMessage(err.message);
-    });
+    updateUserProfile(userDetails)
+      .then((response) => {
+        if (response.status === 200) {
+          dispatch(updateReduxUser({ userData: userDetails }));
+          setLoading(false);
+          successToast(response?.message);
+        } else {
+          setLoading(false);
+          infoToast(response?.message);
+        }
+      })
+      .catch((err) => {
+        setLoading(false);
+        errorToast(err.message);
+      });
   };
 
   return (
@@ -58,6 +66,7 @@ function GeneralDetails() {
             className="bg-gray-700 text-gray-200 border-0 rounded-md p-2 mb-4 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 w-full md:w-[48%] mr-[2%]"
             placeholder="Full Name"
             defaultValue={userData?.name ? userData?.name : ""}
+            disabled={loading}
           />
           <input
             required
@@ -70,6 +79,7 @@ function GeneralDetails() {
             className="bg-gray-700 text-gray-200 border-0 rounded-md p-2 mb-4 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 w-full md:w-[48%] mr-[2%]"
             placeholder="User Name"
             defaultValue={userData?.username}
+            disabled={loading}
           />
 
           <textarea
@@ -81,15 +91,27 @@ function GeneralDetails() {
             onChange={(e) => {
               setBio(e.target.value);
             }}
+            disabled={loading}
           ></textarea>
-
-          <button
-            onClick={handleSubmit}
-            type="submit"
-            className="bg-gradient-to-r w-[100%] from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-indigo-600 hover:to-blue-600 transition ease-in-out duration-150"
-          >
-            Submit
-          </button>
+          {loading && (
+            <div className="w-full flex justify-center items-center">
+              <Spinner
+                color="info"
+                aria-label="Large spinner example"
+                size="lg"
+              />
+            </div>
+          )}
+          {!loading ? (
+            <button
+              disabled={loading}
+              onClick={handleSubmit}
+              type="submit"
+              className="bg-gradient-to-r w-[100%] from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-indigo-600 hover:to-blue-600 transition ease-in-out duration-150"
+            >
+              Submit
+            </button>
+          ) : null}
 
           {/* Response Message */}
           {responseMessage && (
