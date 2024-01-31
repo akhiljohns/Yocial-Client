@@ -25,7 +25,7 @@ export const userUrl = {
   getConnections: (userId) => `/user/fetch/connection/${userId}`,
 
   //update user
-  updateData: (username) => `/user/update/user/${username}`,
+  updateProfile:  `/user/update/profile`,
 
   //report
   report: (userId, username) => `/user/report/user/${userId}/${username}`,

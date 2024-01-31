@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { updateUserProfile } from "../../../services/User/apiMethods";
 
 function GeneralDetails() {
   const [fName, setFname] = useState("");
@@ -10,24 +11,38 @@ function GeneralDetails() {
 
   const userData = useSelector((state) => state?.user?.userData);
 
-useEffect(() => {
+  useEffect(() => {
+    if (userData) {
+      setFname(userData?.name);
+      setUsername(userData?.username);
+      setBio(userData?.bio);
+    }
+  }, [userData]);
 
-  if (userData) {
-    setFname(userData?.name);
-    setUsername(userData?.username);
-    setBio(userData?.bio);
-  }
-},[userData])
+  const handleSubmit = async () => {
+    const userDetails = {
+      name: fName,
+      username: username,
+      bio: bio,
+      userId: userData?._id,
+    };
 
-  const handleSubmit = async (e) => {
-      setResponseMessage("Profile updated successfully!");
+    updateUserProfile(userDetails).then((response) => {
+      if (response.status === 200) {
+        setResponseMessage(response?.message);
+      } else {
+        setResponseMessage(response?.message);
+      }
+    }).catch((err) => {
+
+      setResponseMessage(err.message);
+    });
   };
 
   return (
     <div className="flex items-center justify-center h-screen dark">
       <div className="flex items-center justify-center w-full max-w-lg bg-black rounded-lg shadow-md p-8 text-orange-500">
         <div>
-
           <input
             required
             type="text"
@@ -51,7 +66,7 @@ useEffect(() => {
             className="bg-gray-700 text-gray-200 border-0 rounded-md p-2 mb-4 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 w-full md:w-[48%] mr-[2%]"
             placeholder="User Name"
             defaultValue={userData?.username}
-            />
+          />
 
           <textarea
             name="bio"
@@ -65,21 +80,22 @@ useEffect(() => {
           ></textarea>
 
           <button
-          onClick={handleSubmit}
+            onClick={handleSubmit}
             type="submit"
             className="bg-gradient-to-r w-[100%] from-indigo-500 to-blue-500 text-white font-bold py-2 px-4 rounded-md mt-4 hover:bg-indigo-600 hover:to-blue-600 transition ease-in-out duration-150"
           >
             Submit
           </button>
 
-        {/* Response Message */}
-        {responseMessage && (
-          <div className={`mt-4 opacity-80`}>
-            <p className="text-xl text-center text-orange-500">{responseMessage}</p>
-          </div>
-        )}
+          {/* Response Message */}
+          {responseMessage && (
+            <div className={`mt-4 opacity-80`}>
+              <p className="text-xl text-center text-orange-500">
+                {responseMessage}
+              </p>
+            </div>
+          )}
         </div>
-
       </div>
     </div>
   );
