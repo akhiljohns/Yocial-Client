@@ -19,7 +19,9 @@ const userSlice = createSlice({
       state.validUser = action.payload.validUser;
     },
     updateReduxUser: (state, action) => {
-      state.userData = action.payload;
+      state.userData.name = action.payload?.userData?.name;
+      state.userData.username = action.payload?.userData?.username;
+      state.userData.bio = action.payload?.userData?.bio;
     },
     removeReduxUser: (state, action) => {
       state.userData = null;

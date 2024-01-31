@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateUserProfile } from "../../../services/User/apiMethods";
+import { updateReduxUser } from "../../../utils/reducers/userReducer";
 
 function GeneralDetails() {
+  const dispatch = useDispatch();
+
   const [fName, setFname] = useState("");
   const [username, setUsername] = useState("");
   const [bio, setBio] = useState("");
@@ -29,6 +32,7 @@ function GeneralDetails() {
 
     updateUserProfile(userDetails).then((response) => {
       if (response.status === 200) {
+        dispatch(updateReduxUser({ userData: userDetails}));
         setResponseMessage(response?.message);
       } else {
         setResponseMessage(response?.message);
