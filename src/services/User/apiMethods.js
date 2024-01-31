@@ -555,14 +555,14 @@ export const deletePost = (postId) => {
   });
 };
 
-// @desc    Search user
-//route     /user/update/user/:username
+// @desc    update user profile
+//route     /user/update/profile"
 // @access  Registerd users
-export const updateUserData = (username, data) => {
+export const updateUserProfile = (userData) => {
   return new Promise((resolve, reject) => {
     try {
-      const url = userUrl.updateData(username);
-      apiCall("put", url, data)
+      const url = userUrl.updateProfile;
+      apiCall("post", url, userData)
         .then((response) => {
           resolve(response);
         })
