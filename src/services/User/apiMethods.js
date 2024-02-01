@@ -572,6 +572,23 @@ export const updateUserProfile = (userData) => {
     }
   });
 };
+// @desc    update user email
+//route     /user/update/email"
+// @access  Registerd users
+export const updateUserEmail = (userDetails) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = authUrl.updateEmail;
+      apiCall("post", url, userDetails)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => reject(err));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 
 //////////////////////////////////////////// CHAT SECTION //////////////////////////////////
 // @desc    Create or get chatRoom of two

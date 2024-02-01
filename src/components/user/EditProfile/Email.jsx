@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUserProfile } from "../../../services/User/apiMethods";
+import { updateUserEmail } from "../../../services/User/apiMethods";
 import { updateReduxUser } from "../../../utils/reducers/userReducer";
 import { Spinner } from "flowbite-react";
 import { errorToast, infoToast, successToast } from "../../../hooks/toast";
@@ -22,7 +22,6 @@ function Email() {
   }, [userData]);
 
   const handleSubmit = async () => {
-
     setLoading(true);
     const emailValid = await checkEmail(email);
     
@@ -31,26 +30,26 @@ function Email() {
       errorToast("Enter A Valid Email Address");
     }else{
       const userDetails = {
-        email:email,
+      newEmail:email,
       userId: userData?._id,
-    };
-
-    // updateUserProfile(userDetails)
-    //   .then((response) => {
-    //     if (response.status === 200) {
-    //       dispatch(updateReduxUser({ userData: userDetails }));
-    //       setLoading(false);
-    //       successToast(response?.message);
-    //     } else {
-    //       setLoading(false);
-    //       infoToast(response?.message);
-    //     }
-    //   })
-    //   .catch((err) => {
-    //     setLoading(false);
-    //     errorToast(err.message);
-    //   });
-  }
+      username: userData?.username,
+      email: userData?.email,
+    }
+      updateUserEmail(userDetails)
+      .then((response) => {
+        if (response.status === 200) {
+          setLoading(false);
+          successToast(response?.message);
+        } else {
+          setLoading(false);
+          infoToast(response?.message);
+        }
+      })
+      .catch((err) => {        
+        setLoading(false);
+        errorToast(err.message);
+      });
+  };
   };
 
   return (

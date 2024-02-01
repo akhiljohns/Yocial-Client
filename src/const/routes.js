@@ -25,7 +25,7 @@ export const userUrl = {
   getConnections: (userId) => `/user/fetch/connection/${userId}`,
 
   //update user
-  updateProfile:  `/user/update/profile`,
+  updateProfile: `/user/update/profile`,
 
   //report
   report: (userId, username) => `/user/report/user/${userId}/${username}`,
@@ -47,7 +47,6 @@ export const userUrl = {
   suggestions: (userId) => `/user/fetch-suggested-users/${userId}`,
 };
 
-
 export const adminUrl = {
   login: "/admin/login",
   //fetch users with pagination and search
@@ -65,10 +64,8 @@ export const adminUrl = {
   fetchSinglePost: (postId) => `/admin/fetch-single-post/${postId}`,
 
   //block a post
-  blockPost: (postId) => `/admin/post/block/${postId}`
+  blockPost: (postId) => `/admin/post/block/${postId}`,
 };
-
-
 
 export const postUrl = {
   create: "/post/create-post",
@@ -104,29 +101,27 @@ export const postUrl = {
   getAll: `/post/get-every-posts`,
 };
 
-
 export const authUrl = {
-    authUser: "/auth/user",
-    authAdmin: "/auth/admin",
+  authUser: "/auth/user",
+  authAdmin: "/auth/admin",
 
-    sendOtp: "/auth/sent-verification",
-    verifyOtp: "/auth/verify-otpToken",
+  sendOtp: "/auth/sent-verification",
+  verifyOtp: "/auth/verify-otpToken",
 
-    sendMail:"/auth/send-verification"
-    
+  sendMail: "/auth/send-verification",
+  updateEmail: "/auth/update/email",
 };
 
-
-
-
 export const messageUrl = {
-    getChatRoom: (firstId, secondId) => `/messages/inbox/room/${firstId}/${secondId}`,
-    
-    getMessages: (roomId) => `/messages/inbox/${roomId}`,
+  getChatRoom: (firstId, secondId) =>
+    `/messages/inbox/room/${firstId}/${secondId}`,
 
-    newMessage: (roomId) => `messages/inbox/new-message/${roomId}`,
+  getMessages: (roomId) => `/messages/inbox/${roomId}`,
 
-    getRoomFromUser: (userId) => `/messages/inbox/get-room/userID/${userId}`,
+  newMessage: (roomId) => `messages/inbox/new-message/${roomId}`,
 
-    getRooms: (firstId, secondId)=> `/messages/inbox/room/fetch/${firstId}/${secondId}`,
+  getRoomFromUser: (userId) => `/messages/inbox/get-room/userID/${userId}`,
+
+  getRooms: (firstId, secondId) =>
+    `/messages/inbox/room/fetch/${firstId}/${secondId}`,
 };
