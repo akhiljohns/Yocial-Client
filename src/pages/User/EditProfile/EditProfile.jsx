@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import GeneralDetails from '../../../components/user/EditProfile/GeneralDetails';
 import '../EditProfile/EditProfile.css'
 import Header from '../../../components/user/Header/Header';
+import Email from '../../../components/user/EditProfile/Email';
 
 function EditProfile() {
   const [loading, setLoading] = useState(false);
@@ -12,8 +13,8 @@ function EditProfile() {
     switch (selectedOption) {
       case 'general':
         return <GeneralDetails />;
-      case 'security':
-        return <div><GeneralDetails /></div>;
+      case 'email':
+        return <div><Email/></div>;
       case 'preferences':
         return <div><GeneralDetails /></div>;
       default:
@@ -32,8 +33,8 @@ function EditProfile() {
           <li onClick={() => setSelectedOption('general')} className="ed-btn cursor-pointer mb-2">
             General Info
           </li>
-          <li onClick={() => setSelectedOption('security')} className="ed-btn cursor-pointer mb-2">
-            Security
+          <li onClick={() => setSelectedOption('email')} className="ed-btn cursor-pointer mb-2">
+            Email
           </li>
           <li onClick={() => setSelectedOption('preferences')} className="ed-btn cursor-pointer mb-2">
             Preferences

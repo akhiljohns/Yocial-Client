@@ -14,6 +14,7 @@ import {
   setReduxUser,
 } from "../../../utils/reducers/userReducer";
 import { Spinner } from "flowbite-react";
+import { successToast } from "../../../hooks/toast";
 
 function Login() {
   const navigate = useNavigate();
@@ -66,7 +67,7 @@ function Login() {
     postMail(userData).then((response) => {
       setLoading(false);
 
-      alert(response.message);
+      successToast(response.message);
       window.location.reload("/login");
     });
   };

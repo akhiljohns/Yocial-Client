@@ -1,5 +1,6 @@
 
 import axios from "axios";
+import { errorToast } from "./toast";
 const uploadCloudinary = async (imgData, imageFile, setErr, setLoading) => {
   try {
     const image = await fetch(imgData);
@@ -22,7 +23,7 @@ const uploadCloudinary = async (imgData, imageFile, setErr, setLoading) => {
     }
   } catch (error) {
     setLoading(false);
-    alert(error.message);
+    errorToast(error.message);
     setErr("Error uploading image to Cloudinary");
     return null;
   }

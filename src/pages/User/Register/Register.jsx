@@ -3,6 +3,7 @@ import { regValidate } from "../../../hooks/regValidation";
 import { postRegister } from "../../../services/User/apiMethods";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { errorToast, successToast } from "../../../hooks/toast";
 
 function Register() {
   const [fName, setFname] = useState("");
@@ -48,7 +49,7 @@ function Register() {
           .then((response) => {
             setLoading(false);
             if (response.status === 200) {
-              alert(response.message);
+              successToast(response.message);
               navigate("/login");
             } else {
               setLoading(false);
@@ -63,9 +64,8 @@ function Register() {
         setLoading(false);
       }
     } catch (error) {
-      alert("kk");
       setLoading(false);
-      setError("Something went wrong, Try after some time");
+      errorToast(error.message || "Something went wrong, Try after some time");
     }
   };
   return (
