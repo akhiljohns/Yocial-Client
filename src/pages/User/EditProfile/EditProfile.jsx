@@ -28,7 +28,6 @@ function EditProfile() {
       
       {/* Left Sidebar with Options */}
       <div className="bg-[rgb(55,65,81)] w-[15%] h-screen ove p-4 text-white flex flex-col items-center justify-center">
-        <h2 className="text-3xl mb-4 font-black text-orange-500">Edit Details</h2>
         <ul>
           <li onClick={() => setSelectedOption('general')} className="ed-btn cursor-pointer mb-2">
             General Info

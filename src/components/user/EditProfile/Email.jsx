@@ -58,14 +58,14 @@ function Email() {
         <div>
           <input
             required
-            type="text"
-            id="fullname"
-            name="fullname"
+            type="email"
+            id="email"
+            name="email"
             onChange={(e) => {
               setEmail(e.target.value.trim());
             }}
             className="bg-gray-700  text-gray-200 border-0 rounded-md p-2 mb-4 focus:bg-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-500 transition ease-in-out duration-150 w-full"
-            placeholder="Full Name"
+            placeholder="Email"
             defaultValue={userData?.email ? userData?.email : ""}
             disabled={loading}
           />

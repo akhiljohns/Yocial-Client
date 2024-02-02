@@ -589,6 +589,23 @@ export const updateUserEmail = (userDetails) => {
     }
   });
 };
+// @desc    Verify user email for changing
+//route     /auth/verify/"
+// @access  Registerd users
+export const verifyUserEmail = (userDetails) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = authUrl.verifyEmail(userDetails);
+      apiCall("post", url)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => reject(err));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 
 //////////////////////////////////////////// CHAT SECTION //////////////////////////////////
 // @desc    Create or get chatRoom of two

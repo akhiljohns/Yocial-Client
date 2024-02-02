@@ -110,6 +110,7 @@ export const authUrl = {
 
   sendMail: "/auth/send-verification",
   updateEmail: "/auth/update/email",
+  verifyEmail: ({id,token})=> `/auth/change-email/${id}/${token}`,
 };
 
 export const messageUrl = {
