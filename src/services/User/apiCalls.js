@@ -105,6 +105,7 @@ const refreshAccessToken = async (error) => {
 
               axios(error.config)
                 .then((response) => {
+                  window.location.reload()
                   resolve({success: response});
                 })
                 .catch((error) => {
