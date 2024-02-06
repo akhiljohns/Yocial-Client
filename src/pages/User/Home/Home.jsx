@@ -5,11 +5,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { setFollowing } from "../../../utils/reducers/userReducer";
-import { followUser, getConnections, unfollowUser } from "../../../services/User/apiMethods";
+import { fetchUserPosts, followUser, getAllPosts, getConnections, unfollowUser } from "../../../services/User/apiMethods";
+import SinglePostCard from "../../../components/user/SinglePostCard/SinglePostCard";
 
 // IMPORTING COMPONENTS 
 import Header from "../../../components/user/Header/Header";
 import UserSideBar from "../../../components/user/Sidebar/UserSideBar";
+import { setLoadedPosts, setUserPosts } from "../../../utils/reducers/postReducer";
 
 const UserHome = () => {
   const navigate = useNavigate();
@@ -18,8 +20,25 @@ const UserHome = () => {
   const [error, setError] = useState("");
   const { validUser, userData,followers,following } = useSelector((state) => state?.user);
 
+  //auth check
+  useEffect(() => {
+    if (!userData || !validUser) {
+      navigate("/login");
+    }
+  }, [userData, validUser, navigate]);
+
+
   const dispatch = useDispatch()
 
+  const lastPost = useSelector((state) => state?.userPosts?.lastPost)
+
+
+  //pagination related
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+
+  //fetching common posts from redux store
+  const loadedPosts = useSelector((state) => state?.userPosts?.loadedPosts);
 
   useEffect(() => {
     fetchAllUsers()
@@ -30,6 +49,58 @@ const UserHome = () => {
         setError(err.message);
       });
   }, []);
+
+    //fetching common posts and setting it to redux store
+    useEffect(() => {
+      if(!lastPost){
+        try {
+          setLoading(true);
+          setTimeout(() => {
+            getAllPosts(page)
+              .then((response) => {
+                const newPosts = response.posts;
+                dispatch(setLoadedPosts(newPosts));
+              })
+              .catch((error) => {
+                setError(error?.message);
+              })
+              .finally(() => {
+                setLoading(false);
+              });
+          }, 2000);
+        } catch (error) {
+          setError(error?.message);
+        }
+      }
+  }, [page, dispatch, lastPost]);
+
+  // useEffect(() => {
+  //   if(!lastPost){
+  //     const postContainer = document.getElementById("post-container");
+  //     postContainer.addEventListener("scroll", () => {
+  //       if (postContainer) {
+  //         const { scrollTop, scrollHeight, clientHeight } = postContainer;
+  //         if (scrollTop + clientHeight >= scrollHeight && !loading) {
+  //           setLoading(true);
+  //           setPage(page + 1);
+  //         }
+  //       }
+  //     });
+  //   }
+  // });
+
+  // to fetch the user posts
+  useEffect(() => {
+    if (validUser) {
+      fetchUserPosts(userData?._id)
+        .then((response) => {
+          dispatch(setUserPosts(response));
+        })
+        .catch((error) => {
+          setError(error);
+        });
+    }
+  }, [validUser, userData, dispatch]);
 
 
   const follow = (user) => {
@@ -95,7 +166,8 @@ const UserHome = () => {
         <UserSideBar />
         <div className="flex items-center justify-center h-screen">
           <div className="w-full max-w-4xl">
-            <div className="main-box bg-white p-6 rounded shadow-md">
+          <SinglePostCard/>
+            {/* <div className="main-box bg-white p-6 rounded shadow-md">
               <div className="table-responsive">
                 <table className="table user-list w-full">
                   <thead>
@@ -116,7 +188,7 @@ const UserHome = () => {
                   </tbody>
                 </table>
               </div>
-            </div>
+            </div> */}
           </div>
           <ToastContainer />
         </div>

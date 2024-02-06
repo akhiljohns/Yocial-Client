@@ -74,6 +74,8 @@ export const postUrl = {
   getPostCount: "/post/fetch-count",
 
   getSinglePost: (postId) => `/post/fetch-single-post/${postId}`,
+  
+  getUserPosts: "/post/fetchUserPosts",
 
   getUserDetails: "/post/fetchUserDetails",
 

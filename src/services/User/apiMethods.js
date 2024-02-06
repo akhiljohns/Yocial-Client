@@ -177,6 +177,25 @@ export const getAllPosts = (page) => {
   });
 };
 
+
+//@dec      Fetch a user posts
+//method    GET
+export const fetchUserPosts = (userId) => {
+  return new Promise((resolve, reject) => {
+      try {
+          apiCall("get", `${postUrl.getUserPosts}?userId=${userId}`)
+            .then((response) => {
+              resolve(response);
+            })
+            .catch((error) => reject(error));
+      } catch (error) {
+          reject(error);
+      }
+  })
+};
+
+
+
 // @desc    Fetch posts count
 // @route   GET /post/fetch-count
 // @access  Private
