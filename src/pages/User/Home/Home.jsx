@@ -2,23 +2,34 @@ import React, { useEffect, useState } from "react";
 import { fetchAllUsers } from "../../../services/Admin/apiMethods";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { setFollowing } from "../../../utils/reducers/userReducer";
-import { fetchUserPosts, followUser, getAllPosts, getConnections, unfollowUser } from "../../../services/User/apiMethods";
+import {
+  fetchUserPosts,
+  followUser,
+  getAllPosts,
+  getConnections,
+  unfollowUser,
+} from "../../../services/User/apiMethods";
 import SinglePostCard from "../../../components/user/SinglePostCard/SinglePostCard";
 
-// IMPORTING COMPONENTS 
+// IMPORTING COMPONENTS
 import Header from "../../../components/user/Header/Header";
 import UserSideBar from "../../../components/user/Sidebar/UserSideBar";
-import { setLoadedPosts, setUserPosts } from "../../../utils/reducers/postReducer";
+import {
+  setLoadedPosts,
+  setUserPosts,
+} from "../../../utils/reducers/postReducer";
 
 const UserHome = () => {
   const navigate = useNavigate();
-  const currentUser = useSelector((state)=> state?.user?.userData);
+  const currentUser = useSelector((state) => state?.user?.userData);
   const [users, setUsers] = useState([]);
   const [error, setError] = useState("");
-  const { validUser, userData,followers,following } = useSelector((state) => state?.user);
+  const { validUser, userData, followers, following } = useSelector(
+    (state) => state?.user
+  );
 
   //auth check
   useEffect(() => {
@@ -27,11 +38,9 @@ const UserHome = () => {
     }
   }, [userData, validUser, navigate]);
 
+  const dispatch = useDispatch();
 
-  const dispatch = useDispatch()
-
-  const lastPost = useSelector((state) => state?.userPosts?.lastPost)
-
+  const lastPost = useSelector((state) => state?.userPosts?.lastPost);
 
   //pagination related
   const [page, setPage] = useState(1);
@@ -50,28 +59,28 @@ const UserHome = () => {
       });
   }, []);
 
-    //fetching common posts and setting it to redux store
-    useEffect(() => {
-      if(!lastPost){
-        try {
-          setLoading(true);
-          setTimeout(() => {
-            getAllPosts(page)
-              .then((response) => {
-                const newPosts = response.posts;
-                dispatch(setLoadedPosts(newPosts));
-              })
-              .catch((error) => {
-                setError(error?.message);
-              })
-              .finally(() => {
-                setLoading(false);
-              });
-          }, 2000);
-        } catch (error) {
-          setError(error?.message);
-        }
+  //fetching common posts and setting it to redux store
+  useEffect(() => {
+    if (!lastPost) {
+      try {
+        setLoading(true);
+        setTimeout(() => {
+          getAllPosts(page)
+            .then((response) => {
+              const newPosts = response.posts;
+              dispatch(setLoadedPosts(newPosts));
+            })
+            .catch((error) => {
+              setError(error?.message);
+            })
+            .finally(() => {
+              setLoading(false);
+            });
+        }, 2000);
+      } catch (error) {
+        setError(error?.message);
       }
+    }
   }, [page, dispatch, lastPost]);
 
   // useEffect(() => {
@@ -102,21 +111,20 @@ const UserHome = () => {
     }
   }, [validUser, userData, dispatch]);
 
-
   const follow = (user) => {
     followUser(currentUser?._id, user?._id)
-      .then((response)=> {
-      dispatch(setFollowing(response.userConnection.following))
-    })
-    .catch((error) => {
-      setError(error?.message);
-    });
-  }
-  
+      .then((response) => {
+        dispatch(setFollowing(response.userConnection.following));
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
+
   const unfollow = (user) => {
     unfollowUser(currentUser?._id, user?._id)
-    .then((response) => {
-        dispatch(setFollowing(response.userConnection.following))
+      .then((response) => {
+        dispatch(setFollowing(response.userConnection.following));
       })
       .catch((error) => {
         setError(error?.message);
@@ -134,7 +142,11 @@ const UserHome = () => {
     <tr key={user._id}>
       <td>
         <div className="flex items-center">
-          <img src={user.profilePic} alt="" className="w-8 h-8 rounded-full mr-2" />
+          <img
+            src={user.profilePic}
+            alt=""
+            className="w-8 h-8 rounded-full mr-2"
+          />
           <div>
             <a href="#" className="user-link">
               {user.name}
@@ -142,31 +154,45 @@ const UserHome = () => {
             <span className="user-subhead block">{user.role}</span>
           </div>
         </div>
-        </td>
-    <td>{user.username}</td>
-    <td>
-      <div className="flex justify-around">
-        {
-          !following?.includes(user?._id) ? (
-            <button style={{ ...buttonStyles, background: "#4CAF50", color: "#fff" }} onClick={() => follow(user)}>Follow</button>
+      </td>
+      <td>{user.username}</td>
+      <td>
+        <div className="flex justify-around">
+          {!following?.includes(user?._id) ? (
+            <button
+              style={{ ...buttonStyles, background: "#4CAF50", color: "#fff" }}
+              onClick={() => follow(user)}
+            >
+              Follow
+            </button>
           ) : (
-            <button style={{ ...buttonStyles, background: "#f44336", color: "#fff" }} onClick={() => unfollow(user)}>Unfollow</button>
-          )
-        }
-      </div>
-    </td>
-  </tr>
-);
+            <button
+              style={{ ...buttonStyles, background: "#f44336", color: "#fff" }}
+              onClick={() => unfollow(user)}
+            >
+              Unfollow
+            </button>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
 
-  const filteredUsers = users.filter(user => user._id !== currentUser?._id);
+  const filteredUsers = users.filter((user) => user._id !== currentUser?._id);
   return (
-    <div className="flex overflow-x-hidden">
-      <div className="flex-1 relative">
+    <div className="flex overflow-x-hidden ">
+      <div className="flex-1 relative flex justify-center">
         <Header choice={"profile"} />
         <UserSideBar />
-        <div className="flex items-center justify-center h-screen">
-          <div className="w-full max-w-4xl">
-          <SinglePostCard/>
+        <div className="w-fit flex items-center justify-center ">
+          <div
+            id="posts-container"
+            className="p-2 max-w-4xl h-screen flex flex-col items-center gap-10 pt-24 overflow-auto no-scrollbar"
+          >
+            {[0, 1, 2, 3, 4].map((post, index) => {
+              return <SinglePostCard post={loadedPosts[post]} key={index} />;
+            })}
+            {/* Follow Users Section  */}
             {/* <div className="main-box bg-white p-6 rounded shadow-md">
               <div className="table-responsive">
                 <table className="table user-list w-full">
