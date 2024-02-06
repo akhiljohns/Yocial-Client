@@ -14,13 +14,14 @@ const postSlice = createSlice({
   },
   reducers: {
     setUserPosts: (state, action) => {
-      state.posts = action.payload.posts;
+      state.posts = action.payload;
     },
     updateUserPosts: (state, action) => {
       state.posts.unshift(action.payload.post);
     },
     addNewPost: (state, action) => {
       state.newPost = action.payload;
+      state.loadedPosts.unshift(action.payload);
     },
     removeNewPost: (state, action) => {
       state.newPost = null;
@@ -35,7 +36,7 @@ const postSlice = createSlice({
       state.editPost = "";
     },
     editUserPost: (state, action) => {
-      state.posts = state.posts.map((post) => {
+      state.posts = state?.posts?.map((post) => {
         if (post._id === action.payload?._id) {
           return action.payload;
         }

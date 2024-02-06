@@ -10,8 +10,8 @@ import ErrorBoundary from "./components/user/Error/ErrorBoundary";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>
-    <ErrorBoundary>
+    {/* <ErrorBoundary> */}
       <AppRouter />
-    </ErrorBoundary>
+    {/* </ErrorBoundary> */}
   </Provider>
 );

@@ -7,7 +7,11 @@ import {
 } from "../../..//services/User/apiMethods.js";
 import Header from "../../../components/user/Header/Header.jsx";
 import SinglePostModal from "../../../components/user/Elements/SinglePostModal.jsx";
-import { editUserPost, setEditPost, setUserPosts } from "../../../utils/reducers/postReducer.js";
+import {
+  editUserPost,
+  setEditPost,
+  setUserPosts,
+} from "../../../utils/reducers/postReducer.js";
 import CreatePostModal from "../../../components/user/Post/CreatePostModal.jsx";
 const Profile = () => {
   const navigate = useNavigate();
@@ -18,7 +22,9 @@ const Profile = () => {
   const [error, setError] = useState("");
   const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
-  const { validUser, userData } = useSelector((state) => state?.user);
+  const { validUser, userData } = useSelector(
+    (state) => state?.user?.validUser
+  );
   const { username } = useParams();
 
   const [imageSrc, setImageSrc] = useState("");
@@ -32,7 +38,7 @@ const Profile = () => {
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-const posts = useSelector((state) => state?.userPosts?.posts);
+  const posts = useSelector((state) => state?.userPosts?.posts);
 
   const handleImage = (post) => {
     dispatch(setEditPost({ editPost: post }));
@@ -54,8 +60,7 @@ const posts = useSelector((state) => state?.userPosts?.posts);
     if (user) {
       fetchUserDetails(user?._id)
         .then((response) => {
-
-          dispatch(setUserPosts(response))
+          dispatch(setUserPosts(response?.posts));
           setFollowersCount(response.followers.length);
           setFollowingCount(response.followings.length);
         })
@@ -98,37 +103,39 @@ const posts = useSelector((state) => state?.userPosts?.posts);
 
           <div className="text-white p-4 bg-black">
             <div className="grid grid-cols-4 gap-5">
-              {posts.map((post) => (
-                <img
-                  key={post?._id}
-                  src={post?.image}
-                  alt={post?.caption}
-                  className="w-full"
-                  onClick={(e) => {
-                    handleImage(post);
-                  }}
-                />
-              ))}
-              <SinglePostModal
-                isOpen={isModalOpen}
-                closeModal={closeModal}
-                imageUrl={imageSrc}
-                caption={caption}
-                postId={postId}
-                setIsCreatePostModalOpen={setIsCreatePostModalOpen}
-              />
-
-              {isCreatePostModalOpen && (
-                <CreatePostModal
-                  isModalOpen={isCreatePostModalOpen}
-                  setIsModalOpen={setIsCreatePostModalOpen}
-                  type={"editPost"}
-                />
-              )}
+              {posts.length > 0 &&
+                posts?.map((post) => (
+                  <img
+                    key={post?._id}
+                    src={post?.image}
+                    alt={post?.caption}
+                    className="w-full"
+                    onClick={(e) => {
+                      handleImage(post);
+                    }}
+                  />
+                ))}
             </div>
           </div>
         </div>
       </div>
+
+      <SinglePostModal
+        isOpen={isModalOpen}
+        closeModal={closeModal}
+        imageUrl={imageSrc}
+        caption={caption}
+        postId={postId}
+        setIsCreatePostModalOpen={setIsCreatePostModalOpen}
+      />
+
+      {isCreatePostModalOpen && (
+        <CreatePostModal
+          isModalOpen={isCreatePostModalOpen}
+          setIsModalOpen={setIsCreatePostModalOpen}
+          type={"editPost"}
+        />
+      )}
     </>
   );
 };

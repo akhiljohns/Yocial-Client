@@ -11,7 +11,7 @@ import CropImage from "../Options/CropImg";
 import PostInput from "../Elements/PostInput";
 import { Spinner } from "flowbite-react";
 import { successToast } from "../../../hooks/toast";
-import { editUserPost } from "../../../utils/reducers/postReducer";
+import { addNewPost, editUserPost } from "../../../utils/reducers/postReducer";
 
 function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
 
@@ -48,7 +48,7 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
   const handlePostResponse = (response) => {
     setLoading(false);
     if (response.status === 200) {
-      dispatch(editUserPost(response.post))
+      (type !== "editPost" ?  dispatch(addNewPost(response.post)):  dispatch(editUserPost(response.post)))
       successToast(response.message);
       clearComponent();
       closeModal();
