@@ -18,6 +18,7 @@ import SinglePostCard from "../../../components/user/SinglePostCard/SinglePostCa
 import Header from "../../../components/user/Header/Header";
 import UserSideBar from "../../../components/user/Sidebar/UserSideBar";
 import {
+  clearLoadedPosts,
   setLoadedPosts,
   setUserPosts,
 } from "../../../utils/reducers/postReducer";
@@ -49,37 +50,27 @@ const UserHome = () => {
   //fetching common posts from redux store
   const loadedPosts = useSelector((state) => state?.userPosts?.loadedPosts);
 
-  useEffect(() => {
-    fetchAllUsers()
-      .then((response) => {
-        setUsers(response.users);
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
-  }, []);
+
 
   //fetching common posts and setting it to redux store
   useEffect(() => {
     if (!lastPost) {
       try {
         setLoading(true);
-        setTimeout(() => {
-          getAllPosts(page)
-            .then((response) => {
-              const newPosts = response.posts;
-              dispatch(setLoadedPosts(newPosts));
-            })
-            .catch((error) => {
+        getAllPosts(page)
+        .then((response) => {
+          const newPosts = response.posts;
+          dispatch(setLoadedPosts(newPosts));
+        })
+        .catch((error) => {
               setError(error?.message);
             })
             .finally(() => {
               setLoading(false);
             });
-        }, 2000);
-      } catch (error) {
-        setError(error?.message);
-      }
+          } catch (error) {
+            setError(error?.message);
+          }
     }
   }, [page, dispatch, lastPost]);
 
@@ -109,75 +100,15 @@ const UserHome = () => {
           setError(error);
         });
     }
-  }, [validUser, userData, dispatch]);
+  }, []);
 
-  const follow = (user) => {
-    followUser(currentUser?._id, user?._id)
-      .then((response) => {
-        dispatch(setFollowing(response.userConnection.following));
-      })
-      .catch((error) => {
-        setError(error?.message);
-      });
-  };
-
-  const unfollow = (user) => {
-    unfollowUser(currentUser?._id, user?._id)
-      .then((response) => {
-        dispatch(setFollowing(response.userConnection.following));
-      })
-      .catch((error) => {
-        setError(error?.message);
-      });
-  };
-
-  const buttonStyles = {
-    padding: "8px 16px",
-    borderRadius: "4px",
-    cursor: "pointer",
-    transition: "background-color 0.3s ease",
-  };
-
-  const UserRow = ({ user }) => (
-    <tr key={user._id}>
-      <td>
-        <div className="flex items-center">
-          <img
-            src={user.profilePic}
-            alt=""
-            className="w-8 h-8 rounded-full mr-2"
-          />
-          <div>
-            <a href="#" className="user-link">
-              {user.name}
-            </a>
-            <span className="user-subhead block">{user.role}</span>
-          </div>
-        </div>
-      </td>
-      <td>{user.username}</td>
-      <td>
-        <div className="flex justify-around">
-          {!following?.includes(user?._id) ? (
-            <button
-              style={{ ...buttonStyles, background: "#4CAF50", color: "#fff" }}
-              onClick={() => follow(user)}
-            >
-              Follow
-            </button>
-          ) : (
-            <button
-              style={{ ...buttonStyles, background: "#f44336", color: "#fff" }}
-              onClick={() => unfollow(user)}
-            >
-              Unfollow
-            </button>
-          )}
-        </div>
-      </td>
-    </tr>
-  );
-
+  
+  useEffect(() => {
+    window.addEventListener("beforeunload", () => {
+      dispatch(clearLoadedPosts());
+    });
+  });
+  
   const filteredUsers = users.filter((user) => user._id !== currentUser?._id);
   return (
     <div className="flex overflow-x-hidden ">
@@ -189,12 +120,107 @@ const UserHome = () => {
             id="posts-container"
             className="p-2 max-w-4xl h-screen flex flex-col items-center gap-10 pt-24 overflow-auto no-scrollbar"
           >
-            {[0, 1, 2, 3, 4].map((post, index) => {
-              return <SinglePostCard post={loadedPosts[post]} key={index} />;
-            })}
-            {/* Follow Users Section  */}
-            {/* <div className="main-box bg-white p-6 rounded shadow-md">
-              <div className="table-responsive">
+            {loadedPosts &&
+              loadedPosts?.map((post, index) => {
+                return <SinglePostCard post={post} key={post?._id} />;
+              })}
+          </div>
+          <ToastContainer />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default UserHome;
+
+
+
+
+// const follow = (user) => {
+//   followUser(currentUser?._id, user?._id)
+//     .then((response) => {
+//       dispatch(setFollowing(response.userConnection.following));
+//     })
+//     .catch((error) => {
+//       setError(error?.message);
+//     });
+// };
+
+// const unfollow = (user) => {
+//   unfollowUser(currentUser?._id, user?._id)
+//     .then((response) => {
+//       dispatch(setFollowing(response.userConnection.following));
+//     })
+//     .catch((error) => {
+//       setError(error?.message);
+//     });
+// };
+
+
+
+
+  // const buttonStyles = {
+  //   padding: "8px 16px",
+  //   borderRadius: "4px",
+  //   cursor: "pointer",
+  //   transition: "background-color 0.3s ease",
+  // };
+
+  
+
+
+
+
+
+
+
+  // const UserRow = ({ user }) => (
+
+
+
+
+{/* Follow Users Section  */}
+{/* <div className="main-box bg-white p-6 rounded shadow-md">
+  //   <tr key={user._id}>
+  //     <td>
+  //       <div className="flex items-center">
+  //         <img
+  //           src={user.profilePic}
+  //           alt=""
+  //           className="w-8 h-8 rounded-full mr-2"
+  //         />
+  //         <div>
+  //           <a href="#" className="user-link">
+  //             {user.name}
+  //           </a>
+  //           <span className="user-subhead block">{user.role}</span>
+  //         </div>
+  //       </div>
+  //     </td>
+  //     <td>{user.username}</td>
+  //     <td>
+  //       <div className="flex justify-around">
+  //         {!following?.includes(user?._id) ? (
+  //           <button
+  //             style={{ ...buttonStyles, background: "#4CAF50", color: "#fff" }}
+  //             onClick={() => follow(user)}
+  //           >
+  //             Follow
+  //           </button>
+  //         ) : (
+  //           <button
+  //             style={{ ...buttonStyles, background: "#f44336", color: "#fff" }}
+  //             onClick={() => unfollow(user)}
+  //           >
+  //             Unfollow
+  //           </button>
+  //         )}
+  //       </div>
+  //     </td>
+  //   </tr>
+  // );
+<div className="table-responsive">
                 <table className="table user-list w-full">
                   <thead>
                     <tr>
@@ -215,12 +241,3 @@ const UserHome = () => {
                 </table>
               </div>
             </div> */}
-          </div>
-          <ToastContainer />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default UserHome;

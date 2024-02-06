@@ -59,9 +59,9 @@ const postSlice = createSlice({
 
     // related to common posts
     setLoadedPosts: (state, action) => {
-      state.loadedPosts = [...state.loadedPosts, ...action.payload];
+      state.loadedPosts = [...state?.loadedPosts, ...action?.payload];
 
-      if (action.payload.length < 5) {
+      if (action?.payload?.length < 5) {
         state.lastPost = true;
       }
     },
