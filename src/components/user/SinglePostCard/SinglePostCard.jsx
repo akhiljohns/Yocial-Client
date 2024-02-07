@@ -23,18 +23,19 @@ const SinglePostCard = ({ post }) => {
   }, [post.createdAt]); 
 
   return (
-    <div className="bg-white p-8 rounded-lg shadow-md max-w-md w-full ">
+    <div className="bg-white p-5 rounded-lg shadow-md max-w-md w-full ">
       {/* User Info with Three-Dot Menu */}
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center space-x-2">
           <img
             src={postUser?.profilePic}
             alt="User Avatar"
+            draggable="false"
             className="w-8 h-8 rounded-full"
           />
           <div>
-            <p className="text-gray-800 font-semibold">{postUser?.name}</p>
-            <p className="text-gray-500 text-sm">{time}</p>
+            <p className="text-gray-800 font-semibold mt-1">{postUser?.name}</p>
+            <p className="text-gray-400 text-sm">{time}</p>
           </div>
         </div>
         <div className="text-gray-500 cursor-pointer">
@@ -70,7 +71,8 @@ const SinglePostCard = ({ post }) => {
         <img
           src={post?.image}
           alt="Post Image"
-          className="w-full h-48 object-cover rounded-md"
+          draggable="false"
+          className="w-full aspect-square object-cover rounded-md"
         />
       </div>
       {/* Like and Comment Section */}

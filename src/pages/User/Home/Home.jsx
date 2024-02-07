@@ -112,13 +112,13 @@ const UserHome = () => {
   const filteredUsers = users.filter((user) => user._id !== currentUser?._id);
   return (
     <div className="flex overflow-x-hidden ">
-      <div className="flex-1 relative flex justify-center">
+      <div className="flex-1  relative flex justify-center">
         <Header choice={"profile"} />
         <UserSideBar />
-        <div className="w-fit flex items-center justify-center ">
+        <div className="w-full flex items-center justify-center ">
           <div
             id="posts-container"
-            className="p-2 max-w-4xl h-screen flex flex-col items-center gap-10 pt-24 overflow-auto no-scrollbar"
+            className="p-2 w-1/2 h-screen flex flex-col items-center gap-10 pt-24 overflow-auto no-scrollbar"
           >
             {loadedPosts &&
               loadedPosts?.map((post, index) => {
