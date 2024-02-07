@@ -13,6 +13,7 @@ import {
   unfollowUser,
 } from "../../../services/User/apiMethods";
 import SinglePostCard from "../../../components/user/SinglePostCard/SinglePostCard";
+import "./Home.css";
 
 // IMPORTING COMPONENTS
 import Header from "../../../components/user/Header/Header";
@@ -22,6 +23,7 @@ import {
   setLoadedPosts,
   setUserPosts,
 } from "../../../utils/reducers/postReducer";
+import { errorToast } from "../../../hooks/toast";
 
 const UserHome = () => {
   const navigate = useNavigate();
@@ -50,44 +52,45 @@ const UserHome = () => {
   //fetching common posts from redux store
   const loadedPosts = useSelector((state) => state?.userPosts?.loadedPosts);
 
-
-
   //fetching common posts and setting it to redux store
   useEffect(() => {
     if (!lastPost) {
       try {
         setLoading(true);
-        getAllPosts(page)
-        .then((response) => {
-          const newPosts = response.posts;
-          dispatch(setLoadedPosts(newPosts));
-        })
-        .catch((error) => {
-              setError(error?.message);
+        setTimeout(() => {
+          // For Seamless Addition of new posts
+          getAllPosts(page)
+            .then((response) => {
+              const newPosts = response.posts;
+              dispatch(setLoadedPosts(newPosts));
+            })
+            .catch((error) => {
+              errorToast(error?.message);
             })
             .finally(() => {
               setLoading(false);
             });
-          } catch (error) {
-            setError(error?.message);
-          }
+        }, 1000);
+      } catch (error) {
+        errorToast(error?.message);
+      }
     }
   }, [page, dispatch, lastPost]);
 
-  // useEffect(() => {
-  //   if(!lastPost){
-  //     const postContainer = document.getElementById("post-container");
-  //     postContainer.addEventListener("scroll", () => {
-  //       if (postContainer) {
-  //         const { scrollTop, scrollHeight, clientHeight } = postContainer;
-  //         if (scrollTop + clientHeight >= scrollHeight && !loading) {
-  //           setLoading(true);
-  //           setPage(page + 1);
-  //         }
-  //       }
-  //     });
-  //   }
-  // });
+  useEffect(() => {
+    if (!lastPost) {
+      const postContainer = document.getElementById("posts-container");
+      postContainer.addEventListener("scroll", () => {
+        if (postContainer) {
+          const { scrollTop, scrollHeight, clientHeight } = postContainer;
+          if (scrollTop + clientHeight >= scrollHeight && !loading) {
+            setLoading(true);
+            setPage(page + 1);
+          }
+        }
+      });
+    }
+  });
 
   // to fetch the user posts
   useEffect(() => {
@@ -97,18 +100,17 @@ const UserHome = () => {
           dispatch(setUserPosts(response));
         })
         .catch((error) => {
-          setError(error);
+          errorToast(error);
         });
     }
   }, []);
 
-  
   useEffect(() => {
     window.addEventListener("beforeunload", () => {
       dispatch(clearLoadedPosts());
     });
   });
-  
+
   const filteredUsers = users.filter((user) => user._id !== currentUser?._id);
   return (
     <div className="flex overflow-x-hidden ">
@@ -124,6 +126,12 @@ const UserHome = () => {
               loadedPosts?.map((post, index) => {
                 return <SinglePostCard post={post} key={post?._id} />;
               })}
+
+            {loading && (
+              <div class="bg">
+                <div class="loader"></div>
+              </div>
+            )}
           </div>
           <ToastContainer />
         </div>
@@ -133,111 +141,3 @@ const UserHome = () => {
 };
 
 export default UserHome;
-
-
-
-
-// const follow = (user) => {
-//   followUser(currentUser?._id, user?._id)
-//     .then((response) => {
-//       dispatch(setFollowing(response.userConnection.following));
-//     })
-//     .catch((error) => {
-//       setError(error?.message);
-//     });
-// };
-
-// const unfollow = (user) => {
-//   unfollowUser(currentUser?._id, user?._id)
-//     .then((response) => {
-//       dispatch(setFollowing(response.userConnection.following));
-//     })
-//     .catch((error) => {
-//       setError(error?.message);
-//     });
-// };
-
-
-
-
-  // const buttonStyles = {
-  //   padding: "8px 16px",
-  //   borderRadius: "4px",
-  //   cursor: "pointer",
-  //   transition: "background-color 0.3s ease",
-  // };
-
-  
-
-
-
-
-
-
-
-  // const UserRow = ({ user }) => (
-
-
-
-
-{/* Follow Users Section  */}
-{/* <div className="main-box bg-white p-6 rounded shadow-md">
-  //   <tr key={user._id}>
-  //     <td>
-  //       <div className="flex items-center">
-  //         <img
-  //           src={user.profilePic}
-  //           alt=""
-  //           className="w-8 h-8 rounded-full mr-2"
-  //         />
-  //         <div>
-  //           <a href="#" className="user-link">
-  //             {user.name}
-  //           </a>
-  //           <span className="user-subhead block">{user.role}</span>
-  //         </div>
-  //       </div>
-  //     </td>
-  //     <td>{user.username}</td>
-  //     <td>
-  //       <div className="flex justify-around">
-  //         {!following?.includes(user?._id) ? (
-  //           <button
-  //             style={{ ...buttonStyles, background: "#4CAF50", color: "#fff" }}
-  //             onClick={() => follow(user)}
-  //           >
-  //             Follow
-  //           </button>
-  //         ) : (
-  //           <button
-  //             style={{ ...buttonStyles, background: "#f44336", color: "#fff" }}
-  //             onClick={() => unfollow(user)}
-  //           >
-  //             Unfollow
-  //           </button>
-  //         )}
-  //       </div>
-  //     </td>
-  //   </tr>
-  // );
-<div className="table-responsive">
-                <table className="table user-list w-full">
-                  <thead>
-                    <tr>
-                      <th className="py-2">
-                        <span>Name</span>
-                      </th>
-                      <th className="py-2">
-                        <span>Username</span>
-                      </th>
-                      <th className="py-2">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {filteredUsers.map((user) => (
-                      <UserRow key={user._id} user={user} />
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div> */}

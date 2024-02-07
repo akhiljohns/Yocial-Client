@@ -19,7 +19,7 @@ const SinglePostCard = ({ post }) => {
   useEffect(() => {
     setPostUser(post?.userId);
     setLikes(post?.likes.length);
-    setTime(timeAgo(new Date(post?.createdAt))); // Ensure post.createdAt is a Date object
+    setTime(timeAgo(new Date(post?.createdAt)));
   }, [post.createdAt]); 
 
   return (
