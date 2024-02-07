@@ -57,7 +57,7 @@ const UserHome = () => {
             .finally(() => {
               setLoading(false);
             });
-        });
+        }, 1000);
       } catch (error) {
         errorToast(error?.message);
       }
@@ -77,7 +77,7 @@ const UserHome = () => {
         }
       });
     }
-  }, [lastPost]);
+  });
 
   // to fetch the user posts
   useEffect(() => {
@@ -96,7 +96,7 @@ const UserHome = () => {
     window.addEventListener("beforeunload", () => {
       dispatch(clearLoadedPosts());
     });
-  }, []);
+  });
 
   return (
     <div className="flex overflow-x-hidden ">
@@ -112,8 +112,9 @@ const UserHome = () => {
               loadedPosts?.map((post, index) => {
                 return <SinglePostCard post={post} key={post?._id} />;
               })}
+              {lastPost && (<p className="text-white">No More Posts To Show</p>)}
 
-            {loading && (
+            {(loading && !lastPost) && (
               <div class="bg">
                 <div class="loader"></div>
               </div>
