@@ -5,8 +5,6 @@ import Header from '../../../components/user/Header/Header';
 import Email from '../../../components/user/EditProfile/Email';
 
 function EditProfile() {
-  const [loading, setLoading] = useState(false);
-  const [responseMessage, setResponseMessage] = useState('');
   const [selectedOption, setSelectedOption] = useState('general');
 
   const renderContent = () => {
@@ -15,8 +13,6 @@ function EditProfile() {
         return <GeneralDetails />;
       case 'email':
         return <div><Email/></div>;
-      case 'preferences':
-        return <div><GeneralDetails /></div>;
       default:
         return null;
     }
@@ -34,9 +30,6 @@ function EditProfile() {
           </li>
           <li onClick={() => setSelectedOption('email')} className="ed-btn cursor-pointer mb-2">
             Email
-          </li>
-          <li onClick={() => setSelectedOption('preferences')} className="ed-btn cursor-pointer mb-2">
-            Preferences
           </li>
         </ul>
       </div>

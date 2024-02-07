@@ -31,7 +31,6 @@ const Profile = () => {
   const [caption, setCaption] = useState("");
   const [postId, setPostId] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
-  const comments = ["Nice!", "Great photo!", "Love it!"]; // Replace with your comments
 
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
 

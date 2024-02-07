@@ -1,17 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { fetchAllUsers } from "../../../services/Admin/apiMethods";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { setFollowing } from "../../../utils/reducers/userReducer";
-import {
-  fetchUserPosts,
-  followUser,
-  getAllPosts,
-  getConnections,
-  unfollowUser,
-} from "../../../services/User/apiMethods";
+import { fetchUserPosts, getAllPosts } from "../../../services/User/apiMethods";
 import SinglePostCard from "../../../components/user/SinglePostCard/SinglePostCard";
 import "./Home.css";
 
@@ -29,10 +21,7 @@ const UserHome = () => {
   const navigate = useNavigate();
   const currentUser = useSelector((state) => state?.user?.userData);
   const [users, setUsers] = useState([]);
-  const [error, setError] = useState("");
-  const { validUser, userData, followers, following } = useSelector(
-    (state) => state?.user
-  );
+  const { validUser, userData } = useSelector((state) => state?.user);
 
   //auth check
   useEffect(() => {
@@ -111,7 +100,6 @@ const UserHome = () => {
     });
   });
 
-  const filteredUsers = users.filter((user) => user._id !== currentUser?._id);
   return (
     <div className="flex overflow-x-hidden ">
       <div className="flex-1  relative flex justify-center">
