@@ -7,11 +7,12 @@ import { Navigate } from "react-router-dom";
 
 
 
-export const clearUser = () => {
+export const clearUser = async () => {
  localStorage.removeItem('userAuth');
  localStorage.removeItem('refreshToken');
- persistor.purge(); 
-window.location.reload("/login")
+ persistor.purge()
+//  localStorage.clear()
+ window.location.href = "/login"
 };
 
 export const apiCall = async (method, url, data) => {

@@ -83,8 +83,7 @@ export const postUrl = {
   deletePost: (postId) => `/post/delete/post/${postId}`,
 
   //likes
-  likePost: "/post/like-post",
-  unlikePost: "/post/unlike-post",
+  likeunlikePost: (data) =>`/post/like-unlike/${data.postId}/${data.userId}`,
 
   //comments
   fetchComments: (postId) => `/post/fetch-comments/${postId}`,

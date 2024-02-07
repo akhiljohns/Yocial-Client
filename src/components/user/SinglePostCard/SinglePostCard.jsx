@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getUser } from "../../../services/User/apiMethods";
+import { getUser, likeunlikePost } from "../../../services/User/apiMethods";
 import { timeAgo } from "../../../hooks/timeCalculator";
+import { editLoadedPost, editUserPost } from "../../../utils/reducers/postReducer";
+
+
 const SinglePostCard = ({ post }) => {
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const user = useSelector((state) => state?.user?.userData);
 
   const [owner, setOwner] = useState(false);
 
   const [likes, setLikes] = useState([]);
+  const [liked, setLiked] = useState(false);
 
   const [postUser, setPostUser] = useState(null);
 
@@ -18,9 +23,36 @@ const SinglePostCard = ({ post }) => {
 
   useEffect(() => {
     setPostUser(post?.userId);
-    setLikes(post?.likes.length);
+    setLikes(post?.likes);
     setTime(timeAgo(new Date(post?.createdAt)));
   }, [post.createdAt]); 
+
+useEffect(() => {
+  if (likes.includes(user?._id)) {
+    setLiked(true);
+  }
+}, [likes, user]);
+
+
+  const likeunlike = () => {
+
+
+
+    likeunlikePost(user?._id, post?._id).then((res) => {
+      dispatch(editLoadedPost(res.post));
+    })
+    setLiked(!liked);
+
+    if(liked){
+      setLikes(likes.filter((like) => like!== user?._id));
+    }else{
+      setLikes([...likes, user?._id]);
+    }
+  };
+
+
+
+
 
   return (
     <div className="bg-white p-5 rounded-lg shadow-md max-w-md w-full ">
@@ -78,15 +110,16 @@ const SinglePostCard = ({ post }) => {
       {/* Like and Comment Section */}
       <div className="flex items-center justify-between text-gray-500">
         <div className="flex items-center space-x-2">
-          <button className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1">
+          <button onClick={likeunlike} className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1">
             <svg
+              color= {liked ? "red" : ""}
               className="w-5 h-5 fill-current"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
             >
               <path d="M12 21.35l-1.45-1.32C6.11 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-4.11 6.86-8.55 11.54L12 21.35z" />
             </svg>
-            <span>{likes} Likes</span>
+            <span>{likes?.length} Likes</span>
           </button>
         </div>
         <button className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1">

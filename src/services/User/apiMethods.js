@@ -307,31 +307,12 @@ export const fetchAPost = (postId) => {
 // @desc    Like post
 //@route    PATCH /post/like-post
 // @access  Registerd users
-export const likePost = (userId, postId) => {
+export const likeunlikePost = (userId, postId) => {
   return new Promise((resolve, reject) => {
     try {
-      const data = { userId: userId, postId: postId };
+      const data = { userId ,postId };
 
-      apiCall("patch", postUrl.likePost, data)
-        .then((response) => {
-          resolve(response);
-        })
-        .catch((error) => reject(error));
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
-
-// @desc    Unlike post
-//@route    PATCH /post/unllike-post
-// @access  Registerd users
-export const unlikePost = (userId, postId) => {
-  return new Promise((resolve, reject) => {
-    try {
-      const data = { userId: userId, postId: postId };
-
-      apiCall("patch", postUrl.unlikePost, data)
+      apiCall("patch", postUrl.likeunlikePost(data))
         .then((response) => {
           resolve(response);
         })

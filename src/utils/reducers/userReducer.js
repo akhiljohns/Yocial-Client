@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userAuth } from "../../const/localStorage";
+import { refreshToken, userAuth } from "../../const/localStorage";
 import { authUrl } from "../../const/routes";
 import { apiCall } from "../../services/User/apiCalls";
 
@@ -37,6 +37,13 @@ const userSlice = createSlice({
     setFollowers: (state, action) => {
       state.followers = action.payload;
     },
+
+    logOut: (state, action) => {
+      state.userData = null;
+      state.validUser = false;
+      localStorage.removeItem(userAuth);
+      localStorage.removeItem(refreshToken);
+    }
   },
 });
 
@@ -80,6 +87,7 @@ export const {
   updateCurrentRoom,
   setFollowing,
   setFollowers,
+  logOut
 } = userSlice.actions;
 
 export default userSlice.reducer;

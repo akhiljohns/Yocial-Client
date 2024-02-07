@@ -31,7 +31,7 @@ function Login() {
     if (user && userData) {
       navigate("/");
     }
-  }, [navigate]);
+  }, [user, userData, navigate]);
 
   const setCredentials = () => {
     if (!credential) {

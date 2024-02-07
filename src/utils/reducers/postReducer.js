@@ -66,6 +66,15 @@ const postSlice = createSlice({
         state.lastPost = true;
       }
     },
+    editLoadedPost:(state, action)=>{
+      state.loadedPosts = state?.loadedPosts?.map((post) => {
+        if (post._id === action.payload?._id) {
+          return action.payload;
+        }
+        return post;
+      });
+    },
+
     addCreatedPost: (state, action) => {
       state.loadedPosts = [action.payload, ...state.loadedPosts];
     },
@@ -88,6 +97,7 @@ export const {
   setEditPost,
   removeEditPost,
   editUserPost,
+  editLoadedPost,
   removeDeletedPost
 } = postSlice.actions;
 

@@ -19,12 +19,11 @@ import { errorToast } from "../../../hooks/toast";
 
 const UserHome = () => {
   const navigate = useNavigate();
-  const currentUser = useSelector((state) => state?.user?.userData);
-  const [users, setUsers] = useState([]);
   const { validUser, userData } = useSelector((state) => state?.user);
 
   //auth check
   useEffect(() => {
+    console.log(validUser, userData);
     if (!userData || !validUser) {
       navigate("/login");
     }
@@ -59,7 +58,7 @@ const UserHome = () => {
             .finally(() => {
               setLoading(false);
             });
-        }, 1000);
+        });
       } catch (error) {
         errorToast(error?.message);
       }
@@ -79,7 +78,7 @@ const UserHome = () => {
         }
       });
     }
-  });
+  }, [lastPost]);
 
   // to fetch the user posts
   useEffect(() => {
@@ -98,7 +97,7 @@ const UserHome = () => {
     window.addEventListener("beforeunload", () => {
       dispatch(clearLoadedPosts());
     });
-  });
+  }, []);
 
   return (
     <div className="flex overflow-x-hidden ">
