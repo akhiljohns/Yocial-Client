@@ -1,13 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getUser, likeunlikePost } from "../../../services/User/apiMethods";
+import {
+  getUser,
+  likeunlikePost,
+  removeSavedPost,
+  savePost,
+} from "../../../services/User/apiMethods";
 import { timeAgo } from "../../../hooks/timeCalculator";
-import { editLoadedPost, editUserPost } from "../../../utils/reducers/postReducer";
-
+import {
+  editLoadedPost,
+  editUserPost,
+} from "../../../utils/reducers/postReducer";
+import { errorToast } from "../../../hooks/toast";
+import {
+  updateReduxUser,
+  updateSavedPosts,
+} from "../../../utils/reducers/userReducer";
 
 const SinglePostCard = ({ post }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state?.user?.userData);
 
@@ -15,6 +27,7 @@ const SinglePostCard = ({ post }) => {
 
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState(false);
+  const [saved, setSaved] = useState(false);
 
   const [postUser, setPostUser] = useState(null);
 
@@ -25,34 +38,50 @@ const SinglePostCard = ({ post }) => {
     setPostUser(post?.userId);
     setLikes(post?.likes);
     setTime(timeAgo(new Date(post?.createdAt)));
-  }, [post.createdAt]); 
+  }, [post.createdAt]);
 
-useEffect(() => {
-  if (likes.includes(user?._id)) {
-    setLiked(true);
-  }
-}, [likes, user]);
-
+  useEffect(() => {
+    if (likes?.includes(user?._id)) {
+      setLiked(true);
+    }
+    if (user?.savedPosts?.includes(post?._id)) {
+      setSaved(true);
+    }
+  }, [likes, user]);
 
   const likeunlike = () => {
-
-
-
     likeunlikePost(user?._id, post?._id).then((res) => {
       dispatch(editLoadedPost(res.post));
-    })
+    });
     setLiked(!liked);
 
-    if(liked){
-      setLikes(likes.filter((like) => like!== user?._id));
-    }else{
+    if (liked) {
+      setLikes(likes.filter((like) => like !== user?._id));
+    } else {
       setLikes([...likes, user?._id]);
     }
   };
 
-
-
-
+  const savepost = () => {
+    setSaved(true);
+    savePost(user?._id, post?._id)
+      .then((res) => {
+        dispatch(updateSavedPosts(res?.post?._id));
+      })
+      .catch((err) => {
+        errorToast(err);
+      });
+  };
+  const unsavepost = () => {
+    setSaved(false);
+    removeSavedPost(user?._id, post?._id)
+      .then((res) => {
+        dispatch(updateSavedPosts(res?.post?._id));
+      })
+      .catch((err) => {
+        errorToast(err);
+      });
+  };
 
   return (
     <div className="bg-white p-5 rounded-lg shadow-md max-w-md w-full ">
@@ -93,10 +122,7 @@ useEffect(() => {
       </div>
       {/* Message */}
       <div className="mb-4">
-        <p className="text-gray-800">
-         {post?.caption}
-         
-        </p>
+        <p className="text-gray-800">{post?.caption}</p>
       </div>
       {/* Image */}
       <div className="mb-4">
@@ -110,9 +136,12 @@ useEffect(() => {
       {/* Like and Comment Section */}
       <div className="flex items-center justify-between text-gray-500">
         <div className="flex items-center space-x-2">
-          <button onClick={likeunlike} className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1">
+          <button
+            onClick={likeunlike}
+            className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1"
+          >
             <svg
-              color= {liked ? "red" : ""}
+              color={liked ? "red" : ""}
               className="w-5 h-5 fill-current"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -146,6 +175,40 @@ useEffect(() => {
           </svg>
           <span>0 Comments</span>
         </button>
+        {/* Save Post */}
+        <svg
+          onClick={saved ? unsavepost : savepost}
+          className="cursor-pointer ml-auto mr-2"
+          width={26}
+          height={25}
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          fill={saved ? "#6B7280" : "white"}
+        >
+          <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
+          <g
+            id="SVGRepo_tracerCarrier"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            stroke="black"
+            strokeWidth="1.056"
+          >
+            <path
+              fill={"black"}
+              fillRule="evenodd"
+              d="M4 5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v15.138a1.5 1.5 0 0 1-2.244 1.303l-5.26-3.006a1 1 0 0 0-.992 0l-5.26 3.006A1.5 1.5 0 0 1 4 20.138V5zm11 4a1 1 0 1 1 0 2H9a1 1 0 1 1 0-2h6z"
+              clipRule="evenodd"
+            ></path>
+          </g>
+          <g id="SVGRepo_iconCarrier">
+            <path
+              fill=""
+              fillRule="evenodd"
+              d="M4 5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v15.138a1.5 1.5 0 0 1-2.244 1.303l-5.26-3.006a1 1 0 0 0-.992 0l-5.26 3.006A1.5 1.5 0 0 1 4 20.138V5zm11 4a1 1 0 1 1 0 2H9a1 1 0 1 1 0-2h6z"
+              clipRule="evenodd"
+            ></path>
+          </g>
+        </svg>
       </div>
     </div>
   );

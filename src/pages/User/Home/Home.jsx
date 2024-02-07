@@ -23,7 +23,6 @@ const UserHome = () => {
 
   //auth check
   useEffect(() => {
-    console.log(validUser, userData);
     if (!userData || !validUser) {
       navigate("/login");
     }

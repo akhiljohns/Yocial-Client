@@ -19,16 +19,28 @@ const userSlice = createSlice({
       state.validUser = action.payload.validUser;
     },
     updateReduxUser: (state, action) => {
-      state.userData.name = action.payload?.userData?.name || state?.userData?.name ;
-      state.userData.username = action.payload?.userData?.username || state?.userData?.username;
-      state.userData.bio = action.payload?.userData?.bio || state?.userData?.bio;
-      state.userData.email = action.payload?.userData?.email || state?.userData?.email;
-
+      state.userData.name =
+        action.payload?.userData?.name || state?.userData?.name;
+      state.userData.username =
+        action.payload?.userData?.username || state?.userData?.username;
+      state.userData.bio =
+        action.payload?.userData?.bio || state?.userData?.bio;
+      state.userData.email =
+        action.payload?.userData?.email || state?.userData?.email;
     },
     removeReduxUser: (state, action) => {
       state.userData = null;
       state.validUser = false;
       localStorage.removeItem(userAuth);
+    },
+    updateSavedPosts: (state, action) => {
+      if (state?.userData?.savedPosts?.includes(action.payload)) {
+        state.userData.savedPosts = state.userData.savedPosts.filter(
+          (postId) => postId !== action.payload
+        );
+      } else {
+        state.userData.savedPosts.push(action.payload);
+      }
     },
     setFollowing: (state, action) => {
       state.following = action.payload;
@@ -43,7 +55,7 @@ const userSlice = createSlice({
       state.validUser = false;
       localStorage.removeItem(userAuth);
       localStorage.removeItem(refreshToken);
-    }
+    },
   },
 });
 
@@ -87,7 +99,8 @@ export const {
   updateCurrentRoom,
   setFollowing,
   setFollowers,
-  logOut
+  updateSavedPosts,
+  logOut,
 } = userSlice.actions;
 
 export default userSlice.reducer;
