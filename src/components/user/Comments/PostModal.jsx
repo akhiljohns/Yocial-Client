@@ -118,8 +118,9 @@ const PostModal = ({
                         </h2>
                       </div>
                       {/* Delete Icon/Button */}
+                      {userId === comment?.userId?._id &&
                       <button
-                        onClick={() => {
+                      onClick={() => {
                           setDelCommentDetails({
                             commentId: comment?._id,
                             userId: comment?.userId?._id,
@@ -141,6 +142,7 @@ const PostModal = ({
                           />
                         </svg>
                       </button>
+                    }
                       {showDeleteConfirmation && (
                         <Confirmation
                           visible={showDeleteConfirmation}
