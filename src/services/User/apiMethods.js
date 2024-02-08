@@ -177,24 +177,21 @@ export const getAllPosts = (page) => {
   });
 };
 
-
 //@dec      Fetch a user posts
 //method    GET
 export const fetchUserPosts = (userId) => {
   return new Promise((resolve, reject) => {
-      try {
-          apiCall("get", `${postUrl.getUserPosts}?userId=${userId}`)
-            .then((response) => {
-              resolve(response);
-            })
-            .catch((error) => reject(error));
-      } catch (error) {
-          reject(error);
-      }
-  })
+    try {
+      apiCall("get", `${postUrl.getUserPosts}?userId=${userId}`)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => reject(error));
+    } catch (error) {
+      reject(error);
+    }
+  });
 };
-
-
 
 // @desc    Fetch posts count
 // @route   GET /post/fetch-count
@@ -310,7 +307,7 @@ export const fetchAPost = (postId) => {
 export const likeunlikePost = (userId, postId) => {
   return new Promise((resolve, reject) => {
     try {
-      const data = { userId ,postId };
+      const data = { userId, postId };
 
       apiCall("patch", postUrl.likeunlikePost(data))
         .then((response) => {
@@ -326,15 +323,18 @@ export const likeunlikePost = (userId, postId) => {
 // @desc    Get comment
 //@route    GET /post/fetch-comment
 // @access  Registerd users
-export const fetchComments = (postId) => {
+export const fetchComments = (postId, type) => {
   return new Promise((resolve, reject) => {
     try {
-      const url = postUrl.fetchComments(postId);
+      const data = { postId, type };
+      const url = postUrl.fetchComments(data);
       apiCall("get", url)
         .then((response) => {
           resolve(response);
         })
-        .catch((error) => reject(error));
+        .catch((error) => {
+          reject(error);
+        });
     } catch (error) {
       reject(error);
     }
@@ -379,7 +379,7 @@ export const replyToComment = ({ commentId, postId, userId, content }) => {
 export const addComment = (userId, postId, content) => {
   return new Promise((resolve, reject) => {
     try {
-      const data = { userId,postId,content};
+      const data = { userId, postId, content };
       apiCall("post", postUrl.addComment, data)
         .then((response) => {
           resolve(response);

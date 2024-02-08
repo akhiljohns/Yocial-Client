@@ -1,10 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { errorToast, successToast } from "../../../hooks/toast";
-import { addComment } from "../../../services/User/apiMethods";
+import { addComment, fetchComments } from "../../../services/User/apiMethods";
+import { timeAgo } from "../../../hooks/timeCalculator";
 
-const PostModal = ({ userId, post, closeModal }) => {
+const PostModal = ({ userId, post, closeModal,commentCount,setCommentCount }) => {
+  const [postComments, setPostComments] = useState([]);
   const [newComment, setNewComment] = useState("");
   const MAX_COMMENT_LENGTH = 200; // Maximum characters allowed for the comment
+
+  useEffect(() => {
+    fetchComments(post?._id, "comments").then((response) => {
+      setPostComments(response);
+    });
+  }, [post._id]);
 
   const handleOverlayClick = (e) => {
     if (e.target.classList.contains("bg-black")) {
@@ -13,22 +21,23 @@ const PostModal = ({ userId, post, closeModal }) => {
   };
 
   const handleSendComment = () => {
-    if (newComment.length > MAX_COMMENT_LENGTH) {
+    if (newComment?.length > MAX_COMMENT_LENGTH) {
       errorToast("Comment is too long!");
       return;
     }
-    if (newComment.length === 0) {
+    if (newComment?.length === 0) {
       errorToast("Comment cannot be empty!");
       return;
     }
     // Add comment to the list of comments
-    addComment(userId, post._id, newComment)
+    addComment(userId, post?._id, newComment)
       .then((response) => {
-        successToast("Comment added");
+        setPostComments([response, ...postComments]);
+        setCommentCount(commentCount + 1);
         setNewComment("");
       })
       .catch((error) => {
-        errorToast("Error adding comment");
+        errorToast("Failed to add comment");
       });
   };
 
@@ -50,36 +59,37 @@ const PostModal = ({ userId, post, closeModal }) => {
           </div>
           {/* <!-- Right side - Comments --> */}
           <div className="w-1/2 ml-2 bg-gray-200 h-full relative">
-            <div className="overflow-auto no-scrollbar h-full pb-12">
+            <div className="overflow-auto no-scrollbar h-full pb-12 p-3">
               {/* <!-- Sample comments --> */}
-              <div className="border-b py-2">
+              {/* <div className="border-b py-2">
                 <h2 className="text-xl font-semibold mb-2">User Name</h2>
                 <h2 className="text-sm mb-2">Date</h2>
                 <p className="text-gray-700 text-2xl font-semibold">
                   Comment text goes here
                 </p>
-              </div>
-              <div className="border-b py-2">
-                <h2 className="text-xl font-semibold mb-2">User Name</h2>
-                <h2 className="text-sm mb-2">Date</h2>
-                <p className="text-gray-700 text-2xl font-semibold">
-                  Comment text goes here
-                </p>
-              </div>
-              <div className="border-b py-2">
-                <h2 className="text-xl font-semibold mb-2">User Name</h2>
-                <h2 className="text-sm mb-2">Date</h2>
-                <p className="text-gray-700 text-2xl font-semibold">
-                  Comment text goes here
-                </p>
-              </div>
-              <div className="border-b py-2">
-                <h2 className="text-xl font-semibold mb-2">User Name</h2>
-                <h2 className="text-sm mb-2">Date</h2>
-                <p className="text-gray-700 text-2xl font-semibold">
-                  Comment text goes here
-                </p>
-              </div>
+              </div> */}
+              {postComments?.length === 0 ? (
+                <h1 className="text-center text-2xl font-bold">
+                  No Comments Yet
+                </h1>
+              ) : (
+                ""
+              )}
+              {postComments.length > 0 &&
+                postComments.map((comment, index) => (
+                  <div className="border-b py-2" key={index}>
+                    <h1 className="text-[80%] inline font-medium opacity-60">
+                      {comment?.userId?.username + " : "}
+                    </h1>
+                    <h1 className="text-[90%] inline font-bold break-words">
+                      {comment?.content}
+                    </h1>
+
+                    <h2 className="text-[50%] opacity-60">
+                      {timeAgo(new Date(comment?.createdAt))}
+                    </h2>
+                  </div>
+                ))}
             </div>
             {/* Input box for new comment */}
             <div className="absolute bottom-0 left-0 w-full p-4 bg-gray-100">

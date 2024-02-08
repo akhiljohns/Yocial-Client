@@ -86,7 +86,7 @@ export const postUrl = {
   likeunlikePost: (data) =>`/post/like-unlike/${data.postId}/${data.userId}`,
 
   //comments
-  fetchComments: (postId) => `/post/fetch-comments/${postId}`,
+  fetchComments: (data) => `/post/fetch-comments/${data.postId}/${data.type}`,
   fetchReplies: (commentId) => `/post/comments/replies/${commentId}`,
   addComment: "/post/add-comment",
   addReply: (commentId) => `/post/comments/reply-to/${commentId}`,

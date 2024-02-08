@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
+  fetchComments,
   getUser,
   likeunlikePost,
   removeSavedPost,
@@ -31,17 +32,23 @@ const SinglePostCard = ({ post }) => {
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
-  const [commentOpen,setCommentOpen] = useState(false);
+  const [commentOpen, setCommentOpen] = useState(false);
+  const [commentCount, setCommentCount] = useState(0);
   const [postUser, setPostUser] = useState(null);
 
   const [error, setError] = useState("");
   const [time, setTime] = useState("");
 
   useEffect(() => {
-    setPostUser(post?.userId);
-    setLikes(post?.likes);
-    setTime(timeAgo(new Date(post?.createdAt)));
-  }, [post.createdAt]);
+    if (post && post.createdAt) {
+      fetchComments(post?._id, "count").then((res) => {
+        setCommentCount(res.count);
+      });
+      setPostUser(post?.userId);
+      setLikes(post?.likes);
+      setTime(timeAgo(new Date(post?.createdAt)));
+    }
+  }, [post]);
 
   useEffect(() => {
     if (likes?.includes(user?._id)) {
@@ -121,7 +128,6 @@ const SinglePostCard = ({ post }) => {
               <circle cx="12" cy="17" r="1" />
             </svg>
           </button>
-
         </div>
       </div>
       {/* Message */}
@@ -136,7 +142,6 @@ const SinglePostCard = ({ post }) => {
           draggable="false"
           className="w-full aspect-square object-cover rounded-md"
         />
-        
       </div>
       {/* Like and Comment Section */}
       <div className="flex items-center justify-between text-gray-500">
@@ -156,9 +161,12 @@ const SinglePostCard = ({ post }) => {
             <span>{likes?.length} Likes</span>
           </button>
         </div>
-        <button onClick={(e)=>{
-          setCommentOpen(true)
-        }} className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1">
+        <button
+          onClick={(e) => {
+            setCommentOpen(true);
+          }}
+          className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1"
+        >
           <svg
             width="22px"
             height="22px"
@@ -180,7 +188,7 @@ const SinglePostCard = ({ post }) => {
               ></path>
             </g>
           </svg>
-          <span>0 Comments</span>
+          <span> {commentCount} Comments</span>
         </button>
         {/* Save Post */}
         <svg
@@ -217,10 +225,9 @@ const SinglePostCard = ({ post }) => {
           </g>
         </svg>
       </div>
-      {commentOpen &&
-      <PostModal userId={user._id} post={post} closeModal={setCommentOpen}/>
-       }
-
+      {commentOpen && (
+        <PostModal userId={user._id} post={post} closeModal={setCommentOpen} commentCount={commentCount} setCommentCount={setCommentCount} />
+      )}
     </div>
   );
 };
