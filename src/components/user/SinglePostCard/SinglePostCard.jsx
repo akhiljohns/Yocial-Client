@@ -17,6 +17,9 @@ import {
   updateReduxUser,
   updateSavedPosts,
 } from "../../../utils/reducers/userReducer";
+import Comment from "../Comments/Comment";
+import PostModal from "../Comments/PostModal";
+import { comment } from "postcss";
 
 const SinglePostCard = ({ post }) => {
   const dispatch = useDispatch();
@@ -28,7 +31,7 @@ const SinglePostCard = ({ post }) => {
   const [likes, setLikes] = useState([]);
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
-
+  const [commentOpen,setCommentOpen] = useState(false);
   const [postUser, setPostUser] = useState(null);
 
   const [error, setError] = useState("");
@@ -118,6 +121,7 @@ const SinglePostCard = ({ post }) => {
               <circle cx="12" cy="17" r="1" />
             </svg>
           </button>
+
         </div>
       </div>
       {/* Message */}
@@ -132,6 +136,7 @@ const SinglePostCard = ({ post }) => {
           draggable="false"
           className="w-full aspect-square object-cover rounded-md"
         />
+        
       </div>
       {/* Like and Comment Section */}
       <div className="flex items-center justify-between text-gray-500">
@@ -151,7 +156,9 @@ const SinglePostCard = ({ post }) => {
             <span>{likes?.length} Likes</span>
           </button>
         </div>
-        <button className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1">
+        <button onClick={(e)=>{
+          setCommentOpen(true)
+        }} className="flex justify-center items-center gap-2 px-2 hover:bg-gray-50 rounded-full p-1">
           <svg
             width="22px"
             height="22px"
@@ -210,6 +217,10 @@ const SinglePostCard = ({ post }) => {
           </g>
         </svg>
       </div>
+      {commentOpen &&
+      <PostModal closeModal={setCommentOpen}/>
+       }
+
     </div>
   );
 };
