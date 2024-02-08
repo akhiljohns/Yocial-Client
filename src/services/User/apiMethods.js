@@ -393,10 +393,10 @@ export const addComment = (userId, postId, content) => {
 // @desc    Delete comment
 //@route    DELETE /post/delete-comment
 // @access  Registerd users
-export const deleteComment = (commentId) => {
+export const deleteComment = (commentId , userId ) => {
   return new Promise((resolve, reject) => {
     try {
-      apiCall("delete", postUrl.deleteComment, { commentId: commentId })
+      apiCall("post", postUrl.deleteComment, { commentId:commentId , userId:userId })
         .then((response) => {
           resolve(response);
         })
