@@ -22,13 +22,16 @@ const UserSideBar = () => {
     >
       <div className="flex flex-col h-full justify-center items-center">
         <button
-          className="py-2 px-4 my-2 bg-blue-500 text-white rounded hover:bg-blue-700"
+          className="py-2 px-4 my-2 w-40 bg-gray-900 text-white rounded hover:bg-blue-700"
           onClick={openModal}
         >
           Create Post
         </button>
-        <button onClick={()=> {navigate(`/editprofile/${userData.username}`)}} className="py-2 px-4 my-2 bg-blue-500 text-white rounded hover:bg-blue-700">
+        <button onClick={()=> {navigate(`/editprofile/${userData.username}`)}} className="py-2 px-4 my-2 w-40 bg-gray-900 text-white rounded hover:bg-blue-700">
           Edit Profile
+        </button>
+        <button onClick={()=> {navigate(`/editprofile/${userData.username}`)}} className="py-2 px-4 my-2 w-40 bg-gray-900 text-white rounded hover:bg-blue-700">
+        Search
         </button>
       </div>
       {isModalOpen && (
