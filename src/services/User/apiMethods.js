@@ -379,7 +379,7 @@ export const replyToComment = ({ commentId, postId, userId, content }) => {
 export const addComment = (userId, postId, content) => {
   return new Promise((resolve, reject) => {
     try {
-      const data = { userId: userId, postId: postId, content: content };
+      const data = { userId,postId,content};
       apiCall("post", postUrl.addComment, data)
         .then((response) => {
           resolve(response);
