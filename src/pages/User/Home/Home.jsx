@@ -115,8 +115,8 @@ const UserHome = () => {
             {lastPost && <p className="text-white">No More Posts To Show</p>}
 
             {loading && !lastPost && (
-              <div class="bg">
-                <div class="loader"></div>
+              <div className="bg">
+                <div className="loader"></div>
               </div>
             )}
           </div>
