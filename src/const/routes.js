@@ -16,6 +16,7 @@ export const userUrl = {
 
   //saved posts
   savePost: (userId, postId) => `/user/${userId}/save/post/${postId}`,
+  fetchSavedPost: (userId) => `/user/savedposts/${userId}`,
   removeSave: (userId, postId) => `/user/${userId}/save/post/remove/${postId}`,
 
   //connection

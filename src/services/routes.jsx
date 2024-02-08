@@ -17,6 +17,7 @@ import AdminHome from "../pages/Admin/Home/AdminHome";
 import AdminProtect from "../components/Protect/AdminProtect";
 import EditProfile from "../pages/User/EditProfile/EditProfile";
 import AuthEmail from "../components/user/EditProfile/AuthEmail";
+import SavedPosts from "../pages/User/SavedPosts/SavedPosts";
 
 const AppRouter = () => {
   return (
@@ -33,6 +34,7 @@ const AppRouter = () => {
           }
         />
         <Route path="/editprofile/:username" element={<EditProfile/>} />
+        <Route path="/savedposts" element={<SavedPosts/>} />
         <Route path="/auth/verify/:id/:token" element={<AuthEmail/>} />
 
         <Route path="*" element={<Error />} />

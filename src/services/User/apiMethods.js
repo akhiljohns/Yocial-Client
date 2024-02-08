@@ -407,6 +407,42 @@ export const deleteComment = (commentId , userId ) => {
   });
 };
 
+// @desc    Save post
+// @route   DELETE /user/:userId/save/post/:postId
+// @access  Registerd users
+export const savePost = (userId, postId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = userUrl.savePost(userId, postId);
+      apiCall("put", url)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => reject(error));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// @desc    Fetch Saved post
+// @route   GET /savedPosts/:userId
+// @access  Registerd users
+export const fetchSavedPosts = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = userUrl.fetchSavedPost(userId);
+      apiCall("get", url)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => reject(error));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 // @desc    Remove from saved
 // @route   DELETE /user/:userId/save/post/remove/:postId
 // @access  Registerd users
@@ -427,23 +463,7 @@ export const removeSavedPost = (userId, postId) => {
   });
 };
 
-// @desc    Save post
-// @route   DELETE /user/:userId/save/post/:postId
-// @access  Registerd users
-export const savePost = (userId, postId) => {
-  return new Promise((resolve, reject) => {
-    try {
-      const url = userUrl.savePost(userId, postId);
-      apiCall("put", url)
-        .then((response) => {
-          resolve(response);
-        })
-        .catch((error) => reject(error));
-    } catch (error) {
-      reject(error);
-    }
-  });
-};
+
 
 // @desc    Follow user
 // @route   POST /user/:userId/follow/:followeeUserId

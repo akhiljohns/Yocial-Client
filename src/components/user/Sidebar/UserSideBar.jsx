@@ -30,8 +30,8 @@ const UserSideBar = () => {
         <button onClick={()=> {navigate(`/editprofile/${userData.username}`)}} className="py-2 px-4 my-2 w-40 bg-gray-900 text-white rounded hover:bg-blue-700">
           Edit Profile
         </button>
-        <button onClick={()=> {navigate(`/editprofile/${userData.username}`)}} className="py-2 px-4 my-2 w-40 bg-gray-900 text-white rounded hover:bg-blue-700">
-        Search
+        <button onClick={()=> {navigate(`/savedposts`)}} className="py-2 px-4 my-2 w-40 bg-gray-900 text-white rounded hover:bg-blue-700">
+        Saved Posts
         </button>
       </div>
       {isModalOpen && (
