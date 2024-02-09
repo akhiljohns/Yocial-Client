@@ -1,7 +1,7 @@
-export const userAuth = 'userAuth';
-export const refreshToken = 'refreshToken';
+export const userAuth = "userAuth";
+export const refreshToken = "refreshToken";
 
-export const adminAuth = 'adminAuth';
-export const adminRefresh = 'adminRefresh';
+export const adminAuth = "adminAuth";
+export const adminRefresh = "adminRefresh";
 
-export const fcmToken = 'fcmToken';
+export const fcmToken = "fcmToken";

@@ -33,9 +33,10 @@ const AppRouter = () => {
             </Protect>
           }
         />
-        <Route path="/editprofile/:username" element={<EditProfile/>} />
-        <Route path="/savedposts" element={<SavedPosts/>} />
-        <Route path="/auth/verify/:id/:token" element={<AuthEmail/>} />
+        <Route path="/editprofile/:username" element={<EditProfile />} />
+        <Route path="/:username" element={<EditProfile />} />
+        <Route path="/savedposts" element={<SavedPosts />} />
+        <Route path="/auth/verify/:id/:token" element={<AuthEmail />} />
 
         <Route path="*" element={<Error />} />
         <Route

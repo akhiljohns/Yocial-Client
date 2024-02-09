@@ -8,10 +8,10 @@ function UserProtect({ children }) {
 
   const userData = useSelector((state) => state?.user?.userData);
 
-  if(user && userData) {
-    return children
+  if (user && userData) {
+    return children;
   } else {
-    return navigate("/login")
+    return navigate("/login");
   }
 }
 

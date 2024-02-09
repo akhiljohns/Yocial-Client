@@ -122,7 +122,11 @@ function AdminLogin() {
 
           {loading && (
             <div className="w-full flex justify-center items-center">
-              <Spinner color="info" aria-label="Large spinner example" size="lg" />
+              <Spinner
+                color="info"
+                aria-label="Large spinner example"
+                size="lg"
+              />
             </div>
           )}
         </div>

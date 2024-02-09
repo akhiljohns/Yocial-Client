@@ -84,7 +84,7 @@ function Login() {
           localStorage.setItem(userAuth, response.tokens.accessToken);
           localStorage.setItem(refreshToken, response.tokens.refreshToken);
           dispatch(setReduxUser({ userData: response.user, validUser: true }));
-          
+
           getConnections(response.user._id).then((response) => {
             dispatch(setFollowers(response.connection.followersCount));
             dispatch(setFollowing(response.connection.followingCount));
@@ -93,13 +93,13 @@ function Login() {
           });
         }
       })
-      .catch( (error) => {
-         setLoading(false);
-         setVerify(false);
+      .catch((error) => {
+        setLoading(false);
+        setVerify(false);
         if (error?.userVerified === false) {
-           setVerify(true);
-           setError(error.message);
-          } else {
+          setVerify(true);
+          setError(error.message);
+        } else {
           setError(error.message);
         }
       });

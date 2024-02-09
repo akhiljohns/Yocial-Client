@@ -393,10 +393,13 @@ export const addComment = (userId, postId, content) => {
 // @desc    Delete comment
 //@route    DELETE /post/delete-comment
 // @access  Registerd users
-export const deleteComment = (commentId , userId ) => {
+export const deleteComment = (commentId, userId) => {
   return new Promise((resolve, reject) => {
     try {
-      apiCall("post", postUrl.deleteComment, { commentId:commentId , userId:userId })
+      apiCall("post", postUrl.deleteComment, {
+        commentId: commentId,
+        userId: userId,
+      })
         .then((response) => {
           resolve(response);
         })
@@ -462,8 +465,6 @@ export const removeSavedPost = (userId, postId) => {
     }
   });
 };
-
-
 
 // @desc    Follow user
 // @route   POST /user/:userId/follow/:followeeUserId

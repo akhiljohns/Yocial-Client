@@ -52,7 +52,6 @@ export const regValidate = async ({
   password,
   password2,
   setErr,
-  
 }) => {
   return new Promise(async (resolve, reject) => {
     try {

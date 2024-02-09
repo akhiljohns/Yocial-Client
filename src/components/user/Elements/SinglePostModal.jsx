@@ -39,12 +39,12 @@ const SinglePostModal = ({
   const handleDelete = () => {
     deletePost(postId)
       .then((response) => {
-        closeModal()
+        closeModal();
         dispatch(removeDeletedPost(postId));
         successToast(response.message);
       })
       .catch((error) => {
-        closeModal()
+        closeModal();
         errorToast(error.message);
       });
   };

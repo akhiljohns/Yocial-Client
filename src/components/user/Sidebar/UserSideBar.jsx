@@ -8,7 +8,7 @@ import CreatePostModal from "../Post/CreatePostModal";
 
 const UserSideBar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const userData = useSelector((state) => state?.user?.userData);
 
   const openModal = () => {
@@ -27,11 +27,21 @@ const UserSideBar = () => {
         >
           Create Post
         </button>
-        <button onClick={()=> {navigate(`/editprofile/${userData.username}`)}} className="py-2 px-4 my-2 w-40 bg-gray-900 text-white rounded hover:bg-blue-700">
+        <button
+          onClick={() => {
+            navigate(`/editprofile/${userData.username}`);
+          }}
+          className="py-2 px-4 my-2 w-40 bg-gray-900 text-white rounded hover:bg-blue-700"
+        >
           Edit Profile
         </button>
-        <button onClick={()=> {navigate(`/savedposts`)}} className="py-2 px-4 my-2 w-40 bg-gray-900 text-white rounded hover:bg-blue-700">
-        Saved Posts
+        <button
+          onClick={() => {
+            navigate(`/savedposts`);
+          }}
+          className="py-2 px-4 my-2 w-40 bg-gray-900 text-white rounded hover:bg-blue-700"
+        >
+          Saved Posts
         </button>
       </div>
       {isModalOpen && (

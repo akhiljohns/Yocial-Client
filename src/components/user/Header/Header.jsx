@@ -8,7 +8,7 @@ import { logOut } from "../../../utils/reducers/userReducer.js";
 const Header = ({ choice }) => {
   const userData = useSelector((state) => state?.user?.userData);
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const user = useSelector((state) => state?.user?.validUser);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ const Header = ({ choice }) => {
 
   const handleLogout = () => {
     clearUser();
-    dispatch(logOut())
+    dispatch(logOut());
   };
 
   return (
@@ -30,9 +30,7 @@ const Header = ({ choice }) => {
             Welcome, {userData?.name}
           </div>
         ) : (
-          <div onClick={() => navigate(`/`)}>
-            Go Home
-          </div>
+          <div onClick={() => navigate(`/`)}>Go Home</div>
         )}
 
         <button onClick={handleLogout} className="bg-black px-4 py-2 rounded">

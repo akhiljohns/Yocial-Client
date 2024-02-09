@@ -118,31 +118,31 @@ const PostModal = ({
                         </h2>
                       </div>
                       {/* Delete Icon/Button */}
-                      {userId === comment?.userId?._id &&
-                      <button
-                      onClick={() => {
-                          setDelCommentDetails({
-                            commentId: comment?._id,
-                            userId: comment?.userId?._id,
-                          });
-                          setShowDeleteConfirmation(true);
-                        }}
-                        className="text-gray-400 hover:text-red-600 ml-2"
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          className="h-5 w-5"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
+                      {userId === comment?.userId?._id && (
+                        <button
+                          onClick={() => {
+                            setDelCommentDetails({
+                              commentId: comment?._id,
+                              userId: comment?.userId?._id,
+                            });
+                            setShowDeleteConfirmation(true);
+                          }}
+                          className="text-gray-400 hover:text-red-600 ml-2"
                         >
-                          <path
-                            fillRule="evenodd"
-                            d="M13.293 6.293a1 1 0 011.414 1.414L11.414 11l3.293 3.293a1 1 0 01-1.414 1.414L10 12.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 11 5.293 7.707a1 1 0 011.414-1.414L10 9.586l3.293-3.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    }
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M13.293 6.293a1 1 0 011.414 1.414L11.414 11l3.293 3.293a1 1 0 01-1.414 1.414L10 12.414l-3.293 3.293a1 1 0 01-1.414-1.414L8.586 11 5.293 7.707a1 1 0 011.414-1.414L10 9.586l3.293-3.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </button>
+                      )}
                       {showDeleteConfirmation && (
                         <Confirmation
                           visible={showDeleteConfirmation}

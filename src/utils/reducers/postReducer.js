@@ -44,18 +44,16 @@ const postSlice = createSlice({
       });
     },
     removeDeletedPost: (state, action) => {
-     const posts = state.posts
-      const postId = action.payload; 
-      const foundPost = posts.find(obj => obj._id === postId);
-      
+      const posts = state.posts;
+      const postId = action.payload;
+      const foundPost = posts.find((obj) => obj._id === postId);
+
       if (foundPost) {
         const indexToDelete = posts.indexOf(foundPost);
         posts.splice(indexToDelete, 1);
       } else {
         console.log("Post Not Found");
       }
-      
-      
     },
 
     // related to common posts
@@ -66,7 +64,7 @@ const postSlice = createSlice({
         state.lastPost = true;
       }
     },
-    editLoadedPost:(state, action)=>{
+    editLoadedPost: (state, action) => {
       state.loadedPosts = state?.loadedPosts?.map((post) => {
         if (post._id === action.payload?._id) {
           return action.payload;
@@ -98,7 +96,7 @@ export const {
   removeEditPost,
   editUserPost,
   editLoadedPost,
-  removeDeletedPost
+  removeDeletedPost,
 } = postSlice.actions;
 
 export default postSlice.reducer;

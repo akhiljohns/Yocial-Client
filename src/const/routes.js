@@ -75,7 +75,7 @@ export const postUrl = {
   getPostCount: "/post/fetch-count",
 
   getSinglePost: (postId) => `/post/fetch-single-post/${postId}`,
-  
+
   getUserPosts: "/post/fetchUserPosts",
 
   getUserDetails: "/post/fetchUserDetails",
@@ -84,7 +84,7 @@ export const postUrl = {
   deletePost: (postId) => `/post/delete/post/${postId}`,
 
   //likes
-  likeunlikePost: (data) =>`/post/like-unlike/${data.postId}/${data.userId}`,
+  likeunlikePost: (data) => `/post/like-unlike/${data.postId}/${data.userId}`,
 
   //comments
   fetchComments: (data) => `/post/fetch-comments/${data.postId}/${data.type}`,
@@ -112,7 +112,7 @@ export const authUrl = {
 
   sendMail: "/auth/send-verification",
   updateEmail: "/auth/update/email",
-  verifyEmail: ({id,token})=> `/auth/change-email/${id}/${token}`,
+  verifyEmail: ({ id, token }) => `/auth/change-email/${id}/${token}`,
 };
 
 export const messageUrl = {

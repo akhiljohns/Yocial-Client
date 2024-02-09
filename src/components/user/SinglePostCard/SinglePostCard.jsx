@@ -226,7 +226,13 @@ const SinglePostCard = ({ post }) => {
         </svg>
       </div>
       {commentOpen && (
-        <PostModal userId={user._id} post={post} closeModal={setCommentOpen} commentCount={commentCount} setCommentCount={setCommentCount} />
+        <PostModal
+          userId={user._id}
+          post={post}
+          closeModal={setCommentOpen}
+          commentCount={commentCount}
+          setCommentCount={setCommentCount}
+        />
       )}
     </div>
   );
