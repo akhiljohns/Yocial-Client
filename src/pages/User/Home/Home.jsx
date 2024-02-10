@@ -110,7 +110,7 @@ const UserHome = () => {
           >
             {loadedPosts &&
               loadedPosts?.map((post, index) => {
-                return <SinglePostCard post={post} key={post?._id} />;
+                return <SinglePostCard post={post} key={index} />;
               })}
             {lastPost && <p className="text-white">No More Posts To Show</p>}
 
