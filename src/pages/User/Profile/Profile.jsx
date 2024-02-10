@@ -8,7 +8,6 @@ import {
 import Header from "../../../components/user/Header/Header.jsx";
 import SinglePostModal from "../../../components/user/Elements/SinglePostModal.jsx";
 import {
-  editUserPost,
   setEditPost,
   setUserPosts,
 } from "../../../utils/reducers/postReducer.js";
@@ -22,9 +21,7 @@ const Profile = () => {
   const [error, setError] = useState("");
   const [followersCount, setFollowersCount] = useState(0);
   const [followingCount, setFollowingCount] = useState(0);
-  const { validUser, userData } = useSelector(
-    (state) => state?.user?.validUser
-  );
+
   const { username } = useParams();
 
   const [imageSrc, setImageSrc] = useState("");
@@ -65,7 +62,7 @@ const Profile = () => {
         })
         .catch((error) => setError(error?.message));
     }
-  }, [user]);
+  }, [dispatch, user]);
 
   return (
     <>
@@ -86,7 +83,18 @@ const Profile = () => {
                   <h5 className="text-white">{user?.name}</h5>
                   <p className="text-white">{user?.username}</p>
                 </div>
+                {/* <div className="ml-4 flex justify-center items-center py-1">
+                  <button
+                    onClick={() => {
+                      navigate(`/savedposts`);
+                    }}
+                    className="py-2 px-4 my-2 w-40 bg-gray-900 text-white rounded hover:bg-blue-700"
+                  >
+                    Saved Posts
+                  </button>
+                </div> */}
               </div>
+
               <div className="mt-6 text-white bg-black p-4">
                 <div className="flex justify-center items-center py-1">
                   <div>
@@ -102,16 +110,6 @@ const Profile = () => {
                     <p className="mb-1 h5">{followingCount}</p>
                   </div>
                 </div>
-                <div>
-                  <button
-                    onClick={() => {
-                      navigate(`/savedposts`);
-                    }}
-                    className="py-2 px-4 my-2 w-40 bg-gray-900 text-white rounded hover:bg-blue-700"
-                  >
-                    Saved Posts
-                  </button>
-                </div>
               </div>
             </div>
 
@@ -124,7 +122,7 @@ const Profile = () => {
                       src={post?.image}
                       alt={post?.caption}
                       className="w-full"
-                      onClick={(e) => {
+                      onClick={() => {
                         handleImage(post);
                       }}
                     />
