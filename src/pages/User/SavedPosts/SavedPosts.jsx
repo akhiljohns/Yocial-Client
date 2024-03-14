@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { fetchSavedPosts } from "../../../services/User/apiMethods";
 import PostModal from "../../../components/user/Comments/PostModal";
 import { successToast } from "../../../hooks/toast";
+
 function SavedPosts() {
   const [savedPosts, setSavedPosts] = useState([]);
   const [postOpen, setPostOpen] = useState(false);
@@ -21,25 +22,30 @@ function SavedPosts() {
     setSelectedPost(post);
     setPostOpen(true);
   };
+
   return (
     <>
       <div className="fixed z-40">
         <Header />
       </div>
-      <div className="absolute mt-20  text-white p-4 bg-black">
-        <div className="bg-black mt-6 w-full">
-          <div className="grid grid-cols-5 gap-6">
-            {savedPosts?.map((post) => (
-              <img
-                onClick={(e) => handlePostOpen(post)}
-                key={post?._id}
-                src={post?.image}
-                alt={post?.caption}
-                className="w-full"
-              />
-            ))}
+      <div className="absolute inset-0 flex justify-center items-center">
+        {savedPosts.length === 0 ? (
+          <p className="text-white">No saved posts</p>
+        ) : (
+          <div className="bg-black mt-6">
+            <div className="grid grid-cols-5 gap-6">
+              {savedPosts.map((post) => (
+                <img
+                  onClick={(e) => handlePostOpen(post)}
+                  key={post?._id}
+                  src={post?.image}
+                  alt={post?.caption}
+                  className="w-full"
+                />
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
       {postOpen && (
         <PostModal
