@@ -69,70 +69,85 @@ const Profile = () => {
       <div className="fixed z-40">
         <Header choice={"home"} />
       </div>
-      <div className="absolute mt-20  text-white p-4 bg-black">
+      <div className="absolute mt-20 text-white p-4 bg-black">
         <div className="gradient-custom-2 bg-black text-white min-h-screen flex items-center justify-center">
           <div className="container mx-auto py-5">
-            <div className="bg-black rounded-lg shadow-lg p-5 w-full">
-              <div className=" flex items-center justify-center">
-                <img
-                  src={user?.profilePic}
-                  alt="User Profile"
-                  className="rounded-full h-20 w-20 mr-4 img-thumbnail"
-                />
-                <div className="ms-3">
+            {posts.length > 0 ? (
+              <div className="bg-black rounded-lg shadow-lg p-5 w-full flex flex-col items-center justify-center">
+                {/* User Details */}
+                <div className="flex items-center justify-center">
+                  <img
+                    src={user?.profilePic}
+                    alt="User Profile"
+                    className="rounded-full h-20 w-20 mr-4 img-thumbnail"
+                  />
+                  <div className="ms-3">
+                    <h5 className="text-white">{user?.name}</h5>
+                    <p className="text-white">{user?.username}</p>
+                  </div>
+                </div>
+
+                {/* User Stats */}
+                <div className="mt-6 text-white bg-black p-4">
+                  <div className="flex justify-center items-center py-1">
+                    <div>
+                      <p className="small text-muted mb-0">Posts</p>
+                      <p className="mb-1 h5">{posts?.length}</p>
+                    </div>
+                    <div className="px-3">
+                      <p className="small text-muted mb-0">Followers</p>
+                      <p className="mb-1 h5">{followersCount}</p>
+                    </div>
+                    <div>
+                      <p className="small text-muted mb-0">Following</p>
+                      <p className="mb-1 h5">{followingCount}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* User Posts */}
+                <div className="text-white p-4 bg-black">
+                  <div className="grid grid-cols-4 gap-5">
+                    {posts.map((post) => (
+                      <img
+                        key={post?._id}
+                        src={post?.image}
+                        alt={post?.caption}
+                        className="w-full"
+                        style={{
+                          userSelect: "none",
+                          WebkitUserSelect: "none",
+                          MozUserSelect: "none",
+                          msUserSelect: "none",
+                          WebkitUserDrag: "none",
+                          userDrag: "none",
+                        }} //Disable Image Dragging & Selecting
+                        onClick={() => {
+                          handleImage(post);
+                        }}
+                        onContextMenu={(e) => e.preventDefault()} // Disable right-click
+                      />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <div className="bg-black rounded-lg shadow-lg p-5 w-full flex items-center justify-center">
+                <div className="text-center">
+                  <img
+                    src={user?.profilePic}
+                    alt="User Profile"
+                    className="rounded-full h-20 w-20 mr-4 img-thumbnail"
+                  />
                   <h5 className="text-white">{user?.name}</h5>
                   <p className="text-white">{user?.username}</p>
-                </div>
-                {/* <div className="ml-4 flex justify-center items-center py-1">
-                  <button
-                    onClick={() => {
-                      navigate(`/savedposts`);
-                    }}
-                    className="py-2 px-4 my-2 w-40 bg-gray-900 text-white rounded hover:bg-blue-700"
-                  >
-                    Saved Posts
-                  </button>
-                </div> */}
-              </div>
-
-              <div className="mt-6 text-white bg-black p-4">
-                <div className="flex justify-center items-center py-1">
-                  <div>
-                    <p className="small text-muted mb-0">Posts</p>
-                    <p className="mb-1 h5">{posts?.length}</p>
-                  </div>
-                  <div className="px-3">
-                    <p className="small text-muted mb-0">Followers</p>
-                    <p className="mb-1 h5">{followersCount}</p>
-                  </div>
-                  <div>
-                    <p className="small text-muted mb-0">Following</p>
-                    <p className="mb-1 h5">{followingCount}</p>
-                  </div>
+                  <p className="text-white">No posts available.</p>
                 </div>
               </div>
-            </div>
-
-            <div className="text-white p-4 bg-black">
-              <div className="grid grid-cols-4 gap-5">
-                {posts.length > 0 &&
-                  posts?.map((post) => (
-                    <img
-                      key={post?._id}
-                      src={post?.image}
-                      alt={post?.caption}
-                      className="w-full"
-                      onClick={() => {
-                        handleImage(post);
-                      }}
-                    />
-                  ))}
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
-
       <SinglePostModal
         isOpen={isModalOpen}
         closeModal={closeModal}
