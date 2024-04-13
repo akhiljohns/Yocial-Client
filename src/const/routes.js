@@ -10,7 +10,7 @@ export const userUrl = {
   // fetch | search user data
   fetchUser: "/user/fetch-users",
   getCredentials: "/user/userdetails",
-  searchUser: (key) => `/user/search/${key}`,
+  searchUser: (key) => `/user/fetch/users/${key}`,
   fetchByUsername: (username) => `/user/fetch/username/${username}`,
   fetchByEmail: (email) => `/user/fetch-user/email/${email}`,
 

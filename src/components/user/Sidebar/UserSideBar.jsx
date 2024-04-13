@@ -43,6 +43,14 @@ const UserSideBar = () => {
         >
           Saved Posts
         </button>
+        <button
+          onClick={() => {
+            navigate(`/searchusers`);
+          }}
+          className="py-2 px-4 my-2 w-40 bg-gray-900 text-white rounded hover:bg-blue-700"
+        >
+          Search
+        </button>
       </div>
       {isModalOpen && (
         <CreatePostModal
