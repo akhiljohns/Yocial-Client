@@ -1,6 +1,6 @@
 import React from "react";
 
-function PostInput({ setImage, setImagePreview, setSelectedImg, setErr }) {
+function PostInput({ setImage, setImagePreview, setSelectedImg, setErr ,disabled}) {
   const handleImageChange = (e) => {
     const img = e.target.files[0];
     try {
@@ -20,6 +20,7 @@ function PostInput({ setImage, setImagePreview, setSelectedImg, setErr }) {
         id="image"
         name="image"
         onChange={handleImageChange}
+        disabled={disabled}
         accept="image/jpeg, image/png, image/webp, image/jpg"
         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
       />

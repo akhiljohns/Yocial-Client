@@ -11,10 +11,10 @@ function AuthEmail() {
 
   const [verified, setVerified] = useState(false);
   const user = useSelector((state) => state?.user?.userData);
-  const { id, token } = useParams();
+  const { id, token , type } = useParams();
 
   useEffect(() => {
-    verifyUserEmail({ id, token })
+    verifyUserEmail({ id, token ,type })
       .then((response) => {
         if (user) {
           dispatch(updateReduxUser({ userData: { email: response.email } }));

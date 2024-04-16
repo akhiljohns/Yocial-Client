@@ -22,34 +22,40 @@ function Email() {
   }, [userData]);
 
   const handleSubmit = async () => {
+    if (userData?.email && userData?.email === email) {
+      errorToast("You are already using this email");
+      return;
+    }
+
     setLoading(true);
     const emailValid = await checkEmail(email);
-    
-    if(!emailValid){
-      setLoading(false);
+
+    if (!emailValid) {
       errorToast("Enter A Valid Email Address");
-    }else{
+      setLoading(false);
+    } else {
       const userDetails = {
-      newEmail:email,
-      userId: userData?._id,
-      username: userData?.username,
-      email: userData?.email,
-    }
+        newEmail: email,
+        userId: userData?._id,
+        username: userData?.username,
+        email: userData?.email,
+        type:"update",
+      };  
       updateUserEmail(userDetails)
-      .then((response) => {
-        if (response.status === 200) {
+        .then((response) => {
+          if (response.status === 200) {
+            setLoading(false);
+            successToast(response?.message);
+          } else {
+            setLoading(false);
+            infoToast(response?.message);
+          }
+        })
+        .catch((err) => {
           setLoading(false);
-          successToast(response?.message);
-        } else {
-          setLoading(false);
-          infoToast(response?.message);
-        }
-      })
-      .catch((err) => {        
-        setLoading(false);
-        errorToast(err.message);
-      });
-  };
+          errorToast(err.message);
+        });
+    }
   };
 
   return (
@@ -69,7 +75,7 @@ function Email() {
             defaultValue={userData?.email ? userData?.email : ""}
             disabled={loading}
           />
-         
+
           {loading && (
             <div className="w-full flex justify-center items-center">
               <Spinner

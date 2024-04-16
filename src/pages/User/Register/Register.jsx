@@ -89,6 +89,7 @@ function Register() {
               onChange={(e) => {
                 setFname(e.target.value.trim());
               }}
+              disabled={loading}
             />
           </div>
           <div className="mb-4 w-1/2">
@@ -97,6 +98,7 @@ function Register() {
             </label>
             <input
               required
+              disabled={loading}
               placeholder="Last Name"
               type="text"
               id="lname"
@@ -114,6 +116,7 @@ function Register() {
           </label>
           <input
             required
+            disabled={loading}
             placeholder="Username"
             type="text"
             id="username"
@@ -132,6 +135,7 @@ function Register() {
             required
             placeholder="Email"
             type="text"
+            disabled={loading}
             id="email"
             name="email"
             className="w-full border p-2 rounded"
@@ -148,6 +152,7 @@ function Register() {
             <input
               maxLength={6}
               required
+              disabled={loading}
               placeholder="Password"
               type="password"
               id="password"
@@ -165,6 +170,7 @@ function Register() {
             <input
               maxLength={6}
               required
+              disabled={loading}
               placeholder="Confirm Password"
               type="password"
               id="password2"
