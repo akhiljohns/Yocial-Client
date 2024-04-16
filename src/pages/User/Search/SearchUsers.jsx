@@ -3,6 +3,7 @@ import { searchUser } from "../../../services/User/apiMethods";
 import { debounce } from "lodash"; // Import debounce function from lodash
 import { Spinner } from "flowbite-react";
 
+// Lazy-loaded components
 const Header = React.lazy(() =>
   import("../../../components/user/Header/Header")
 );
@@ -24,24 +25,20 @@ function SearchUsers() {
       return;
     }
 
-    setLoading(true);
-
-    searchUser(key)
-      .then((response) => {
-        setLoading(false);
-        if (response.length > 0) {
+    // Wrap the search function with startTransition
+    React.startTransition(() => {
+      setLoading(true);
+      searchUser(key)
+        .then((response) => {
           setUsers(response);
-          setNoUsersFound(false);
-        } else {
+          setNoUsersFound(response.length === 0);
+        })
+        .catch(() => {
           setUsers([]);
           setNoUsersFound(true);
-        }
-      })
-      .catch(() => {
-        setLoading(false);
-        setUsers([]);
-        setNoUsersFound(true);
-      });
+        })
+        .finally(() => setLoading(false));
+    });
   }, 300); // Adjust the debounce time as needed (e.g., 300 milliseconds)
 
   // Function to handle search input change
@@ -52,8 +49,12 @@ function SearchUsers() {
 
   return (
     <>
-      <Header choice={"home"} />
-      <UserSideBar />
+      <React.Suspense
+        fallback={<Spinner color="info" aria-label="Loading..." size="lg" />}
+      >
+        <Header choice={"home"} />
+        <UserSideBar />
+      </React.Suspense>
       <div
         style={{
           display: "flex",
@@ -93,9 +94,9 @@ function SearchUsers() {
             alignItems: "center",
           }}
         >
-          {users.map((user) => (
+          {users.map((user, index) => (
             <div
-              key={user.id}
+              key={index}
               style={{
                 border: "1px solid #ccc",
                 borderRadius: "5px",
