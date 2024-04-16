@@ -96,11 +96,11 @@ const Profile = () => {
                     </div>
                     <div className="px-3">
                       <p className="small text-muted mb-0">Followers</p>
-                      <p className="mb-1 h5">{followersCount}</p>
+                      <p className="mb-1 h5">{followersCount ? followersCount : 0}</p>
                     </div>
                     <div>
                       <p className="small text-muted mb-0">Following</p>
-                      <p className="mb-1 h5">{followingCount}</p>
+                      <p className="mb-1 h5">{followingCount ? followingCount : 0}</p>
                     </div>
                   </div>
                 </div>
