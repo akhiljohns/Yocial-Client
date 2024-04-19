@@ -211,8 +211,8 @@ function Register() {
         ) : null}
         {loading ? (
           <div className="py-1 w-full flex justify-center items-center">
-            <div className="w-12 h-12 border-4 border-dotted border-white border-solid rounded-full animate-spin">
-              <div className="w-6 h-6 border-4 border-dotted border-orange-500 border-solid rounded-full animate-spin-reverse mx-auto"></div>
+            <div className="w-12 h-12 border-4 border-dotted border-white rounded-full animate-spin">
+              <div className="w-6 h-6 border-4 border-dotted border-orange-500 rounded-full animate-spin-reverse mx-auto"></div>
             </div>
           </div>
         ) : null}

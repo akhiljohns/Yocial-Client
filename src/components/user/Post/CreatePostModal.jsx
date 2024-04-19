@@ -14,7 +14,7 @@ import { successToast } from "../../../hooks/toast";
 import { addNewPost, editUserPost } from "../../../utils/reducers/postReducer";
 
 function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
-
+  Modal.setAppElement("#root"); 
   const dispatch = useDispatch();
 
   const [croppedImg, setCroppedImg] = useState(null);
