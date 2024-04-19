@@ -76,10 +76,7 @@ const DEFAULT_OPTIONS = [
   },
 ];
 
-function ImageFilter({
-  imgUrl,
-  
-}) {
+function ImageFilter({ croppedImg, setFilteredImage, setImageFilterActive }) {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0);
   const [options, setOptions] = useState(DEFAULT_OPTIONS);
   const selectedOption = options[selectedOptionIndex];
@@ -100,14 +97,31 @@ function ImageFilter({
 
     return {
       filter: filters.join(" "),
-      backgroundImage: `url(${imgUrl} ||'https://res.cloudinary.com/akhiljohns-cloud/image/upload/v1713264447/Yocial-UserPosts/wallpaperflare.com_wallpaper_3_.jpg_garase.jpg')`,
+      backgroundImage: `url(${croppedImg})`,
+    };
+  }
+
+  function handleSubmit() {
+    const image = new Image();
+    image.src = croppedImg;
+    image.crossOrigin = "anonymous";
+    image.onload = function () {
+      const canvas = document.createElement("canvas");
+      canvas.width = image.width;
+      canvas.height = image.height;
+      const ctx = canvas.getContext("2d");
+      ctx.filter = getImageStyle().filter;
+      ctx.drawImage(image, 0, 0);
+      const url = canvas.toDataURL("image/jpeg");
+      setFilteredImage(url);
+      setImageFilterActive(false);
     };
   }
 
   return (
-    <div className="container">
+      <div className="fimage-container fixed">
       <div className="main-image" style={getImageStyle()} />
-      <div className="sidebar">
+      <div className="fim-sidebar h-full">
         {options.map((option, index) => {
           return (
             <SidebarItem
@@ -125,6 +139,10 @@ function ImageFilter({
         value={selectedOption.value}
         handleChange={handleSliderChange}
       />
+
+      <button onClick={handleSubmit} className="img-sub-button p-5 flex-1 bg-white text-black h-full">
+        Submit
+      </button>
     </div>
   );
 }

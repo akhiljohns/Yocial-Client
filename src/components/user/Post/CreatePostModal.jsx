@@ -12,6 +12,7 @@ import PostInput from "../Elements/PostInput";
 import { Spinner } from "flowbite-react";
 import { successToast } from "../../../hooks/toast";
 import { addNewPost, editUserPost } from "../../../utils/reducers/postReducer";
+const ImageFilter = React.lazy(() => import("../ImageFilter/ImageFilter"));
 
 function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
   Modal.setAppElement("#root"); 
@@ -24,6 +25,11 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedImg, setSelectedImg] = useState(false); // State to manage the selected image
   const [loading, setLoading] = useState(false);
+
+  const [imageFilterActive , setImageFilterActive] = useState(false);
+  const [filteredImage,setFilteredImage] = useState(null);
+
+
   const navigate = useNavigate();
   const userData = useSelector((state) => state?.user?.userData);
   const userPost = useSelector((state) => state?.userPosts?.editPost);
@@ -139,8 +145,20 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
           aspectInit={{ value: 1 / 1 }}
           setCroppedImg={setCroppedImg}
           setimgSelected={setSelectedImg}
+          setImageFilterActive={setImageFilterActive}
           setErr={setErr}
         />
+      )}
+
+
+      {imageFilterActive && (
+        // <React.Suspense fallback={<Spinner />}>
+            <ImageFilter
+            croppedImg={imagePreview}
+            setFilteredImage={setImagePreview}
+            setImageFilterActive={setImageFilterActive}
+          />
+        // </React.Suspense>
       )}
       <div className="p-6 text-center">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">

@@ -7,6 +7,7 @@ const CropImage = ({
   aspectInit,
   setCroppedImg,
   setimgSelected,
+  setImageFilterActive,
   setErr,
 }) => {
   const [disable, setDisable] = useState(false);
@@ -30,6 +31,7 @@ const CropImage = ({
       const croppedUrl = await UseCropImage(imgUrl, croppedAreaPx);
       setDisable(false);
       setCroppedImg(croppedUrl);
+      setImageFilterActive(true)
       setimgSelected(false);
     } catch (error) {
       setimgSelected(false);
