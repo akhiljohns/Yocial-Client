@@ -133,7 +133,7 @@ function Login() {
               Password
             </label>
             <input
-              maxLength={6}
+              maxLength={60}
               required
               placeholder="Password"
               type="password"
