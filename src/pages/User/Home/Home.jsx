@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useFetcher, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -16,8 +16,16 @@ import {
   setUserPosts,
 } from "../../../utils/reducers/postReducer";
 import { errorToast } from "../../../hooks/toast";
+import LikesModal from "../../../components/user/Modals/LikesModal";
+import UserList from "../../../components/user/Modals/UserList";
 
 const UserHome = () => {
+  //likes
+  // const likesModal = useRef();
+  // const closeLikeModal = useRef();
+  const [likePost, setLikePost] = useState();
+  const [likesModalOpen, setLikesModalOpen] = useState(false);
+
   const navigate = useNavigate();
   const { validUser, userData } = useSelector((state) => state?.user);
 
@@ -98,6 +106,10 @@ const UserHome = () => {
     });
   });
 
+  const toggleLikesModal = () => {
+    setLikesModalOpen(!likesModalOpen);
+  };
+
   return (
     <div className="flex overflow-x-hidden ">
       <div className="flex-1  relative flex justify-center">
@@ -110,7 +122,14 @@ const UserHome = () => {
           >
             {loadedPosts &&
               loadedPosts?.map((post, index) => {
-                return <SinglePostCard post={post} key={index} />;
+                return (
+                  <SinglePostCard
+                    post={post}
+                    key={index}
+                    setLikePost={setLikePost}
+                    toggleLikesModal={toggleLikesModal}
+                  />
+                );
               })}
             {lastPost && <p className="text-white">No More Posts To Show</p>}
 
@@ -123,6 +142,46 @@ const UserHome = () => {
           <ToastContainer />
         </div>
       </div>
+
+      {likesModalOpen && (
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-gray-800 bg-opacity-50">
+          <div
+            className="relative bg-white rounded-lg shadow dark:bg-gray-700 p-4"
+            style={{ width: "80%", height: "80%" }}
+          >
+            <button
+              type="button"
+              onClick={toggleLikesModal}
+              className="absolute top-2 right-2 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            >
+              <svg
+                className="w-4 h-4"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 14"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"
+                />
+              </svg>
+              <span className="sr-only">Close modal</span>
+            </button>
+            <div className="px-6 py-4 border-b rounded-t dark:border-gray-600">
+              <h3 className="text-lg font-semibold text-gray-900 lg:text-xl dark:text-white">
+                Likes
+              </h3>
+            </div>
+            <div className="mt-4">
+              <UserList closeModal={toggleLikesModal} userIds={likePost} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

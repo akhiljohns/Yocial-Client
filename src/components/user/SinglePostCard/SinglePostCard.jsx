@@ -12,7 +12,7 @@ import { errorToast } from "../../../hooks/toast";
 import { updateSavedPosts } from "../../../utils/reducers/userReducer";
 import PostModal from "../Comments/PostModal";
 
-const SinglePostCard = ({ post }) => {
+const SinglePostCard = ({ post ,setLikePost,toggleLikesModal}) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user?.userData);
 
@@ -63,9 +63,9 @@ const SinglePostCard = ({ post }) => {
   };
 
 
-  const showLikes = () => {
-    setLikePost(post);
-    likeModal.current.click();
+  const showLikes = (likes) => {
+    setLikePost(likes)
+    toggleLikesModal()
   }
 
   return (
@@ -173,9 +173,11 @@ const SinglePostCard = ({ post }) => {
           ></path>
         </svg>
       </div>
-      <div className="mt-1">
+      {/* POST LIKED USERS */}
+      <div onClick={(e) =>showLikes(post?.likes) } className="mt-1">
         {post?.likes?.length > 0 ? (
-          <span className="pl-2 text-black text-sm font-light select-none">
+          // <span onClick={console.log(post?.likes) } className="pl-2 text-black text-sm font-light select-none">
+          <span  className="pl-2 text-black text-sm font-light select-none">
             {post?.likes?.includes(user?._id)
               ? `You ${
                   post?.likes.length > 1
