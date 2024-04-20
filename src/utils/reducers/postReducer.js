@@ -1,11 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const posts = [];
 let newPost, editPost;
 
 const postSlice = createSlice({
   name: "userPosts",
   initialState: {
-    posts: [],
+    posts: posts,
     newPost: newPost,
     loadedPosts: [],
     lastPost: false,
@@ -35,13 +36,22 @@ const postSlice = createSlice({
       state.editPost = "";
     },
     editUserPost: (state, action) => {
-      state.posts = state?.posts?.map((post) => {
-        if (post._id === action.payload?._id) {
-          return action.payload;
-        }
-        return post;
-      });
+      // Ensure state.posts is initialized as an array if it's undefined or null
+      state.posts = state.posts || [];
+
+      // Check if state.posts is an array before calling map
+      if (Array.isArray(state.posts)) {
+        state.posts = state.posts.map((post) => {
+          if (post._id === action.payload?._id) {
+            return action.payload;
+          }
+          return post;
+        });
+      } else {
+        console.error("state.posts is not an array:", state.posts);
+      }
     },
+
     removeDeletedPost: (state, action) => {
       const posts = state.posts;
       const postId = action.payload;
