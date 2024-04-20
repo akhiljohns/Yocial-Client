@@ -3,7 +3,7 @@ import { getUser } from '../../../services/User/apiMethods';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-function ProfileField({userId, follow, setTitle, closeModal}) {
+function ProfileField({userId, follow, setTitle}) {
     const navigate = useNavigate()
 
     const currentUser = useSelector((state)=> state?.user?.userData);
@@ -20,9 +20,6 @@ function ProfileField({userId, follow, setTitle, closeModal}) {
         setTitle('')
       }
 
-      if(closeModal){
-        closeModal.current.click();
-      }
 
       navigate(`/profile/${user?.username}`);
     }

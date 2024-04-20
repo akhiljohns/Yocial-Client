@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const posts = [];
 let newPost, editPost;
 
 const postSlice = createSlice({
   name: "userPosts",
   initialState: {
-    posts: posts,
+    posts: [],
     newPost: newPost,
     loadedPosts: [],
     lastPost: false,
