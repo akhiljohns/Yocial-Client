@@ -12,10 +12,11 @@ import PostInput from "../Elements/PostInput";
 import { Spinner } from "flowbite-react";
 import { successToast } from "../../../hooks/toast";
 import { addNewPost, editUserPost } from "../../../utils/reducers/postReducer";
+import CharacterCountIndicator from "../Options/CharacterCount";
 const ImageFilter = React.lazy(() => import("../ImageFilter/ImageFilter"));
 
 function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
-  Modal.setAppElement("#root"); 
+  Modal.setAppElement("#root");
   const dispatch = useDispatch();
 
   const [croppedImg, setCroppedImg] = useState(null);
@@ -26,9 +27,8 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
   const [selectedImg, setSelectedImg] = useState(false); // State to manage the selected image
   const [loading, setLoading] = useState(false);
 
-  const [imageFilterActive , setImageFilterActive] = useState(false);
-  const [filteredImage,setFilteredImage] = useState(null);
-
+  const [imageFilterActive, setImageFilterActive] = useState(false);
+  const [filteredImage, setFilteredImage] = useState(null);
 
   const navigate = useNavigate();
   const userData = useSelector((state) => state?.user?.userData);
@@ -54,7 +54,9 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
   const handlePostResponse = (response) => {
     setLoading(false);
     if (response.status === 200) {
-      (type !== "editPost" ?  dispatch(addNewPost(response.post)):  dispatch(editUserPost(response.post)))
+      type !== "editPost"
+        ? dispatch(addNewPost(response.post))
+        : dispatch(editUserPost(response.post));
       successToast(response.message);
       clearComponent();
       closeModal();
@@ -150,14 +152,13 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
         />
       )}
 
-
       {imageFilterActive && (
         // <React.Suspense fallback={<Spinner />}>
-            <ImageFilter
-            croppedImg={imagePreview}
-            setFilteredImage={setImagePreview}
-            setImageFilterActive={setImageFilterActive}
-          />
+        <ImageFilter
+          croppedImg={imagePreview}
+          setFilteredImage={setImagePreview}
+          setImageFilterActive={setImageFilterActive}
+        />
         // </React.Suspense>
       )}
       <div className="p-6 text-center">
@@ -179,12 +180,14 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
           <input
             type="text"
             id="caption"
+            maxLength={100}
             placeholder="Write something..."
             onChange={(e) => setCaption(e.target.value)}
             className="block text-gray-700 font-bold mb-2 w-full"
             disabled={loading}
             defaultValue={type === "editPost" ? userPost?.caption : ""}
           />
+          <CharacterCountIndicator value={caption} maxLength={100} />
         </div>
         {loading && (
           <div className="w-full flex justify-center items-center">
@@ -219,7 +222,6 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
             alt=""
           />
         )}
-
       </div>
     </Modal>
   );
