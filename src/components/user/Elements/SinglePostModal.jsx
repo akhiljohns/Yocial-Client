@@ -40,8 +40,9 @@ const SinglePostModal = ({
     deletePost(postId)
       .then((response) => {
         closeModal();
-        dispatch(removeDeletedPost(postId));
+        // dispatch(removeDeletedPost(postId));
         successToast(response.message);
+        window.location.reload()
       })
       .catch((error) => {
         closeModal();
