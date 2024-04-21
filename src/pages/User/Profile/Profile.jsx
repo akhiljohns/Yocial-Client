@@ -79,6 +79,19 @@ const Profile = () => {
     }
   }, [dispatch, user]);
 
+
+
+  const deletePost = (postId) => {
+    try {
+      // Filter out the post with the specified ID
+      const updatedPosts = posts.filter(post => post._id !== postId);
+      // Update the state with the filtered posts
+      setPosts(updatedPosts);
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+  
   return (
     <>
       <div className="relative h-full w-full">
@@ -165,6 +178,7 @@ const Profile = () => {
         postId={postId}
         setIsCreatePostModalOpen={setIsCreatePostModalOpen}
         owner={owner}
+        delPost={deletePost}
       />
 
       {isCreatePostModalOpen && (

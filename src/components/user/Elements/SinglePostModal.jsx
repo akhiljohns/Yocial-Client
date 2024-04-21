@@ -14,6 +14,7 @@ const SinglePostModal = ({
   postId,
   setIsCreatePostModalOpen,
   owner,
+  delPost
 }) => {
   // Check if the modal is open
   if (!isOpen) return null;
@@ -41,9 +42,9 @@ const SinglePostModal = ({
     deletePost(postId)
       .then((response) => {
         closeModal();
+        delPost(postId);
         // dispatch(removeDeletedPost(postId));
         successToast(response.message);
-        window.location.reload();
       })
       .catch((error) => {
         closeModal();
