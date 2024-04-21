@@ -13,6 +13,7 @@ const SinglePostModal = ({
   caption,
   postId,
   setIsCreatePostModalOpen,
+  owner,
 }) => {
   // Check if the modal is open
   if (!isOpen) return null;
@@ -42,7 +43,7 @@ const SinglePostModal = ({
         closeModal();
         // dispatch(removeDeletedPost(postId));
         successToast(response.message);
-        window.location.reload()
+        window.location.reload();
       })
       .catch((error) => {
         closeModal();
@@ -72,20 +73,22 @@ const SinglePostModal = ({
         <div className="flex-grow ml-4">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-bold text-gray-800">Caption</h2>
-            <div>
-              <button
-                onClick={handleEdit}
-                className="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 transition ease-in-out duration-150 mr-2"
-              >
-                <FaEdit />
-              </button>
-              <button
-                onClick={() => setShowDeleteConfirmation(true)}
-                className="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 transition ease-in-out duration-150"
-              >
-                <FaTrash />
-              </button>
-            </div>
+            {!owner && (
+              <div>
+                <button
+                  onClick={handleEdit}
+                  className="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 transition ease-in-out duration-150 mr-2"
+                >
+                  <FaEdit />
+                </button>
+                <button
+                  onClick={() => setShowDeleteConfirmation(true)}
+                  className="text-gray-500 hover:text-gray-700 focus:outline-none focus:text-gray-700 transition ease-in-out duration-150"
+                >
+                  <FaTrash />
+                </button>
+              </div>
+            )}
           </div>
           {showDeleteConfirmation && (
             <Confirmation

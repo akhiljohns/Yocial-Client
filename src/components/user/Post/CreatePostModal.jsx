@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CropImage from "../Options/CropImg";
 import PostInput from "../Elements/PostInput";
 import { Spinner } from "flowbite-react";
-import { successToast } from "../../../hooks/toast";
+import { errorToast, successToast } from "../../../hooks/toast";
 import { addNewPost, editUserPost } from "../../../utils/reducers/postReducer";
 import CharacterCountIndicator from "../Options/CharacterCount";
 const ImageFilter = React.lazy(() => import("../ImageFilter/ImageFilter"));
@@ -104,6 +104,7 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
       .then(handlePostResponse)
       .catch((error) => {
         setLoading(false);
+        errorToast(error?.message);
         setErr(error?.message);
       });
   };

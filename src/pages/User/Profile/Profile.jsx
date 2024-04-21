@@ -37,7 +37,9 @@ const Profile = () => {
   const { userData } = useSelector((state) => state?.user);
   const userFollowing = useSelector((state) => state?.user.following);
   const userFollowers = useSelector((state) => state?.user.followers);
-  const userposts = useSelector((state) => state?.userPosts.posts.posts.posts);
+  const userposts = useSelector(
+    (state) => state?.userPosts?.posts?.posts?.posts
+  );
 
   const handleImage = (post) => {
     dispatch(setEditPost({ editPost: post }));
@@ -73,8 +75,6 @@ const Profile = () => {
         setPosts(userposts);
         setFollowersCount(userFollowers.length);
         setFollowingCount(userFollowing.length);
-
-        //  WORK FROM HERE STOPPED ON USE FOLLOW FROM REDUX
       }
     }
   }, [dispatch, user]);
@@ -106,7 +106,7 @@ const Profile = () => {
               <div className="flex gap-3 justify-center items-center py-1">
                 <div className="flex flex-col gap-1 items-center">
                   <p className="small text-muted mb-0">Posts</p>
-                  <p className="mb-1 h5">{posts?.length}</p>
+                  <p className="mb-1 h5">{posts?.length || 0}</p>
                 </div>
                 <div className="flex flex-col gap-1 items-center">
                   <p className="small text-muted mb-0">Followers</p>
@@ -121,30 +121,39 @@ const Profile = () => {
           </div>
 
           {/* User Posts */}
-          <div className="text-white p-4 bg-black">
-            <div className="grid grid-cols-4 gap-5">
-              {posts.map((post) => (
-                <img
-                  key={post?._id}
-                  src={post?.image}
-                  alt={post?.caption}
-                  className="w-full"
-                  style={{
-                    userSelect: "none",
-                    WebkitUserSelect: "none",
-                    MozUserSelect: "none",
-                    msUserSelect: "none",
-                    WebkitUserDrag: "none",
-                    userDrag: "none",
-                  }} //Disable Image Dragging & Selecting
-                  onClick={() => {
-                    handleImage(post);
-                  }}
-                  onContextMenu={(e) => e.preventDefault()} // Disable right-click
-                />
-              ))}
+          {posts && (
+            <div className="text-white p-4 bg-black">
+              <div className="grid grid-cols-4 gap-5">
+                {posts.map((post) => (
+                  <img
+                    key={post?._id}
+                    src={post?.image}
+                    alt={post?.caption}
+                    className="w-full"
+                    style={{
+                      userSelect: "none",
+                      WebkitUserSelect: "none",
+                      MozUserSelect: "none",
+                      msUserSelect: "none",
+                      WebkitUserDrag: "none",
+                      userDrag: "none",
+                    }} //Disable Image Dragging & Selecting
+                    onClick={() => {
+                      handleImage(post);
+                    }}
+                    onContextMenu={(e) => e.preventDefault()} // Disable right-click
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+          {!posts && (
+            <div className="bg-black rounded-lg shadow-lg p-5 w-full flex items-center justify-center">
+              <div className="text-center">
+                <p className="text-white">No posts available.</p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
 
@@ -155,6 +164,7 @@ const Profile = () => {
         caption={caption}
         postId={postId}
         setIsCreatePostModalOpen={setIsCreatePostModalOpen}
+        owner={owner}
       />
 
       {isCreatePostModalOpen && (
