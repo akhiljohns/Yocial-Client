@@ -15,7 +15,13 @@ import { addNewPost, editUserPost } from "../../../utils/reducers/postReducer";
 import CharacterCountIndicator from "../Options/CharacterCount";
 const ImageFilter = React.lazy(() => import("../ImageFilter/ImageFilter"));
 
-function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
+function CreatePostModal({
+  isModalOpen,
+  setIsModalOpen,
+  type,
+  editPostCaption,
+  newLocalPost,
+}) {
   Modal.setAppElement("#root");
   const dispatch = useDispatch();
 
@@ -54,9 +60,14 @@ function CreatePostModal({ isModalOpen, setIsModalOpen, type }) {
   const handlePostResponse = (response) => {
     setLoading(false);
     if (response.status === 200) {
-      type !== "editPost"
-        ? dispatch(addNewPost(response.post))
-        : dispatch(editUserPost(response.post));
+      // To Add post in redux or local state
+      if (type !== "editPost") {
+        // newLocalPost(response?.post)
+        dispatch(addNewPost(response?.post));
+      } else {
+        editPostCaption(response?.post?._id, response?.post?.caption);
+        dispatch(editUserPost(response?.post));
+      }
       successToast(response.message);
       clearComponent();
       closeModal();

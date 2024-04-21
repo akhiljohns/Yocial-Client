@@ -79,19 +79,53 @@ const Profile = () => {
     }
   }, [dispatch, user]);
 
-
+  const newLocalPost = (newPost) => {
+    try {
+      // Create a new array with the new post added at the beginning
+      const updatedPosts = [newPost, ...posts];
+      // Update the state with the new array of posts
+      setPosts(updatedPosts);
+    } catch (error) {
+      console.error("Error adding new post:", error);
+    }
+  };
 
   const deletePost = (postId) => {
     try {
       // Filter out the post with the specified ID
-      const updatedPosts = posts.filter(post => post._id !== postId);
+      const updatedPosts = posts.filter((post) => post._id !== postId);
       // Update the state with the filtered posts
       setPosts(updatedPosts);
     } catch (error) {
       console.error("Error deleting post:", error);
     }
   };
-  
+
+  const updatePostCaption = (postId, newCaption) => {
+    try {
+      // Find the post with the specified ID
+      const postToUpdate = posts.find((post) => post._id === postId);
+      if (postToUpdate) {
+        // Create a copy of the post object and update its caption
+        const updatedPost = { ...postToUpdate, caption: newCaption };
+        // Find the index of the post in the array
+        const indexToUpdate = posts.findIndex((post) => post._id === postId);
+        // Create a new array with the updated post
+        const updatedPosts = [
+          ...posts.slice(0, indexToUpdate),
+          updatedPost,
+          ...posts.slice(indexToUpdate + 1),
+        ];
+        // Update the state with the new array of posts
+        setPosts(updatedPosts);
+      } else {
+        console.log("Post not found");
+      }
+    } catch (error) {
+      console.error("Error updating post caption:", error);
+    }
+  };
+
   return (
     <>
       <div className="relative h-full w-full">
@@ -186,6 +220,8 @@ const Profile = () => {
           isModalOpen={isCreatePostModalOpen}
           setIsModalOpen={setIsCreatePostModalOpen}
           type={"editPost"}
+          newLocalPost={newLocalPost}
+          editPostCaption={updatePostCaption}
         />
       )}
     </>
