@@ -16,6 +16,7 @@ const Profile = () => {
   const dispatch = useDispatch();
 
   const [user, setUser] = useState(null);
+  const [owner, setOwner] = useState(false);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
   const [followersCount, setFollowersCount] = useState(0);
@@ -33,7 +34,10 @@ const Profile = () => {
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-  const userposts = useSelector((state) => state?.userPosts?.posts.posts.posts);
+  const { userData } = useSelector((state) => state?.user);
+  const userFollowing = useSelector((state) => state?.user.following);
+  const userFollowers = useSelector((state) => state?.user.followers);
+  const userposts = useSelector((state) => state?.userPosts.posts.posts.posts);
 
   const handleImage = (post) => {
     dispatch(setEditPost({ editPost: post }));
@@ -46,21 +50,32 @@ const Profile = () => {
   useEffect(() => {
     if (username) {
       fetchUserByUsername(username)
-        .then((response) => setUser(response))
+        .then((response) => {
+          setUser(response);
+          if (response._id === userData._id) setOwner(true);
+        })
         .catch((error) => setError(error?.message));
     }
   }, [username]);
 
   useEffect(() => {
     if (user) {
-      fetchUserDetails(user?._id)
-        .then((response) => {
-          // dispatch(setUserPosts(response?.posts));
-          setPosts(response?.posts);
-          setFollowersCount(response.followers.length);
-          setFollowingCount(response.followings.length);
-        })
-        .catch((error) => setError(error?.message));
+      if (!owner) {
+        fetchUserDetails(user?._id)
+          .then((response) => {
+            // dispatch(setUserPosts(response?.posts));
+            setPosts(response?.posts);
+            setFollowersCount(response.followers.length);
+            setFollowingCount(response.followings.length);
+          })
+          .catch((error) => setError(error?.message));
+      } else {
+        setPosts(userposts);
+        setFollowersCount(userFollowers.length);
+        setFollowingCount(userFollowing.length);
+
+        //  WORK FROM HERE STOPPED ON USE FOLLOW FROM REDUX
+      }
     }
   }, [dispatch, user]);
 
