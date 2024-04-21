@@ -56,9 +56,6 @@ const postSlice = createSlice({
       const posts = state.posts;
       const postId = action.payload;
 
-      console.log('state.posts :>> ', state);
-console.log('action.payload :>> ', action.payload);
-console.log('post :>> ', posts);
       const foundPost = posts.find((obj) => obj._id === postId);
 
       if (foundPost) {

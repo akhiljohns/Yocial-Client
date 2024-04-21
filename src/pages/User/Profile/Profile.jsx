@@ -33,7 +33,7 @@ const Profile = () => {
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
-  // const posts = useSelector((state) => state?.userPosts?.posts);
+  const userposts = useSelector((state) => state?.userPosts?.posts.posts.posts);
 
   const handleImage = (post) => {
     dispatch(setEditPost({ editPost: post }));

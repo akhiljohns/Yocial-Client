@@ -176,7 +176,6 @@ const SinglePostCard = ({ post ,setLikePost,toggleLikesModal}) => {
       {/* POST LIKED USERS */}
       <div onClick={(e) =>showLikes(post?.likes) } className="mt-1">
         {post?.likes?.length > 0 ? (
-          // <span onClick={console.log(post?.likes) } className="pl-2 text-black text-sm font-light select-none">
           <span  className="pl-2 text-black text-sm font-light select-none">
             {post?.likes?.includes(user?._id)
               ? `You ${

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  fetchUserDetails,
   getConnections,
   postLogin,
   postMail,
@@ -15,6 +16,7 @@ import {
 } from "../../../utils/reducers/userReducer";
 import { Spinner } from "flowbite-react";
 import { successToast } from "../../../hooks/toast";
+import { setUserPosts } from "../../../utils/reducers/postReducer";
 
 function Login() {
   const navigate = useNavigate();
@@ -81,15 +83,22 @@ function Login() {
     postLogin(userData)
       .then((response) => {
         if (response.status === 200) {
+          // To set the user in the redux store
+          let userId = response.user._id;
           localStorage.setItem(userAuth, response.tokens.accessToken);
           localStorage.setItem(refreshToken, response.tokens.refreshToken);
           dispatch(setReduxUser({ userData: response.user, validUser: true }));
-
-          getConnections(response.user._id).then((response) => {
+          // To set the user's connections in the redux store
+          getConnections(userId).then((response) => {
             dispatch(setFollowers(response.connection.followersCount));
             dispatch(setFollowing(response.connection.followingCount));
-            setLoading(false);
-            navigate("/");
+            // To set the user's posts in the redux store
+            fetchUserDetails(userId).then((response) => {
+              dispatch(setUserPosts(response?.posts));
+              // Navigating to homepage after login
+              setLoading(false);
+              navigate("/");
+            });
           });
         }
       })
