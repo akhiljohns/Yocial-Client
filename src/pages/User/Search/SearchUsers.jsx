@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { searchUser } from "../../../services/User/apiMethods";
 import { debounce } from "lodash"; // Import debounce function from lodash
 import { Spinner } from "flowbite-react";
+import { useNavigate } from 'react-router-dom';
 
 // Lazy-loaded components
 const Header = React.lazy(() =>
@@ -15,6 +16,7 @@ function SearchUsers() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [noUsersFound, setNoUsersFound] = useState(false);
+  const navigate = useNavigate()
 
   // Define a debounced search function
   const debouncedSearch = debounce((key) => {
@@ -46,6 +48,13 @@ function SearchUsers() {
     const { value } = event.target;
     debouncedSearch(value);
   };
+
+
+  const seeProfile = (username) => {
+  
+    navigate(`/profile/${username}`);
+  }
+
 
   return (
     <>
@@ -95,7 +104,7 @@ function SearchUsers() {
           }}
         >
           {users.map((user, index) => (
-            <div
+            <div onClick={()=>seeProfile(user?.username)}
               key={index}
               style={{
                 border: "1px solid #ccc",
