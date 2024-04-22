@@ -7,7 +7,7 @@ import {
   setFollowing,
 } from "../../../utils/reducers/userReducer";
 
-const UserCard = ({ user, userData, seeProfile }) => {
+const UserCard = ({ user, userData, seeProfile ,handleClick}) => {
   // const handleClick = () => {
   //   if (!userFollowing.includes(user._id)) {
   //     followUser(userData._id, user._id).then((response) => {
@@ -48,7 +48,7 @@ const UserCard = ({ user, userData, seeProfile }) => {
         </div>
         {userData._id !== user._id && (
           <div className="ml-[380px]">
-            <FollowBtn user={user} userData={userData} />
+            <FollowBtn user={user} userData={userData} handleClick={handleClick} />
           </div>
         )}
       </div>

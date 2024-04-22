@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { searchUser } from "../../../services/User/apiMethods";
+import { followUser, searchUser, unfollowUser } from "../../../services/User/apiMethods";
 import { debounce } from "lodash"; // Import debounce function from lodash
 import { Spinner } from "flowbite-react";
 import { useNavigate } from "react-router-dom";
 import SearchInput from "./SearchInput";
 import UserCard from "./UserCard";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setFollowing } from "../../../utils/reducers/userReducer";
 // Lazy-loaded components
 const Header = React.lazy(() =>
   import("../../../components/user/Header/Header")
@@ -15,12 +16,16 @@ const UserSideBar = React.lazy(() =>
 );
 
 
+
 function SearchUsers() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [noUsersFound, setNoUsersFound] = useState(false);
   const navigate = useNavigate();
   const { userData } = useSelector((state) => state?.user);
+  const dispatch = useDispatch();
+
+  const userFollowing = useSelector((state) => state?.user.following);
   // Define a debounced search function
   const debouncedSearch = debounce((key) => {
     if (!key) {
@@ -56,6 +61,25 @@ function SearchUsers() {
     navigate(`/profile/${username}`);
   };
 
+  const handleClick = (userId) => {
+    console.log('userId :>> ', userId);
+    if (!userFollowing.includes(userId)) {
+      // console.log('userData._id , user._id :>> ', userData._id , user._id);
+      console.log('userFollowing :>> ', userFollowing);
+      followUser(userData._id, userId).then((response) => {
+        dispatch(setFollowing(response.userConnection.following));
+        console.log('userFollowing :>> ', userFollowing);
+      });
+    } else {
+      // console.log('userData._id , user._id :>> ', userData._id , user._id);
+      console.log('userFollowing :>> ', userFollowing);
+      unfollowUser(userData._id,userId).then((response) => {
+        // console.log("response :>> ", response.userConnection.followers);
+        dispatch(setFollowing(response.userConnection.followers));
+        console.log('userFollowing :>> ', userFollowing);
+      });
+    }
+  };
   return (
     <>
       <React.Suspense
@@ -83,7 +107,7 @@ function SearchUsers() {
           {/* Display user cards */}
           <div className="mt-16">
             {users.map((user,index) => (
-              <UserCard seeProfile={seeProfile} user={user} key={index} userData={userData} />
+              <UserCard seeProfile={seeProfile} user={user} key={index} userData={userData} handleClick={handleClick}/>
             ))}
             
           </div>
