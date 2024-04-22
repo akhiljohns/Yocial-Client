@@ -90,8 +90,8 @@ function Login() {
           dispatch(setReduxUser({ userData: response.user, validUser: true }));
           // To set the user's connections in the redux store
           getConnections(userId).then((response) => {
-            dispatch(setFollowers(response.connection.followersCount));
-            dispatch(setFollowing(response.connection.followingCount));
+            dispatch(setFollowers(response.connection.followers));
+            dispatch(setFollowing(response.connection.following));
             // To set the user's posts in the redux store
             fetchUserDetails(userId).then((response) => {
               dispatch(setUserPosts(response?.posts));

@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { searchUser } from "../../../services/User/apiMethods";
 import { debounce } from "lodash"; // Import debounce function from lodash
 import { Spinner } from "flowbite-react";
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from "react-router-dom";
+import SearchInput from "./SearchInput";
+import UserCard from "./UserCard";
+import { useSelector } from "react-redux";
 // Lazy-loaded components
 const Header = React.lazy(() =>
   import("../../../components/user/Header/Header")
@@ -12,12 +14,14 @@ const UserSideBar = React.lazy(() =>
   import("../../../components/user/Sidebar/UserSideBar")
 );
 
+
 function SearchUsers() {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [noUsersFound, setNoUsersFound] = useState(false);
-  const navigate = useNavigate()
-
+  const navigate = useNavigate();
+  const userFollowing = useSelector((state) => state?.user.following);
+  
   // Define a debounced search function
   const debouncedSearch = debounce((key) => {
     if (!key) {
@@ -49,12 +53,9 @@ function SearchUsers() {
     debouncedSearch(value);
   };
 
-
   const seeProfile = (username) => {
-  
     navigate(`/profile/${username}`);
-  }
-
+  };
 
   return (
     <>
@@ -64,23 +65,10 @@ function SearchUsers() {
         <Header choice={"home"} />
         <UserSideBar />
       </React.Suspense>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          minHeight: "100vh",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center" }}>
+      <div className="flex justify-center h-screen overflow-hidden">
+        <div className="mt-24 overflow-auto w-full justify-center flex">
           {/* Input field for searching users */}
-          <input
-            type="text"
-            placeholder="Search users..."
-            onChange={handleSearchInput}
-            style={{ marginRight: "10px" }}
-          />
+          <SearchInput handleSearchInput={handleSearchInput} />
           {/* Display loading icon if searching */}
           {loading && (
             <div className="spinner-border text-white" role="status">
@@ -91,38 +79,15 @@ function SearchUsers() {
               />
             </div>
           )}
-        </div>
-        {/* Display message if no users found */}
-        {noUsersFound && <p className="text-white">No users found</p>}
-        {/* Display user cards */}
-        <div
-          style={{
-            display: "flex",
-            flexWrap: "wrap",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {users.map((user, index) => (
-            <div onClick={()=>seeProfile(user?.username)}
-              key={index}
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: "5px",
-                padding: "10px",
-                margin: "10px",
-                backgroundColor: "white",
-              }}
-            >
-              <img
-                src={user.profilePic}
-                alt={user.name}
-                style={{ width: "100px", height: "100px", borderRadius: "50%" }}
-              />
-              <div>Name: {user.name}</div>
-              <div>Username: {user.username}</div>
-            </div>
-          ))}
+          {/* Display message if no users found */}
+          {noUsersFound && <p className="text-white mt-16">No users found</p>}
+          {/* Display user cards */}
+          <div className="mt-16">
+            {users.map((user,index) => (
+              <UserCard seeProfile={seeProfile} user={user} key={index} userFollowing={userFollowing} />
+            ))}
+            
+          </div>
         </div>
       </div>
     </>
