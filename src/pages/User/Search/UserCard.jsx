@@ -1,30 +1,11 @@
 import React, { useEffect, useState } from "react";
-import FollowBtn from "./FollowBtn";
-import { followUser, unfollowUser } from "../../../services/User/apiMethods";
-import { useSelector } from "react-redux";
-import {
-  setFollowers,
-  setFollowing,
-} from "../../../utils/reducers/userReducer";
-
-const UserCard = ({ user, userData, seeProfile ,handleClick}) => {
-  // const handleClick = () => {
-  //   if (!userFollowing.includes(user._id)) {
-  //     followUser(userData._id, user._id).then((response) => {
-  //       dispatch(setFollowing(response.userConnection.following));
-  //     });
-  //   } else {
-  //     unfollowUser(userData._id, user._id).then((response) => {
-  //       console.log("response :>> ", response.userConnection.followers);
-  //       dispatch(setFollowing(response.userConnection.followers));
-  //     });
-  //   }
-  // };
+const UserCard = ({ user, seeProfile }) => {
+  
 
   return (
     <>
       <div
-        // onClick={() => seeProfile(user?.username)}
+        onClick={() => seeProfile(user?.username)}
         style={{
           display: "flex",
           alignItems: "center",
@@ -41,16 +22,14 @@ const UserCard = ({ user, userData, seeProfile ,handleClick}) => {
           className="aspect-square w-14 rounded-full"
           src={user.profilePic}
           alt={user.name}
+          // style={{ width: "60px", height: "60px", borderRadius: "50%" }}
+          // style={{ aspectRatio:"square" borderRadius: "50%" }}
         />
-        <div style={{ marginLeft: "20px", width: "100px" }}>
+        <div style={{ marginLeft: "20px" ,width: "100px" }}>
           <div className="text-base font-bold">{user.username}</div>
           <div className="text-sm font-semibold">{user.name}</div>
         </div>
-        {userData._id !== user._id && (
-          <div className="ml-[380px]">
-            <FollowBtn user={user} userData={userData} handleClick={handleClick} />
-          </div>
-        )}
+      
       </div>
     </>
   );
