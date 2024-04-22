@@ -20,8 +20,7 @@ function SearchUsers() {
   const [loading, setLoading] = useState(false);
   const [noUsersFound, setNoUsersFound] = useState(false);
   const navigate = useNavigate();
-  const userFollowing = useSelector((state) => state?.user.following);
-  
+  const { userData } = useSelector((state) => state?.user);
   // Define a debounced search function
   const debouncedSearch = debounce((key) => {
     if (!key) {
@@ -84,7 +83,7 @@ function SearchUsers() {
           {/* Display user cards */}
           <div className="mt-16">
             {users.map((user,index) => (
-              <UserCard seeProfile={seeProfile} user={user} key={index} userFollowing={userFollowing} />
+              <UserCard seeProfile={seeProfile} user={user} key={index} userData={userData} />
             ))}
             
           </div>
