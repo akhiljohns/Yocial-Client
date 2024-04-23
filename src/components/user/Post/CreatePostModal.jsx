@@ -81,19 +81,19 @@ function CreatePostModal({
     }
   };
 
-  const handleCloudinary = async ()=>{
-    const data1 = await uploadCloudinary(
-      imagePreview,
-      image,
-      setErr,
-      setLoading
-    );
-
-    return data1;
-  }
+  const handleCloudinary = async () => {
+    return await uploadCloudinary(imagePreview, image, setErr, setLoading);
+  };
 
   const handleSubmit = async () => {
     setLoading(true);
+
+    let imageUrl = "";
+    if (type === "createPost" || type === "avatar") {
+      const imageData = await handleCloudinary();
+      imageUrl = imageData.secure_url;
+    }
+
     if (type === "createPost") {
       if (!image) {
         setLoading(false);
@@ -101,58 +101,55 @@ function CreatePostModal({
         return;
       }
 
-      // const data1 = await uploadCloudinary(
-      //   imagePreview,
-      //   image,
-      //   setErr,
-      //   setLoading
-      // );
+      const data = {
+        userId: userData._id,
+        image: imageUrl,
+        caption: caption,
+      };
 
-      if (data1) {
-        postData = {
-          userId: userData._id,
-          image: data1.secure_url,
-          caption: caption,
-        };
-      }
-    }
-    if (type === "editPost") {
-      postData = {
+      postCreatePost(data)
+        .then(handlePostResponse)
+        .catch((error) => {
+          setLoading(false);
+          errorToast(error?.message);
+          setErr(error?.message);
+        });
+    } else if (type === "avatar") {
+      const data = {
+        userId: userData._id,
+        profilePic: imageUrl,
+      };
+
+      updateUserAvatar(data)
+        .then((response) => {
+          if (response.status === 200) {
+            successToast(response?.message);
+            clearComponent();
+            closeModal();
+          } else {
+            setLoading(false);
+            infoToast(response?.message);
+          }
+        })
+        .catch((error) => {
+          setLoading(false);
+          errorToast(error?.message);
+          setErr(error?.message);
+        });
+    } else if (type === "editPost") {
+      const data = {
         postId: userPost?._id,
         caption: caption,
       };
-    }
 
-    if (type === "avatar") {
-
-      const newAvatar = await handleCloudinary();
-      const data = {
-        userId: userData._id,
-        profilePic: newAvatar.secure_url,
-      };
-console.log('data :>> ', data);
-
-      updateUserAvatar(data).then((response) => {
-        if (response.status === 200) {
-          successToast(response?.message);
-          clearComponent();
-          closeModal();
-          return
-        } else {
+      postUpdatePost(data)
+        .then(handlePostResponse)
+        .catch((error) => {
           setLoading(false);
-          infoToast(response?.message);
-          return
-        }
-      });
+          errorToast(error?.message);
+          setErr(error?.message);
+        });
     }
-
-    (type !== "editPost" ? postCreatePost(postData) : postUpdatePost(postData))
-      .then(handlePostResponse)
-      .catch((error) => {
-        setLoading(false);
-        errorToast(error?.message);
-        setErr(error?.message);
-      });
   };
 
   const closeModal = () => {
