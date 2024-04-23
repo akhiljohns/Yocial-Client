@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   postCreatePost,
   postUpdatePost,
+  updateUserAvatar,
 } from "../../../services/User/apiMethods";
 import Modal from "react-modal";
 import uploadCloudinary from "../../../hooks/cloudinary";
@@ -80,21 +81,32 @@ function CreatePostModal({
     }
   };
 
+  const handleCloudinary = async ()=>{
+    const data1 = await uploadCloudinary(
+      imagePreview,
+      image,
+      setErr,
+      setLoading
+    );
+
+    return data1;
+  }
+
   const handleSubmit = async () => {
     setLoading(true);
-    if (type !== "editPost") {
+    if (type === "createPost") {
       if (!image) {
         setLoading(false);
         setErr("Please select an image");
         return;
       }
 
-      const data1 = await uploadCloudinary(
-        imagePreview,
-        image,
-        setErr,
-        setLoading
-      );
+      // const data1 = await uploadCloudinary(
+      //   imagePreview,
+      //   image,
+      //   setErr,
+      //   setLoading
+      // );
 
       if (data1) {
         postData = {
@@ -109,6 +121,29 @@ function CreatePostModal({
         postId: userPost?._id,
         caption: caption,
       };
+    }
+
+    if (type === "avatar") {
+
+      const newAvatar = await handleCloudinary();
+      const data = {
+        userId: userData._id,
+        profilePic: newAvatar.secure_url,
+      };
+console.log('data :>> ', data);
+
+      updateUserAvatar(data).then((response) => {
+        if (response.status === 200) {
+          successToast(response?.message);
+          clearComponent();
+          closeModal();
+          return
+        } else {
+          setLoading(false);
+          infoToast(response?.message);
+          return
+        }
+      });
     }
 
     (type !== "editPost" ? postCreatePost(postData) : postUpdatePost(postData))

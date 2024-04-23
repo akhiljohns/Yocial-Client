@@ -137,6 +137,7 @@ const Profile = () => {
                 alt="User Profile"
                 className="rounded-full h-20 w-20 mr-4 img-thumbnail"
               />
+              
               <div className="ms-3">
                 <h5 className="text-white">{user?.name}</h5>
                 <p className="text-white">{user?.username}</p>

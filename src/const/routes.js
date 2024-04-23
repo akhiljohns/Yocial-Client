@@ -27,6 +27,7 @@ export const userUrl = {
 
   //update user
   updateProfile: `/user/update/profile`,
+  updateAvatar: `/user/update/avatar`,
 
   //report
   report: (userId, username) => `/user/report/user/${userId}/${username}`,

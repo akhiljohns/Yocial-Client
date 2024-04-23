@@ -3,7 +3,7 @@ import GeneralDetails from '../../../components/user/EditProfile/GeneralDetails'
 import '../EditProfile/EditProfile.css'
 import Header from '../../../components/user/Header/Header';
 import Email from '../../../components/user/EditProfile/Email';
-
+import Avatar from '../../../components/user/EditProfile/AvatarEdit';
 function EditProfile() {
   const [selectedOption, setSelectedOption] = useState('general');
 
@@ -13,6 +13,8 @@ function EditProfile() {
         return <GeneralDetails />;
       case 'email':
         return <div><Email/></div>;
+      case 'avatar':
+        return <div><Avatar/></div>;
       default:
         return null;
     }
@@ -30,6 +32,9 @@ function EditProfile() {
           </li>
           <li onClick={() => setSelectedOption('email')} className="ed-btn cursor-pointer mb-2">
             Email
+          </li>
+          <li onClick={() => setSelectedOption('avatar')} className="ed-btn cursor-pointer mb-2">
+            Profile Avatar
           </li>
         </ul>
       </div>

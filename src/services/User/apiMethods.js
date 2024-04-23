@@ -594,6 +594,23 @@ export const updateUserProfile = (userData) => {
     }
   });
 };
+// @desc    update user avatar
+//route     /user/update/avatar"
+// @access  Registerd users
+export const updateUserAvatar = (userData) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = userUrl.updateAvatar;
+      apiCall("post", url, userData)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => reject(err));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 // @desc    update user email
 //route     /user/update/email"
 // @access  Registerd users
