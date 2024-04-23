@@ -11,11 +11,12 @@ import { editLoadedPost } from "../../../utils/reducers/postReducer";
 import { errorToast } from "../../../hooks/toast";
 import { updateSavedPosts } from "../../../utils/reducers/userReducer";
 import PostModal from "../Comments/PostModal";
+import { useNavigate } from "react-router-dom";
 
-const SinglePostCard = ({ post ,setLikePost,toggleLikesModal}) => {
+const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user?.userData);
-
+  const navigate = useNavigate();
   const [commentOpen, setCommentOpen] = useState(false);
   const [commentCount, setCommentCount] = useState(0);
   const [liked, setLiked] = useState(false);
@@ -62,17 +63,22 @@ const SinglePostCard = ({ post ,setLikePost,toggleLikesModal}) => {
     }
   };
 
-
   const showLikes = (likes) => {
-    setLikePost(likes)
-    toggleLikesModal()
-  }
-
+    setLikePost(likes);
+    toggleLikesModal();
+  };
+  const seeProfile = (username) => {
+    navigate(`/profile/${username}`);
+  };
   return (
     <div className="bg-white p-5 rounded-lg shadow-md max-w-md w-full ">
       <div className="flex items-center justify-between mb-4">
         {/* User Info */}
-        <div className="flex items-center space-x-2">
+
+        <div
+          onClick={() => seeProfile(post?.userId?.username)}
+          className="flex items-center space-x-2"
+        >
           <img
             src={post?.userId?.profilePic}
             alt="User Avatar"
@@ -82,6 +88,9 @@ const SinglePostCard = ({ post ,setLikePost,toggleLikesModal}) => {
           <div>
             <p className="text-gray-800 font-semibold mt-1">
               {post?.userId?.name}
+            </p>
+            <p className="text-gray-800 font-light mt-1">
+              {post?.userId?.username}
             </p>
             <p className="text-gray-400 text-sm">{time}</p>
           </div>
@@ -99,11 +108,7 @@ const SinglePostCard = ({ post ,setLikePost,toggleLikesModal}) => {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-            >
-              <circle cx="12" cy="7" r="1" />
-              <circle cx="12" cy="12" r="1" />
-              <circle cx="12" cy="17" r="1" />
-            </svg>
+            ></svg>
           </button>
         </div>
       </div>
@@ -118,7 +123,7 @@ const SinglePostCard = ({ post ,setLikePost,toggleLikesModal}) => {
           className="w-full aspect-square object-cover rounded-md"
         />
       </div>
-     
+
       <div className="flex items-center justify-between text-gray-500">
         {/* Like Button */}
         <button
@@ -174,9 +179,9 @@ const SinglePostCard = ({ post ,setLikePost,toggleLikesModal}) => {
         </svg>
       </div>
       {/* POST LIKED USERS */}
-      <div onClick={(e) =>showLikes(post?.likes) } className="mt-1">
+      <div onClick={(e) => showLikes(post?.likes)} className="mt-1">
         {post?.likes?.length > 0 ? (
-          <span  className="pl-2 text-black text-sm font-light select-none">
+          <span className="pl-2 text-black text-sm font-light select-none">
             {post?.likes?.includes(user?._id)
               ? `You ${
                   post?.likes.length > 1
