@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import {
   fetchUserByUsername,
   fetchUserDetails,
+  followUser,
+  unfollowUser,
 } from "../../..//services/User/apiMethods.js";
 import Header from "../../../components/user/Header/Header.jsx";
 import SinglePostModal from "../../../components/user/Elements/SinglePostModal.jsx";
@@ -12,6 +14,9 @@ import {
   setUserPosts,
 } from "../../../utils/reducers/postReducer.js";
 import CreatePostModal from "../../../components/user/Post/CreatePostModal.jsx";
+import FollowBtn from "./FollowBtn.jsx";
+import { setFollowing } from "../../../utils/reducers/userReducer.js";
+import ConnectionBtn from "../../../components/user/Options/ConnectionBtn.jsx";
 const Profile = () => {
   const dispatch = useDispatch();
 
@@ -19,8 +24,8 @@ const Profile = () => {
   const [owner, setOwner] = useState(false);
   const [posts, setPosts] = useState([]);
   const [error, setError] = useState("");
-  const [followersCount, setFollowersCount] = useState(0);
-  const [followingCount, setFollowingCount] = useState(0);
+  const [followers, setFollowers] = useState(0);
+  const [following, setFollowing] = useState(0);
 
   const { username } = useParams();
 
@@ -33,13 +38,8 @@ const Profile = () => {
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
-
   const { userData } = useSelector((state) => state?.user);
   const userFollowing = useSelector((state) => state?.user.following);
-  const userFollowers = useSelector((state) => state?.user.followers);
-  const userposts = useSelector(
-    (state) => state?.userPosts?.posts?.posts?.posts
-  );
 
   const handleImage = (post) => {
     dispatch(setEditPost({ editPost: post }));
@@ -54,7 +54,9 @@ const Profile = () => {
       fetchUserByUsername(username)
         .then((response) => {
           setUser(response);
-          if (response._id === userData._id) setOwner(true);
+          if (response._id === userData._id) {
+            setOwner(true);
+          }
         })
         .catch((error) => setError(error?.message));
     }
@@ -62,20 +64,13 @@ const Profile = () => {
 
   useEffect(() => {
     if (user) {
-      if (!owner) {
-        fetchUserDetails(user?._id)
-          .then((response) => {
-            // dispatch(setUserPosts(response?.posts));
-            setPosts(response?.posts);
-            setFollowersCount(response.followers.length);
-            setFollowingCount(response.followings.length);
-          })
-          .catch((error) => setError(error?.message));
-      } else {
-        setPosts(userposts);
-        setFollowersCount(userFollowers.length);
-        setFollowingCount(userFollowing.length);
-      }
+      fetchUserDetails(user?._id)
+        .then((response) => {
+          setPosts(response?.posts);
+          setFollowers(response.followers);
+          setFollowing(response.followings);
+        })
+        .catch((error) => setError(error?.message));
     }
   }, [dispatch, user]);
 
@@ -157,14 +152,23 @@ const Profile = () => {
                 </div>
                 <div className="flex flex-col gap-1 items-center">
                   <p className="small text-muted mb-0">Followers</p>
-                  <p className="mb-1 h5">{userFollowers.length || followersCount || 0}</p>
+                  <p className="mb-1 h5">{followers.length || 0}</p>
                 </div>
                 <div className="flex flex-col gap-1 items-center">
                   <p className="small text-muted mb-0">Following</p>
-                  <p className="mb-1 h5">{userFollowing.length || followingCount || 0}</p>
+                  <p className="mb-1 h5">{following.length || 0}</p>
                 </div>
               </div>
             </div>
+            {!owner && (
+              <div className="flex flex-col items-center justify-center mt-2">
+                <ConnectionBtn
+                  color={"white"}
+                  user={user}
+                  setFollowers={setFollowers}
+                />
+              </div>
+            )}
           </div>
 
           {/* User Posts */}
