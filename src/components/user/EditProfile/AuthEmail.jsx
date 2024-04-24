@@ -11,17 +11,16 @@ function AuthEmail() {
 
   const [verified, setVerified] = useState(false);
   const user = useSelector((state) => state?.user?.userData);
-  const { id, token , type } = useParams();
+  const { id, token, type } = useParams();
 
   useEffect(() => {
-    verifyUserEmail({ id, token ,type })
+    verifyUserEmail({ id, token, type })
       .then((response) => {
         if (user) {
-          dispatch(updateReduxUser({ userData: { email: response.email } }));
+          dispatch(updateReduxUser(response?.user));
         }
-        successToast("Email Has Been Updated");
+        successToast("Verification mail has been sent.");
         setVerified(true);
-        // navigate(`/profile/${user?.username}`)
       })
       .catch((err) => {
         errorToast("INVALID TOKEN");
@@ -48,7 +47,7 @@ function AuthEmail() {
         {!verified && (
           <div className="w-full h-screen flex gap-5 justify-center items-center bg-[#212121]">
             <h1 className="text-white text-center font-semibold text-xl">
-             Token Expired Or Already Verified
+              Token Expired Or Already Verified
             </h1>
             <button
               onClick={() => navigate("/login")}

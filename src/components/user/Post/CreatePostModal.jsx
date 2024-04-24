@@ -14,6 +14,7 @@ import { Spinner } from "flowbite-react";
 import { errorToast, successToast } from "../../../hooks/toast";
 import { addNewPost, editUserPost } from "../../../utils/reducers/postReducer";
 import CharacterCountIndicator from "../Options/CharacterCount";
+import { updateReduxUser } from "../../../utils/reducers/userReducer";
 const ImageFilter = React.lazy(() => import("../ImageFilter/ImageFilter"));
 
 function CreatePostModal({
@@ -21,7 +22,6 @@ function CreatePostModal({
   setIsModalOpen,
   type,
   editPostCaption,
-  newLocalPost,
 }) {
   Modal.setAppElement("#root");
   const dispatch = useDispatch();
@@ -63,7 +63,6 @@ function CreatePostModal({
     if (response.status === 200) {
       // To Add post in redux or local state
       if (type !== "editPost") {
-        // newLocalPost(response?.post)
         dispatch(addNewPost(response?.post));
       } else {
         editPostCaption(response?.post?._id, response?.post?.caption);
@@ -123,6 +122,7 @@ function CreatePostModal({
       updateUserAvatar(data)
         .then((response) => {
           if (response.status === 200) {
+            dispatch(updateReduxUser(response?.user));
             successToast(response?.message);
             clearComponent();
             closeModal();
@@ -197,17 +197,19 @@ function CreatePostModal({
       )}
 
       {imageFilterActive && (
-        // <React.Suspense fallback={<Spinner />}>
         <ImageFilter
           croppedImg={imagePreview}
           setFilteredImage={setImagePreview}
           setImageFilterActive={setImageFilterActive}
         />
-        // </React.Suspense>
       )}
       <div className="p-6 text-center">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">
-          {type !== "editPost" ? "Create Post" : "Edit Post"}
+          {type === "editPost"
+            ? "Edit Post"
+            : type === "createPost"
+            ? "Create Post"
+            : "Edit Avatar"}
         </h2>
         <div className="mb-4">
           {type !== "editPost" && (
@@ -220,19 +222,21 @@ function CreatePostModal({
             />
           )}
         </div>
-        <div className="mb-4">
-          <input
-            type="text"
-            id="caption"
-            maxLength={100}
-            placeholder="Write something..."
-            onChange={(e) => setCaption(e.target.value)}
-            className="block text-gray-700 font-bold mb-2 w-full"
-            disabled={loading}
-            defaultValue={type === "editPost" ? userPost?.caption : ""}
-          />
-          <CharacterCountIndicator value={caption} maxLength={100} />
-        </div>
+        {type !== "avatar" && (
+          <div className="mb-4">
+            <input
+              type="text"
+              id="caption"
+              maxLength={100}
+              placeholder="Write something..."
+              onChange={(e) => setCaption(e.target.value)}
+              className="block text-gray-700 font-bold mb-2 w-full"
+              disabled={loading}
+              defaultValue={type === "editPost" ? userPost?.caption : ""}
+            />
+            <CharacterCountIndicator value={caption} maxLength={100} />
+          </div>
+        )}
         {loading && (
           <div className="w-full flex justify-center items-center">
             <Spinner
@@ -259,14 +263,18 @@ function CreatePostModal({
         </button>
         {err && <p className="text-red-500 text-center">{err}</p>}
       </div>
-      <div className="image-preview">
-        {imagePreview && (
-          <img
-            src={type !== "editPost" ? imagePreview : userPost.image}
-            alt=""
-          />
-        )}
-      </div>
+      {type === "avatar" ? (
+        ""
+      ) : (
+        <div className="image-preview">
+          {imagePreview && (
+            <img
+              src={type !== "editPost" ? imagePreview : userPost.image}
+              alt=""
+            />
+          )}
+        </div>
+      )}
     </Modal>
   );
 }

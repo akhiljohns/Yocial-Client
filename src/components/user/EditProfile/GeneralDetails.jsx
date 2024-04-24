@@ -37,7 +37,7 @@ function GeneralDetails() {
     updateUserProfile(userDetails)
       .then((response) => {
         if (response.status === 200) {
-          dispatch(updateReduxUser({ userData: userDetails }));
+          dispatch(updateReduxUser(response?.user));
           setLoading(false);
           successToast(response?.message);
         } else {

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUserEmail } from "../../../services/User/apiMethods";
-import { updateReduxUser } from "../../../utils/reducers/userReducer";
 import { Spinner } from "flowbite-react";
 import { errorToast, infoToast, successToast } from "../../../hooks/toast";
 import { checkEmail } from "../../../hooks/regValidation";
@@ -39,8 +38,8 @@ function Email() {
         userId: userData?._id,
         username: userData?.username,
         email: userData?.email,
-        type:"update",
-      };  
+        type: "update",
+      };
       updateUserEmail(userDetails)
         .then((response) => {
           if (response.status === 200) {
