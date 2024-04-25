@@ -16,7 +16,6 @@ import {
   setUserPosts,
 } from "../../../utils/reducers/postReducer";
 import { errorToast } from "../../../hooks/toast";
-import LikesModal from "../../../components/user/Modals/LikesModal";
 import UserList from "../../../components/user/Modals/UserList";
 
 const UserHome = () => {
@@ -144,10 +143,10 @@ const UserHome = () => {
       </div>
 
       {likesModalOpen && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-gray-800 bg-opacity-50">
+        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-gray-950 bg-opacity-50">
           <div
-            className="relative bg-white rounded-lg shadow dark:bg-gray-700 p-4"
-            style={{ width: "80%", height: "80%" }}
+            className="relative bg-white rounded-lg shadow dark:bg-gray-950 p-4"
+            style={{ width: "40%", height: "80%" }}
           >
             <button
               type="button"

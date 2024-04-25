@@ -148,14 +148,19 @@ export const postUpdatePost = (postData) => {
     try {
       apiCall("post", postUrl.update(postData?.postId), postData)
         .then((response) => {
-          resolve(response);  
+          resolve(response);
         })
         .catch((error) => {
-          reject({ status: error.status || 500 , message: error.message || "Something went wrong." });
+          reject({
+            status: error.status || 500,
+            message: error.message || "Something went wrong.",
+          });
         });
     } catch (error) {
-      reject({ status: error.status || 500 , message: error.message || "Something went wrong." });
-
+      reject({
+        status: error.status || 500,
+        message: error.message || "Something went wrong.",
+      });
     }
   });
 };

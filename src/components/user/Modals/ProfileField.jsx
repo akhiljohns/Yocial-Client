@@ -1,28 +1,27 @@
-import React, { useEffect, useState } from 'react'
-import { getUser } from '../../../services/User/apiMethods';
-import { useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import { getUser } from "../../../services/User/apiMethods";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-function ProfileField({userId, follow, setTitle}) {
-    const navigate = useNavigate()
+function ProfileField({ userId, follow, setTitle }) {
+  const navigate = useNavigate();
 
-    const currentUser = useSelector((state)=> state?.user?.userData);
+  const currentUser = useSelector((state) => state?.user?.userData);
 
-    const [user, setUser] = useState({})
-    useEffect(()=> {
-        getUser(userId).then((response)=> {
-            setUser(response[0]);
-        })
-    },[userId]);
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    getUser(userId).then((response) => {
+      setUser(response.user[0]);
+    });
+  }, [userId]);
 
-    const seeProfile = () => {
-      if(setTitle){
-        setTitle('')
-      }
-
-
-      navigate(`/profile/${user?.username}`);
+  const seeProfile = () => {
+    if (setTitle) {
+      setTitle("");
     }
+
+    navigate(`/profile/${user?.username}`);
+  };
 
   return (
     <>
@@ -56,4 +55,4 @@ function ProfileField({userId, follow, setTitle}) {
   );
 }
 
-export default ProfileField
+export default ProfileField;

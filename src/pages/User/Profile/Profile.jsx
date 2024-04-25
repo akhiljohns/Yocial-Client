@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
   fetchUserByUsername,
   fetchUserDetails,
 } from "../../..//services/User/apiMethods.js";
 import Header from "../../../components/user/Header/Header.jsx";
 import SinglePostModal from "../../../components/user/Elements/SinglePostModal.jsx";
-import {
-  setEditPost,
-} from "../../../utils/reducers/postReducer.js";
+import { setEditPost } from "../../../utils/reducers/postReducer.js";
 import CreatePostModal from "../../../components/user/Post/CreatePostModal.jsx";
 import ConnectionBtn from "../../../components/user/Options/ConnectionBtn.jsx";
 const Profile = () => {
@@ -92,20 +90,15 @@ const Profile = () => {
 
   const updatePostCaption = (postId, newCaption) => {
     try {
-      // Find the post with the specified ID
       const postToUpdate = posts.find((post) => post._id === postId);
       if (postToUpdate) {
-        // Create a copy of the post object and update its caption
         const updatedPost = { ...postToUpdate, caption: newCaption };
-        // Find the index of the post in the array
         const indexToUpdate = posts.findIndex((post) => post._id === postId);
-        // Create a new array with the updated post
         const updatedPosts = [
           ...posts.slice(0, indexToUpdate),
           updatedPost,
           ...posts.slice(indexToUpdate + 1),
         ];
-        // Update the state with the new array of posts
         setPosts(updatedPosts);
       } else {
         console.log("Post not found");
@@ -131,7 +124,7 @@ const Profile = () => {
                 alt="User Profile"
                 className="rounded-full h-20 w-20 mr-4 img-thumbnail"
               />
-              
+
               <div className="ms-3">
                 <h5 className="text-white">{user?.name}</h5>
                 <p className="text-white">{user?.username}</p>
