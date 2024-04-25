@@ -1,21 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import {
   fetchUserByUsername,
   fetchUserDetails,
-  followUser,
-  unfollowUser,
 } from "../../..//services/User/apiMethods.js";
 import Header from "../../../components/user/Header/Header.jsx";
 import SinglePostModal from "../../../components/user/Elements/SinglePostModal.jsx";
 import {
   setEditPost,
-  setUserPosts,
 } from "../../../utils/reducers/postReducer.js";
 import CreatePostModal from "../../../components/user/Post/CreatePostModal.jsx";
-import FollowBtn from "./FollowBtn.jsx";
-import { setFollowing } from "../../../utils/reducers/userReducer.js";
 import ConnectionBtn from "../../../components/user/Options/ConnectionBtn.jsx";
 const Profile = () => {
   const dispatch = useDispatch();
@@ -39,7 +34,6 @@ const Profile = () => {
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
   const { userData } = useSelector((state) => state?.user);
-  const userFollowing = useSelector((state) => state?.user.following);
 
   const handleImage = (post) => {
     dispatch(setEditPost({ editPost: post }));
@@ -53,8 +47,8 @@ const Profile = () => {
     if (username) {
       fetchUserByUsername(username)
         .then((response) => {
-          setUser(response);
-          if (response._id === userData._id) {
+          setUser(response.user);
+          if (response?.user?._id === userData._id) {
             setOwner(true);
           }
         })

@@ -92,7 +92,7 @@ const UserHome = () => {
     if (validUser) {
       fetchUserPosts(userData?._id)
         .then((response) => {
-          dispatch(setUserPosts(response));
+          dispatch(setUserPosts(response.posts));
         })
         .catch((error) => {
           errorToast(error);
