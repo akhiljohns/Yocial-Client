@@ -10,6 +10,8 @@ import SinglePostModal from "../../../components/user/Elements/SinglePostModal.j
 import { setEditPost } from "../../../utils/reducers/postReducer.js";
 import CreatePostModal from "../../../components/user/Post/CreatePostModal.jsx";
 import ConnectionBtn from "../../../components/user/Options/ConnectionBtn.jsx";
+import UserListsModal from "../../../components/user/Modals/UserListsModal.jsx";
+import UserList from "../../../components/user/Modals/UserList.jsx";
 const Profile = () => {
   const dispatch = useDispatch();
 
@@ -19,7 +21,8 @@ const Profile = () => {
   const [error, setError] = useState("");
   const [followers, setFollowers] = useState(0);
   const [following, setFollowing] = useState(0);
-
+  const [listModal, setListModal] = useState(false);
+  const [usersList, setUsersList] = useState([]);
   const { username } = useParams();
 
   const [imageSrc, setImageSrc] = useState("");
@@ -108,6 +111,26 @@ const Profile = () => {
     }
   };
 
+  const openListsModal = (type) => {
+    if (type === "followers") {
+      if (followers.length == []) {
+        return;
+      }
+      setUsersList(followers);
+      setListModal(true);
+    } else if (type === "following") {
+      if (following.length == []) {
+        return;
+      }
+      setUsersList(following);
+      setListModal(true);
+    }
+  };
+
+  const toggleConnectionModal = () => {
+    setListModal(!listModal);
+  };
+
   return (
     <>
       <div className="relative h-full w-full">
@@ -138,11 +161,17 @@ const Profile = () => {
                   <p className="small text-muted mb-0">Posts</p>
                   <p className="mb-1 h5">{posts?.length || 0}</p>
                 </div>
-                <div className="flex flex-col gap-1 items-center">
+                <div
+                  onClick={() => openListsModal("followers")}
+                  className="flex flex-col gap-1 items-center cursor-pointer"
+                >
                   <p className="small text-muted mb-0">Followers</p>
                   <p className="mb-1 h5">{followers.length || 0}</p>
                 </div>
-                <div className="flex flex-col gap-1 items-center">
+                <div
+                  onClick={() => openListsModal("following")}
+                  className="flex flex-col gap-1 items-center cursor-pointer"
+                >
                   <p className="small text-muted mb-0">Following</p>
                   <p className="mb-1 h5">{following.length || 0}</p>
                 </div>
@@ -168,7 +197,7 @@ const Profile = () => {
                     key={post?._id}
                     src={post?.image}
                     alt={post?.caption}
-                    className="w-full"
+                    className="w-full cursor-pointer"
                     style={{
                       userSelect: "none",
                       WebkitUserSelect: "none",
@@ -214,6 +243,14 @@ const Profile = () => {
           type={"editPost"}
           newLocalPost={newLocalPost}
           editPostCaption={updatePostCaption}
+        />
+      )}
+
+      {listModal && (
+        <UserListsModal
+          type={"Followers"}
+          userIds={usersList}
+          toggleModal={toggleConnectionModal}
         />
       )}
     </>

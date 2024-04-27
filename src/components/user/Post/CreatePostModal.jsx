@@ -66,7 +66,6 @@ function CreatePostModal({
         dispatch(addNewPost(response?.post));
       } else {
         editPostCaption(response?.post?._id, response?.post?.caption);
-        console.log('response in handle       :>> ', response );
         dispatch(editUserPost(response?.post));
       }
       successToast(response.message);

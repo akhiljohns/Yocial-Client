@@ -3,10 +3,9 @@ import { getUser } from "../../../services/User/apiMethods";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
-function ProfileField({ userId, follow, setTitle }) {
+function ProfileField({ userId, follow, setTitle, closeModal }) {
   const navigate = useNavigate();
 
-  const currentUser = useSelector((state) => state?.user?.userData);
 
   const [user, setUser] = useState({});
   useEffect(() => {
@@ -19,7 +18,7 @@ function ProfileField({ userId, follow, setTitle }) {
     if (setTitle) {
       setTitle("");
     }
-
+    closeModal();
     navigate(`/profile/${user?.username}`);
   };
 
@@ -38,17 +37,6 @@ function ProfileField({ userId, follow, setTitle }) {
           <span className="flex-1 ml-3 whitespace-nowrap">
             {user?.username || user?.name}
           </span>
-          {currentUser?._id !== user?._id ? (
-            !follow ? (
-              <button className="inline-flex  items-center justify-center px-2 py-0.5 ml-3 text-xs font-medium text-gray-500 border rounded dark:bg-gray-700 dark:text-gray-400 hover:bg-slate-500 hover:text-white">
-                Follow
-              </button>
-            ) : (
-              <button className="inline-flex items-center justify-center px-2 py-0.5 ml-3 text-xs font-medium text-gray-500 border rounded dark:bg-gray-700 dark:text-gray-400 hover:bg-gray-500 hover:text-white">
-                Unfollow
-              </button>
-            )
-          ) : null}
         </div>
       )}
     </>
