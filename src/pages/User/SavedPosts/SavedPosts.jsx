@@ -40,7 +40,7 @@ function SavedPosts() {
                   key={post?._id}
                   src={post?.image}
                   alt={post?.caption}
-                  className="w-full"
+                  className="w-full cursor-pointer"
                 />
               ))}
             </div>

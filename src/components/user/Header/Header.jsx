@@ -26,11 +26,11 @@ const Header = ({ choice }) => {
     <header className="bg-orange-500 p-4 z-30 text-white absolute w-screen">
       <div className="container mx-auto flex justify-between items-center">
         {choice === "profile" ? (
-          <div onClick={() => navigate(`/profile/${userData?.username}`)}>
+          <div className="cursor-pointer" onClick={() => navigate(`/profile/${userData?.username}`)}>
             Welcome, {userData?.name}
           </div>
         ) : (
-          <div onClick={() => navigate(`/`)}>Go Home</div>
+          <div className="cursor-pointer" onClick={() => navigate(`/`)}>Go Home</div>
         )}
 
         <button onClick={handleLogout} className="bg-black px-4 py-2 rounded">

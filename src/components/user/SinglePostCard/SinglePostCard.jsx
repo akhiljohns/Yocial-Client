@@ -77,7 +77,7 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
 
         <div
           onClick={() => seeProfile(post?.userId?.username)}
-          className="flex items-center space-x-2"
+          className="flex items-center space-x-2  cursor-pointer"
         >
           <img
             src={post?.userId?.profilePic}
@@ -120,7 +120,7 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
           src={post?.image}
           alt="Post Image"
           draggable="false"
-          className="w-full aspect-square object-cover rounded-md"
+          className="w-full aspect-square object-cover rounded-md  cursor-pointer"
         />
       </div>
 
@@ -179,7 +179,7 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
         </svg>
       </div>
       {/* POST LIKED USERS */}
-      <div onClick={(e) => showLikes(post?.likes)} className="mt-1">
+      <div onClick={(e) => showLikes(post?.likes)} className="mt-1  cursor-pointer">
         {post?.likes?.length > 0 ? (
           <span className="pl-2 text-black text-sm font-light select-none">
             {post?.likes?.includes(user?._id)
