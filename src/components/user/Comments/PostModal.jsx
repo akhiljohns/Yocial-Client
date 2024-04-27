@@ -7,7 +7,7 @@ import {
 } from "../../../services/User/apiMethods";
 import { timeAgo } from "../../../hooks/timeCalculator";
 import Confirmation from "../Elements/Confirmation";
-
+import SavePostButton from "../Elements/loaders/SavePostButton";
 const PostModal = ({
   userId,
   post,
@@ -93,6 +93,7 @@ const PostModal = ({
               />
             </div>
             {/* <!-- Right side - Comments --> */}
+
             <div className="w-1/2 ml-2 rounded bg-gray-200 h-full ">
               <div className="overflow-auto no-scrollbar h-full pb-12 p-3">
                 {postComments?.length === 0 ? (
@@ -143,6 +144,7 @@ const PostModal = ({
                           </svg>
                         </button>
                       )}
+
                       {showDeleteConfirmation && (
                         <Confirmation
                           visible={showDeleteConfirmation}
@@ -155,8 +157,10 @@ const PostModal = ({
                   ))
                 )}
               </div>
+              <SavePostButton postId={post?._id} />
             </div>
           </div>
+
           {/* Input box for new comment */}
           <div className="w-full p-4 bg-gray-200 mt-4 rounded-lg shadow-md max-w-3xl">
             <textarea

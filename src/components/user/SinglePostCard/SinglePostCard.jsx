@@ -12,6 +12,7 @@ import { errorToast } from "../../../hooks/toast";
 import { updateSavedPosts } from "../../../utils/reducers/userReducer";
 import PostModal from "../Comments/PostModal";
 import { useNavigate } from "react-router-dom";
+import SavePostButton from "../Elements/loaders/SavePostButton";
 
 const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
   const dispatch = useDispatch();
@@ -41,27 +42,27 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
     setLiked(!liked);
   };
 
-  const saveOrRemovePost = () => {
-    if (saved) {
-      setSaved(false);
-      removeSavedPost(user?._id, post?._id)
-        .then((res) => {
-          dispatch(updateSavedPosts(res?.post?._id));
-        })
-        .catch((err) => {
-          errorToast(err);
-        });
-    } else {
-      setSaved(true);
-      savePost(user?._id, post?._id)
-        .then((res) => {
-          dispatch(updateSavedPosts(res?.post?._id));
-        })
-        .catch((err) => {
-          errorToast(err);
-        });
-    }
-  };
+  // const saveOrRemovePost = () => {
+  //   if (saved) {
+  //     setSaved(false);
+  //     removeSavedPost(user?._id, post?._id)
+  //       .then((res) => {
+  //         dispatch(updateSavedPosts(res?.post?._id));
+  //       })
+  //       .catch((err) => {
+  //         errorToast(err);
+  //       });
+  //   } else {
+  //     setSaved(true);
+  //     savePost(user?._id, post?._id)
+  //       .then((res) => {
+  //         dispatch(updateSavedPosts(res?.post?._id));
+  //       })
+  //       .catch((err) => {
+  //         errorToast(err);
+  //       });
+  //   }
+  // };
 
   const showLikes = (likes) => {
     setLikePost(likes);
@@ -161,25 +162,13 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
           <span> {commentCount} Comments</span>
         </button>
         {/* Save Post Button */}
-        <svg
-          onClick={saveOrRemovePost}
-          className="cursor-pointer ml-auto mr-2"
-          width={26}
-          height={25}
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-          fill={saved ? "black " : "grey"}
-        >
-          <path
-            fill={""}
-            fillRule="evenodd"
-            d="M4 5a3 3 0 0 1 3-3h10a3 3 0 0 1 3 3v15.138a1.5 1.5 0 0 1-2.244 1.303l-5.26-3.006a1 1 0 0 0-.992 0l-5.26 3.006A1.5 1.5 0 0 1 4 20.138V5zm11 4a1 1 0 1 1 0 2H9a1 1 0 1 1 0-2h6z"
-            clipRule="evenodd"
-          ></path>
-        </svg>
+        <SavePostButton postId={post?._id} />
       </div>
       {/* POST LIKED USERS */}
-      <div onClick={(e) => showLikes(post?.likes)} className="mt-1  cursor-pointer">
+      <div
+        onClick={(e) => showLikes(post?.likes)}
+        className="mt-1  cursor-pointer"
+      >
         {post?.likes?.length > 0 ? (
           <span className="pl-2 text-black text-sm font-light select-none">
             {post?.likes?.includes(user?._id)

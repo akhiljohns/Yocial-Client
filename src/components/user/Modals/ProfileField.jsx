@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { getUser } from "../../../services/User/apiMethods";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 
 function ProfileField({ userId, follow, setTitle, closeModal }) {
   const navigate = useNavigate();
-
 
   const [user, setUser] = useState({});
   useEffect(() => {

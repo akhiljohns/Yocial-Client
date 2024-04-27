@@ -3,7 +3,6 @@ import Header from "../../../components/user/Header/Header";
 import { useSelector } from "react-redux";
 import { fetchSavedPosts } from "../../../services/User/apiMethods";
 import PostModal from "../../../components/user/Comments/PostModal";
-import { successToast } from "../../../hooks/toast";
 
 function SavedPosts() {
   const [savedPosts, setSavedPosts] = useState([]);
@@ -40,7 +39,7 @@ function SavedPosts() {
                   key={post?._id}
                   src={post?.image}
                   alt={post?.caption}
-                  className="w-full cursor-pointer"
+                  className="w-full"
                 />
               ))}
             </div>
