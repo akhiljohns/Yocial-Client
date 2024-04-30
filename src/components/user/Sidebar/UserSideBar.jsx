@@ -51,10 +51,18 @@ const UserSideBar = () => {
         >
           Search Users
         </button>
+        <button
+          onClick={() => {
+            navigate(`/chat`);
+          }}
+          className="py-2 px-4 my-2 w-40 bg-gray-900 text-white rounded hover:bg-blue-700"
+        >
+          Chat
+        </button>
       </div>
       {isModalOpen && (
         <CreatePostModal
-          isModalOpen={isModalOpen}
+          isModalOpen={isModalOpen} 
           setIsModalOpen={setIsModalOpen}
           type={"createPost"}
         />

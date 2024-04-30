@@ -10,13 +10,7 @@ function UserList({ userIds, closeModal }) {
       <ul className="my-4 space-y-3  cursor-pointer">
         {userIds?.map((id, index) => (
           <>
-            <ProfileField closeModal={closeModal} userId={id} key={index} />
-            <ProfileField closeModal={closeModal} userId={id} key={index} />
-            <ProfileField closeModal={closeModal} userId={id} key={index} />
-            <ProfileField closeModal={closeModal} userId={id} key={index} />
-            <ProfileField closeModal={closeModal} userId={id} key={index} />
-            <ProfileField closeModal={closeModal} userId={id} key={index} />
-            <ProfileField closeModal={closeModal} userId={id} key={index} />
+            <ProfileField closeModal={closeModal} userId={id} key={id} />
           </>
         ))}
       </ul>

@@ -19,7 +19,7 @@ import EditProfile from "../pages/User/EditProfile/EditProfile";
 import AuthEmail from "../components/user/EditProfile/AuthEmail";
 import SavedPosts from "../pages/User/SavedPosts/SavedPosts";
 import SearchUsers from "../pages/User/Search/SearchUsers";
-import FullPageWithRandomData from "../pages/User/Search/SearchUsers";
+import MessageBox from "../pages/User/Message/MessageBox";
 const AppRouter = () => {
   return (
     <Router>
@@ -39,6 +39,7 @@ const AppRouter = () => {
         <Route path="/savedposts" element={<SavedPosts />} />
         <Route path="/searchusers" element={<SearchUsers />} />
         <Route path="/auth/verify/:id/:token/:type" element={<AuthEmail />} />
+        <Route path="/chat" element={<MessageBox />} />
 
         <Route path="*" element={<Error />} />
         <Route

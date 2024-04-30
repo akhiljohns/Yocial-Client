@@ -12,6 +12,8 @@ const userSlice = createSlice({
     validUser: isValidUser,
     following: [],
     followers: [],
+    chatRooms: [],
+    currentRoom: currentRoom
   },
   reducers: {
     setReduxUser: (state, action) => {
