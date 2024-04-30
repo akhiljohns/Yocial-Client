@@ -8,7 +8,7 @@ import MessageIcn from "../../../components/user/Icons/MessageIcn";
 import { useNavigate } from "react-router-dom";
 import { setCurrentRoom } from "../../../utils/reducers/userReducer";
 import { BASE_URL } from "../../../const/url";
-
+import Header from "../../../components/user/Header/Header";
 function MessageBox() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -18,12 +18,6 @@ function MessageBox() {
   const isValid = useSelector((state) => state?.user?.validUser);
 
   const [reciever, setReciever] = useState();
-
-  useEffect(() => {
-    if (!isValid || !user) {
-      navigate("/login");
-    }
-  });
 
   useEffect(() => {
     if (reciever) {

@@ -1,30 +1,39 @@
-import React, { useEffect, useRef, useState } from 'react'
-import SendIcn from '../Icons/SendIcn'; 
-import { sendMessage } from '../../../services/User/apiMethods';
-import { useDispatch, useSelector } from 'react-redux';
-import EmojiPicker from 'emoji-picker-react';
-import { initFlowbite } from 'flowbite';
-import { updateCurrentRoom, updateReduxChatRoom } from '../../../utils/reducers/userReducer';
-import EmojiIcn from '../Icons/EmojiIcn';
-function TypeBox({chatRoom, setMessages, messages, recieverId, socket, setChatRoom}) {
-
-  const emojiRef = useRef()
+import React, { useEffect, useRef, useState } from "react";
+import SendIcn from "../Icons/SendIcn";
+import { sendMessage } from "../../../services/User/apiMethods";
+import { useDispatch, useSelector } from "react-redux";
+import EmojiPicker from "emoji-picker-react";
+import { initFlowbite } from "flowbite";
+import {
+  updateCurrentRoom,
+  updateReduxChatRoom,
+} from "../../../utils/reducers/userReducer";
+import EmojiIcn from "../Icons/EmojiIcn";
+function TypeBox({
+  chatRoom,
+  setMessages,
+  messages,
+  recieverId,
+  socket,
+  setChatRoom,
+}) {
+  const emojiRef = useRef();
   const emojiIcnRef = useRef();
-  const [error, setError] = useState('')
+  const [error, setError] = useState("");
 
   const dispatch = useDispatch();
 
-  useEffect(()=> {
-    initFlowbite()
-  })
+  useEffect(() => {
+    initFlowbite();
+  });
 
   const textRef = useRef();
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
 
-  const user = useSelector((state)=> state?.user?.userData);
-  
+  const user = useSelector((state) => state?.user?.userData);
+
   const sendNewMessage = () => {
-    if(!text){
+    if (!text) {
       return;
     }
 
@@ -33,59 +42,60 @@ function TypeBox({chatRoom, setMessages, messages, recieverId, socket, setChatRo
         .then((response) => {
           setMessages([...messages, response]);
 
+          socket.emit(
+            "sendMessage",
+            chatRoom?._id,
+            response,
+            user?._id,
+            (res) => {}
+          );
 
-          dispatch(updateReduxChatRoom(recieverId));// updating chat rooms in redux
+          dispatch(updateReduxChatRoom(recieverId)); // updating chat rooms in redux
           dispatch(updateCurrentRoom(response)); // updating current chat room in redux
-
-
-          socket.emit("sendMessage", chatRoom?._id, response, user?._id, (res)=> {
-          });
-          
         })
         .catch((err) => {
           setError(err);
-        }).finally(()=> {
+        })
+        .finally(() => {
           setText("");
           textRef.current.value = "";
-        })
+        });
     } catch (error) {
-      setError(error)
+      setError(error);
     }
   };
 
-
   const setEmoji = (emojiData) => {
-    setText((prev)=> prev+emojiData?.emoji);
+    setText((prev) => prev + emojiData?.emoji);
     textRef.current.value += emojiData.emoji;
-  }
+  };
 
   //Emoji management
   const toggleEmoji = () => {
     emojiRef.current.hidden = !emojiRef.current.hidden;
   };
-   const handleDocumentClick = (event) => {
-     if (
-       emojiRef.current &&
-       !emojiRef.current.contains(event.target) &&
-       emojiIcnRef.current &&
-       !emojiIcnRef.current.contains(event.target)
-     ) {
-       // Click occurred outside the emoji picker and emoji icon, so hide it
-       emojiRef.current.hidden = true;
-     }
-   };
+  const handleDocumentClick = (event) => {
+    if (
+      emojiRef.current &&
+      !emojiRef.current.contains(event.target) &&
+      emojiIcnRef.current &&
+      !emojiIcnRef.current.contains(event.target)
+    ) {
+      // Click occurred outside the emoji picker and emoji icon, so hide it
+      emojiRef.current.hidden = true;
+    }
+  };
   useEffect(() => {
     document.addEventListener("click", handleDocumentClick);
-
-  },[]);
-
-
-  
-
+  }, []);
 
   return (
     <>
-      <div className="absolute bottom-16 left-2 w-fit h-fit bg-white z-10 rounded-lg" hidden ref={emojiRef}>
+      <div
+        className="absolute bottom-16 left-2 w-fit h-fit bg-white z-10 rounded-lg"
+        hidden
+        ref={emojiRef}
+      >
         <EmojiPicker emojiStyle="telegram" onEmojiClick={setEmoji} />
       </div>
       <div className="w-full p-2 bg-transparent h-12 rounded-full ml- mr-auto flex items-center gap-3 border-2 border-white">
@@ -97,7 +107,6 @@ function TypeBox({chatRoom, setMessages, messages, recieverId, socket, setChatRo
           <EmojiIcn size={{ width: 40, height: 40 }} />
         </button>
 
-
         <input
           ref={textRef}
           type="text"
@@ -107,7 +116,9 @@ function TypeBox({chatRoom, setMessages, messages, recieverId, socket, setChatRo
             setText(e.target.value.trim());
             // socket.emit("typing", true, user?._id, (res) => {});
           }}
-          onBlur={()=>{socket.emit("typing", false, (res) => {})}}
+          onBlur={() => {
+            socket.emit("typing", false, (res) => {});
+          }}
         />
         {text ? (
           <div
@@ -156,4 +167,4 @@ function TypeBox({chatRoom, setMessages, messages, recieverId, socket, setChatRo
   );
 }
 
-export default TypeBox
+export default TypeBox;

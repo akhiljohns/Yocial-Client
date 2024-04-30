@@ -17,6 +17,7 @@ function ChatUser({userId, doFunction}) {
     const [time, setTime] = useState();
 
     useEffect(()=> {
+      console.log(userId,"jfjfjfj")
       getRoomWithIds(userId, currentUser?._id).then((response) =>{
         setRoom(response);
         if(response?.lastMessage && response?.lastMessageTime){
@@ -72,8 +73,8 @@ function ChatUser({userId, doFunction}) {
           name={user?.name}
           styleProp={"font-poppins font-semi-bold"}
         />
-        <div className="text-sm text-gray-700 gap-5 flex items-center max-w-full">
-          <span className=" max-w-[6rem] truncate overflow-clip">
+        <div className="text-sm text-black gap-5 flex items-center max-w-full">
+          <span className="max-w-[6rem] truncate overflow-clip">
             {room?.lastMessage}
           </span>{" "}
           <span className="text-xs absolute bottom-1 right-3">{time}</span>
