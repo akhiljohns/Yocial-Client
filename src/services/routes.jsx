@@ -20,6 +20,8 @@ import MessageBox from "../pages/User/Message/MessageBox";
 import AdminLogin from "../pages/Admin/Login/AdminLogin";
 import AdminHome from "../pages/Admin/Home/AdminHome";
 import AdminProtect from "../components/Protect/AdminProtect";
+import AdminUsers from "../pages/Admin/Users/AdminUsers";
+
 
 const AppRouter = () => {
   return (
