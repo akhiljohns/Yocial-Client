@@ -13,6 +13,7 @@ import Profile from "../pages/User/Profile/Profile";
 import AdminLogin from "../pages/Admin/Login/AdminLogin";
 import AdminHome from "../pages/Admin/Home/AdminHome";
 import AdminProtect from "../components/Protect/AdminProtect";
+import AdminUsers from "../pages/Admin/Users/AdminUsers";
 
 const AppRouter = () => {
   return (
@@ -39,14 +40,8 @@ const AppRouter = () => {
         />
 
         <Route path="/admin/login" element={<AdminLogin />} />
-        <Route
-          path="/admin/home"
-          element={
-            <AdminProtect>
-              <AdminHome />
-            </AdminProtect>
-          }
-        />
+        <Route path="/admin/users" element={<AdminUsers />} />
+        <Route path="/admin/home"  element={<AdminProtect> <AdminHome /> </AdminProtect>}/>
       </Routes>
     </Router>
   );
