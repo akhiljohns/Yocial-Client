@@ -10,6 +10,11 @@ import Register from "../pages/User/Register/Register";
 import UserHome from "../pages/User/Home/Home";
 import Protect from "../components/Protect/UserProtect";
 import Profile from "../pages/User/Profile/Profile";
+import EditProfile from "../pages/User/EditProfile/EditProfile";
+import AuthEmail from "../components/user/EditProfile/AuthEmail";
+import SavedPosts from "../pages/User/SavedPosts/SavedPosts";
+import SearchUsers from "../pages/User/Search/SearchUsers";
+import MessageBox from "../pages/User/Message/MessageBox";
 
 /////////////////////////ADMIN PAGES/////////////////////////
 import AdminLogin from "../pages/Admin/Login/AdminLogin";
