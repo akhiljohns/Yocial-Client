@@ -111,7 +111,7 @@ function TypeBox({
           ref={textRef}
           type="text"
           placeholder="Type something ..."
-          className="w-full h-full rounded-full bg-transparent text-white placeholder-slate-300 focus:ring-0 border-0 focus:border-none"
+          className="w-full h-full rounded-full bg-transparent text-white hover:bg-transparent focus:bg-transparent placeholder-slate-300 focus:ring-0 border-0 focus:border-none"
           onChange={(e) => {
             setText(e.target.value.trim());
             // socket.emit("typing", true, user?._id, (res) => {});
