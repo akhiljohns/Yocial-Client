@@ -134,10 +134,10 @@ export const getUserReports = (perPage, search, page) => {
 // @desc    Fetch posts with pagination and populated user
 // @route   GET /admin/fetch-posts
 // @access  Admins
-export const fetchPosts = (page, perPage, search) => {
+export const fetchPosts = (currentPage, perPage) => {
   return new Promise((resolve, reject) => {
     try {
-      const url = `${adminUrl.fetchPosts}?perPage=${perPage}&search=${search}&page=${page}`;
+      const url = `${adminUrl.fetchPosts}?perPage=${perPage}&page=${currentPage}`;
       adminApiCalls("get", url)
         .then((response) => {
           resolve(response);
