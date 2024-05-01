@@ -58,7 +58,7 @@ function ChatBox({reciever, chatRoom, setChatRoom}) {
 
   return (
     <>
-      <div className="w-full h-[47rem] bg- opacity-90 md:h-full rounded-lg relative flex flex-col md:border-white md:border-2">
+      <div className="w-full h-[47rem] opacity-90 md:h-full rounded-lg relative flex flex-col md:border-white md:border-2">
         <div className="flex bg-black w-full h-16 rounded-t-lg items-center px-5 gap-5">
           <ProfilePic
             image={reciever?.profilePic}

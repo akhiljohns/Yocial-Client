@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import { setCurrentRoom } from "../../../utils/reducers/userReducer";
 import { BASE_URL } from "../../../const/url";
 import Header from "../../../components/user/Header/Header";
+import UserSideBar from "../../../components/user/Sidebar/UserSideBar";
 function MessageBox() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -44,7 +45,9 @@ function MessageBox() {
 
   return (
     <>
-      <div className="w-full h-[100vh] hidden p-5 md:flex gap-6">
+    <Header/>
+    <UserSideBar/>
+      <div className="fixed z-50 w-[88vw] ml-[12vw] mt-[10vh] h-[90vh] hidden p-5 md:flex gap-6">
         <ChatList setReciever={setReciever} />
         {chatRoom && reciever ? (
           <ChatBox
