@@ -17,7 +17,6 @@ function ChatUser({userId, doFunction}) {
     const [time, setTime] = useState();
 
     useEffect(()=> {
-      console.log(userId,"jfjfjfj")
       getRoomWithIds(userId, currentUser?._id).then((response) =>{
         setRoom(response);
         if(response?.lastMessage && response?.lastMessageTime){
