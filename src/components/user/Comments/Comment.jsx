@@ -2,7 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import Replies from "./Replies";
 import { timeAgo } from "../../../hooks/timeCalculator";
 import { getReplies, replyToComment } from "../../../services/User/apiMethods";
-function Comment({postId,
+function Comment({
+  postId,
   comment,
   userId,
   setDelCommentDetails,
@@ -11,7 +12,7 @@ function Comment({postId,
   const [error, setError] = useState();
   const [reply, setReply] = useState(null);
   const [replies, setReplies] = useState([]);
-  const replyText = useRef()
+  const replyText = useRef();
 
   useEffect(() => {
     getReplies(comment?._id)
@@ -23,28 +24,28 @@ function Comment({postId,
       });
   }, [comment]);
 
-
   const addReply = () => {
-
-    if(!reply){
+    if (!reply) {
       return false;
     }
 
     const replyData = {
       content: reply,
-      userId:userId,
+      userId: userId,
       postId: postId,
-      commentId: comment._id
+      commentId: comment._id,
     };
 
-    replyToComment(replyData).then((response)=> {
-      setReplies((prev)=> [response, ...prev]);
-      setReply(null)
-      replyText.current.value = '';
-    }).catch((error)=> {
-      setError(error?.message)
-    })
-  }
+    replyToComment(replyData)
+      .then((response) => {
+        setReplies((prev) => [response, ...prev]);
+        setReply(null);
+        replyText.current.value = "";
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
 
   return (
     <div
@@ -59,44 +60,46 @@ function Comment({postId,
           <h1 className="text-[90%] inline font-bold break-words">
             {comment?.content}
           </h1>
-          <h2 className="text-[50%] opacity-60">
-            {timeAgo(new Date(comment?.createdAt))}
-          </h2>
+          <div className="flex items-center">
+            {" "}
+            {/* Wrap reply button and time ago text in a flex container */}
+            <button
+              className="inline text-[50%] opacity-100 font-bold"
+              onClick={() => {
+                const replyInput = document.getElementById(
+                  `replyInput-${comment._id}`
+                );
+                if (replyInput) {
+                  replyInput.classList.toggle("hidden");
+                }
+              }}
+            >
+              Reply
+            </button>
+            <h2 className="text-[50%] opacity-60 ml-2">
+              {" "}
+              {/* Move time ago text to the right */}
+              {timeAgo(new Date(comment?.createdAt))}
+            </h2>
+          </div>
+          <div id={`replyInput-${comment._id}`} className="hidden mt-2">
+            <input
+              onChange={(e) => setReply(e.target.value)}
+              type="text"
+              ref={replyText}
+              placeholder="Write a reply..."
+              className="border border-gray-300 px-2 py-1 w-full"
+            />
+            <button
+              onClick={addReply}
+              className="bg-blue-500 text-white px-3 py-1 rounded ml-2"
+            >
+              Post Reply
+            </button>
+          </div>
+          {replies && replies.length >= 1 && <Replies replies={replies} />}
         </div>
-        {/* Reply Button */}
-        <button
-          onClick={() => {
-            // Toggle visibility of reply input box
-            const replyInput = document.getElementById(
-              `replyInput-${comment._id}`
-            );
-            if (replyInput) {
-              replyInput.classList.toggle("hidden");
-            }
-          }}
-          className="text-gray-400 hover:text-blue-600 ml-2"
-        >
-          Reply
-        </button>
-        {/* Reply Input Box */}
-        <div id={`replyInput-${comment._id}`} className="hidden mt-2">
-          <input
-            onChange={(e) => setReply(e.target.value)}
-            type="text"
-            ref={replyText}
-            placeholder="Write a reply..."
-            className="border border-gray-300 px-2 py-1 w-full"
-          />
-          <button 
-          onClick={addReply}
-          className="bg-blue-500 text-white px-3 py-1 rounded ml-2">
-            Post Reply
-          </button>
-        </div>
-        {/* Render Replies */}
-        {replies && replies.length >= 1 && <Replies replies={replies} />}
       </div>
-      {/* Delete Icon/Button */}
       {userId === comment?.userId?._id && (
         <button
           onClick={() => {

@@ -26,8 +26,6 @@ const PostModal = ({
   useEffect(() => {
     fetchComments(post?._id, "comments").then((response) => {
       setPostComments(response);
-      console.log("response :>> ", response);
-      console.log("response[0].parentId :>> ", response[0].postId);
     });
   }, [post._id]);
 
@@ -57,7 +55,6 @@ const PostModal = ({
         setNewComment("");
       })
       .catch((error) => {
-        console.log(error);
         errorToast("Failed to add comment");
       });
   };
