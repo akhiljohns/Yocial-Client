@@ -8,7 +8,7 @@ import AdminHeader from "../../../components/admin/Header/AdminHeader";
 import AdminSideBar from "../../../components/admin/Sidebar/AdminSideBar";
 
 
-const AdminHome = () => {
+const AdminUsers = () => {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [error, setError] = useState("");
@@ -85,11 +85,41 @@ const AdminHome = () => {
       <AdminHeader choice={"profile"}/>
       <AdminSideBar/>
     <div className="flex items-center justify-center h-screen">
-    <h1 className="text-white">WELCOME TO ADMIN DASHBOARD</h1>
+      <div className="w-full max-w-4xl">
+        <div className="main-box bg-white p-6 rounded shadow-md">
+          <div className="table-responsive">
+            <table className="table user-list w-full">
+              <thead>
+                <tr>
+                  <th className="py-2">
+                    <span>Name</span>
+                  </th>
+                  <th className="py-2">
+                    <span>Username</span>
+                  </th>
+                  <th className="text-center py-2">
+                    <span>Email Status</span>
+                  </th>
+                  <th className="py-2">
+                    <span>Email</span>
+                  </th>
+                  <th className="py-2">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <UserRow key={user._id} user={user} />
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <ToastContainer />
     </div>
     </>
 
   );
 };
 
-export default AdminHome;
+export default AdminUsers;
