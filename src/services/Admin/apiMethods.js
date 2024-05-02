@@ -151,6 +151,25 @@ export const fetchPosts = (currentPage, perPage) => {
     }
   });
 };
+// @desc    Fetch comment count for single posts
+// @route   GET /admin/fetch-comment-count
+// @access  Admins
+export const fetchCommentCount = (postId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = adminUrl.fetchCommentCount(postId);
+      adminApiCalls("get", url)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 
 // @desc    Block a Post
 // @route   PATCH /admin/post/block/:postId

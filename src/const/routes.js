@@ -67,6 +67,9 @@ export const adminUrl = {
 
   //block a post
   blockPost: (postId) => `/admin/post/block/${postId}`,
+
+  // fetch single posts comment count
+  fetchCommentCount: (postId) => `/admin/fetch-comment-count/${postId}`,
 };
 
 export const postUrl = {
@@ -113,7 +116,8 @@ export const authUrl = {
 
   sendMail: "/auth/send-verification",
   updateEmail: "/auth/update/email",
-  verifyEmail: ({ id, token ,type }) => `/auth/change-email/${id}/${token}/${type}`,
+  verifyEmail: ({ id, token, type }) =>
+    `/auth/change-email/${id}/${token}/${type}`,
 };
 
 export const messageUrl = {

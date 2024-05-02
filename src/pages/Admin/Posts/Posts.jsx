@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import AdminHeader from "../../../components/admin/Header/AdminHeader";
 import AdminSideBar from "../../../components/admin/Sidebar/AdminSideBar";
 import { fetchPosts } from "../../../services/Admin/apiMethods";
-
+import PostsRow from "./PostsRow";
+import { errorToast } from "../../../hooks/toast";
 const AdminPosts = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage] = useState(10); // Number of posts per page
 
   useEffect(() => {
-    console.log('hi :>> ',);
     fetchPosts(currentPage, perPage) // Fetch posts with pagination parameters
       .then((response) => {
         setPosts(response.posts);
@@ -72,24 +72,8 @@ const AdminPosts = () => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {posts.map((post,index) => (
-                  <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <img src={post.image} alt="Post" className="h-16 w-16" />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {post.userId.username}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {post.caption}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {post.likes.length}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {post.blocked}
-                    </td>
-                  </tr>
+                {posts.map((post, index) => (
+                  <PostsRow post={post} key={index} />
                 ))}
               </tbody>
             </table>
