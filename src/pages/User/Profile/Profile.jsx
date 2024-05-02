@@ -23,6 +23,7 @@ const Profile = () => {
   const [following, setFollowing] = useState(0);
   const [listModal, setListModal] = useState(false);
   const [usersList, setUsersList] = useState([]);
+  const [listType, setListType] = useState('');
   const { username } = useParams();
 
   const [imageSrc, setImageSrc] = useState("");
@@ -117,12 +118,14 @@ const Profile = () => {
         return;
       }
       setUsersList(followers);
+      setListType('Followers')
       setListModal(true);
     } else if (type === "following") {
       if (following.length == []) {
         return;
       }
       setUsersList(following);
+      setListType('Following')
       setListModal(true);
     }
   };
@@ -248,7 +251,7 @@ const Profile = () => {
 
       {listModal && (
         <UserListsModal
-          type={"Followers"}
+          type={listType}
           userIds={usersList}
           toggleModal={toggleConnectionModal}
         />
