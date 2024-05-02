@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { fetchCommentCount } from "../../../services/Admin/apiMethods";
 
-function PostsRow({ post, key }) {
+function PostsRow({ post, index }) {
   const [commentCount, setCommentCount] = useState(0);
 
   useEffect(() => {
@@ -13,7 +13,7 @@ function PostsRow({ post, key }) {
   }, [post]);
   return (
     <>
-      <tr key={post._id}>
+      <tr key={index}>
         <td className="px-6 py-4 whitespace-nowrap">
           <img src={post.image} alt="Post" className="h-16 w-16" />
         </td>
