@@ -7,14 +7,16 @@ import { errorToast } from "../../../hooks/toast";
 const AdminPosts = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [perPage] = useState(10); // Number of posts per page
+  const [perPage] = useState(5); // Number of posts per page
 
   useEffect(() => {
     fetchPosts(currentPage, perPage) // Fetch posts with pagination parameters
       .then((response) => {
+        console.log('response 232323:>> ', response);
         setPosts(response.posts);
       })
       .catch((error) => {
+        console.log('errrr 232323:>> ',error);
         errorToast(error);
       });
   }, [currentPage, perPage]);

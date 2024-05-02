@@ -3,13 +3,16 @@ import { fetchCommentCount } from "../../../services/Admin/apiMethods";
 
 function PostsRow({ post, index }) {
   const [commentCount, setCommentCount] = useState(0);
-
+  
   useEffect(() => {
     fetchCommentCount(post?._id)
       .then((response) => {
+        console.log('response :>> ', response);
         setCommentCount(response.commentCount);
       })
-      .catch((error) => {});
+      .catch((error) => {
+        console.log('error :>> ', error);
+      });
   }, [post]);
   return (
     <>
