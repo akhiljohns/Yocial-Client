@@ -12,11 +12,9 @@ const AdminPosts = () => {
   useEffect(() => {
     fetchPosts(currentPage, perPage) // Fetch posts with pagination parameters
       .then((response) => {
-        console.log('response 232323:>> ', response);
         setPosts(response.posts);
       })
       .catch((error) => {
-        console.log('errrr 232323:>> ',error);
         errorToast(error);
       });
   }, [currentPage, perPage]);
