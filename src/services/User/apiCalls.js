@@ -51,6 +51,7 @@ export const apiCall = async (method, url, data) => {
             error?.response?.data?.error_code === "FORBIDDEN_LOGIN" ||
             "Unauthorized_verify"
           ) {
+            // clearUser()
             reject(error.response.data);
           }
         } else if (error?.response?.status === 401) {
