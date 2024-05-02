@@ -12,14 +12,14 @@ function ConnectionBtn({user, color, width, height, setFollowers}) {
     //   }
     // }, [user, currentUser]);
 
-    const [following, setFollowing] = useState([])
+    const [following, setFollowing] = useState([]);
     const [error, setError] = useState('')
     useEffect(() => {
     }, [error]);
 
     useEffect(()=> {
         getConnections(currentUser?._id).then((connection)=>{
-            setFollowing(connection.connection.following);
+          setFollowing(connection.connection.following || []);
         }).catch((error)=>{
             setError(error?.message);
         })
@@ -48,7 +48,7 @@ function ConnectionBtn({user, color, width, height, setFollowers}) {
   return (
     <>
       {
-        !following?.includes(user?._id) ? (
+      !following || !following.includes(user?._id) ? (
           <button
             className={`w-${width || 36} h-${height || 9} rounded-lg bg-${
               color || "black"
