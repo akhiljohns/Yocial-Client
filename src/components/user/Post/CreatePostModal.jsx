@@ -66,7 +66,7 @@ function CreatePostModal({
         dispatch(addNewPost(response?.post));
       } else {
         editPostCaption(response?.post?._id, response?.post?.caption);
-        dispatch(editUserPost(response?.post));
+        // dispatch(editUserPost(response?.post));
       }
       successToast(response.message);
       clearComponent();
