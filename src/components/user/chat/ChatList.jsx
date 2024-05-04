@@ -1,10 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ChatUser from "./ChatUser";
-import {
-  getConnections,
-  getRoomWithUserID,
-} from "../../../services/User/apiMethods";
+import { getConnections, getRoomWithUserID } from "../../../services/User/apiMethods";
 import { initFlowbite } from "flowbite";
 import { useNavigate } from "react-router-dom";
 import { setReduxChatRoom } from "../../../utils/reducers/userReducer";
@@ -19,19 +16,18 @@ function ChatList({ setReciever }) {
   const modalDiv = useRef();
 
   const [list, setList] = useState([]);
-  //fetching rooms and setting it in redux state chat rooms
+  
+  // Fetching rooms and setting it in redux state chat rooms
   useEffect(() => {
     try {
       getRoomWithUserID(user?._id)
         .then((rooms) => {
-          const newList = rooms.reduce((acc, curr) => {
-            const users = curr.users;
-            const otherUser = users.filter((id) => id !== user?._id);
-            return acc.concat(otherUser);
-          }, []);
-
-          // setList(newList);
-          dispatch(setReduxChatRoom(newList));
+          const newList = rooms.map(room => ({
+            userId: room.users.find(id => id !== user?._id),
+            lastMessageTime: room.lastMessageTime
+          }));
+          setList(newList);
+          dispatch(setReduxChatRoom(newList.map(item => item.userId)));
         })
         .catch((err) => {
           setError(err);
@@ -41,14 +37,7 @@ function ChatList({ setReciever }) {
     }
   }, [user, dispatch]);
 
-  // setting up the chat room in redux state(only user ids are )
-  useEffect(() => {
-    if (reduxChatRoom) {
-      setList(reduxChatRoom);
-    }
-  }, [reduxChatRoom]);
-
-  //getting connections to show the people user following
+  // Getting connections to show the people user following
   useEffect(() => {
     initFlowbite();
     try {
@@ -66,10 +55,13 @@ function ChatList({ setReciever }) {
     }
   }, [user]);
 
-  // to close a modal
+  // To close a modal
   const closeModal = () => {
     modalDiv.current.click();
   };
+
+  // Sorting the list based on the latest message time
+  const sortedList = list.sort((a, b) => new Date(b.lastMessageTime) - new Date(a.lastMessageTime));
 
   return (
     <>
@@ -85,23 +77,19 @@ function ChatList({ setReciever }) {
             +
           </button>
         </div>
-        {list?.length > 0
-          ? list.map((userId, index) => {
-              return (
-                <ChatUser
-                  key={userId}
-                  userId={userId}
-                  doFunction={setReciever}
-                />
-              );
-            })
+        {sortedList?.length > 0
+          ? sortedList.map(({ userId }) => (
+              <ChatUser
+                key={userId}
+                userId={userId}
+                doFunction={setReciever}
+              />
+            ))
           : null}
       </div>
 
       <div
         id="followers"
-        // tabIndex="-1"
-        // aria-hidden="true"
         className="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
       >
         <div className="relative w-full max-w-2xl max-h-full">
@@ -136,19 +124,17 @@ function ChatList({ setReciever }) {
             </div>
             <div className="p-6 space-y-6">
               {following ? (
-                following.map((userId, index) => {
-                  return (
-                    <div onClick={closeModal} key={userId}>
-                      <ChatUser
-                        key={userId}
-                        doFunction={setReciever}
-                        userId={userId}
-                      />
-                    </div>
-                  );
-                })
+                following.map((userId) => (
+                  <div onClick={closeModal} key={userId}>
+                    <ChatUser
+                      key={userId}
+                      doFunction={setReciever}
+                      userId={userId}
+                    />
+                  </div>
+                ))
               ) : (
-                <span>You not following anyone</span>
+                <span>You are not following anyone</span>
               )}
             </div>
           </div>
