@@ -17,6 +17,8 @@ function TypeBox({
   recieverId,
   socket,
   setChatRoom,
+  setIsModalOpen,
+  isModalOpen
 }) {
   const emojiRef = useRef();
   const emojiIcnRef = useRef();
@@ -132,11 +134,8 @@ function TypeBox({
           </div>
         ) : (
           <div className="w-9 h-9 aspect-square bg-white flex justify-center items-center rounded-full relative">
-            <input
-              type="file"
-              name="image"
-              id="image"
-              accept="image/jpeg, image/png, image/webp, image/jpg"
+            <button
+              onClick={() => setIsModalOpen(!isModalOpen)}
               className="inset-0 w-full h-full absolute opacity-0"
             />
             <TypeBoxSVG />

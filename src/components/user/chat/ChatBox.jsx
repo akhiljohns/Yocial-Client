@@ -10,7 +10,7 @@ import { io }  from 'socket.io-client'
 import MessageArea from './MessageArea'
 import { BASE_URL } from '../../../const/url'
 
-function ChatBox({reciever, chatRoom, setChatRoom}) {
+function ChatBox({reciever, chatRoom, setChatRoom,setIsModalOpen,isModalOpen}) {
 
     const user = useSelector((state)=>state?.user?.userData);
 
@@ -93,6 +93,8 @@ function ChatBox({reciever, chatRoom, setChatRoom}) {
             setMessages={setMessages}
             socket={socket}
             setChatRoom={setChatRoom}
+            setIsModalOpen={setIsModalOpen}
+            isModalOpen={isModalOpen}
           />
         </div>
       </div>

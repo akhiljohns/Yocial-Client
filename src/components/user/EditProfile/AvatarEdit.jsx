@@ -17,7 +17,7 @@ function Avatar() {
         <CreatePostModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
-          type={"avatar"}
+          type={"avatar"} 
           userProfilePic={userData?.profilePic}
           imagePreview={false}
         />

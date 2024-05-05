@@ -10,6 +10,7 @@ import { setCurrentRoom } from "../../../utils/reducers/userReducer";
 import { BASE_URL } from "../../../const/url";
 import Header from "../../../components/user/Header/Header";
 import UserSideBar from "../../../components/user/Sidebar/UserSideBar";
+import CreatePostModal from "../../../components/user/Post/CreatePostModal";
 function MessageBox() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ function MessageBox() {
   const [chatRoom, setChatRoom] = useState();
   const user = useSelector((state) => state?.user?.userData);
   const isValid = useSelector((state) => state?.user?.validUser);
-
+  const [isModalOpen, setIsModalOpen] = useState(true);
   const [reciever, setReciever] = useState();
 
   useEffect(() => {
@@ -45,8 +46,8 @@ function MessageBox() {
 
   return (
     <>
-    <Header/>
-    <UserSideBar/>
+      <Header />
+      <UserSideBar />
       <div className="fixed z-50 w-[88vw] ml-[12vw] mt-[10vh] h-[90vh] hidden p-5 md:flex gap-6">
         <ChatList setReciever={setReciever} />
         {chatRoom && reciever ? (
@@ -54,6 +55,8 @@ function MessageBox() {
             reciever={reciever}
             chatRoom={chatRoom}
             setChatRoom={setChatRoom}
+            setIsModalOpen={setIsModalOpen}
+            isModalOpen={isModalOpen}
           />
         ) : (
           <div className="w-full h-full flex border-2 border-white rounded-lg flex-col justify-center items-center gap-3">
@@ -73,9 +76,24 @@ function MessageBox() {
             reciever={reciever}
             chatRoom={chatRoom}
             setChatRoom={setChatRoom}
+            setIsModalOpen={setIsModalOpen}
+            isModalOpen={isModalOpen}
+
           />
         ) : (
           <ChatList setReciever={setReciever} />
+        )}
+      </div>
+
+      <div className="">
+        {isModalOpen && (
+          <CreatePostModal
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            type={"chatimage"}
+            userProfilePic={user?.profilePic}
+            imagePreview={false}
+          />
         )}
       </div>
     </>

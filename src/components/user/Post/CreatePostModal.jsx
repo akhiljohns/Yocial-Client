@@ -165,7 +165,7 @@ function CreatePostModal({
       isOpen={isModalOpen}
       onRequestClose={closeModal}
       className="flex items-center justify-center"
-      overlayClassName="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm transition-opacity"
+      overlayClassName="fixed inset-0 bg-black bg-opacity-25  backdrop-blur-sm transition-opacity"
       style={{
         overlay: {
           display: "flex",
@@ -203,7 +203,7 @@ function CreatePostModal({
           setImageFilterActive={setImageFilterActive}
         />
       )}
-      <div className="p-6 text-center">
+      <div className="p-6text-center">
         <h2 className="text-2xl font-bold text-gray-800 mb-4">
           {type === "editPost"
             ? "Edit Post"
