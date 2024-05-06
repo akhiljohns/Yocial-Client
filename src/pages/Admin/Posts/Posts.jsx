@@ -2,22 +2,26 @@ import React, { useEffect, useState } from "react";
 import AdminHeader from "../../../components/admin/Header/AdminHeader";
 import AdminSideBar from "../../../components/admin/Sidebar/AdminSideBar";
 import { fetchPosts } from "../../../services/Admin/apiMethods";
+import PostsRow from "./PostsRow";
+import { errorToast } from "../../../hooks/toast";
 
 const AdminPosts = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [perPage] = useState(10); // Number of posts per page
+  const [perPage] = useState(5); // Number of posts per page
+  const [sortBy, setSortBy] = useState(""); // Sorting option
+  const [filterBy, setFilterBy] = useState(""); // Filtering option
+  const [searchQuery, setSearchQuery] = useState(""); // Search query
 
   useEffect(() => {
-    console.log('hi :>> ',);
-    fetchPosts(currentPage, perPage) // Fetch posts with pagination parameters
+    fetchPosts(currentPage, perPage)
       .then((response) => {
         setPosts(response.posts);
       })
       .catch((error) => {
         errorToast(error);
       });
-  }, [currentPage, perPage]);
+  }, [currentPage, perPage, sortBy, filterBy, searchQuery]);
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
@@ -27,16 +31,51 @@ const AdminPosts = () => {
     setCurrentPage(currentPage - 1);
   };
 
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
+  };
+
+  const getSortedPosts = () => {
+    let sortedPosts = [...posts];
+    if (sortBy === "date") {
+      sortedPosts.sort((a, b) => (a.date > b.date ? 1 : -1));
+    } else if (sortBy === "likes") {
+      sortedPosts.sort((a, b) => b.likes?.length - a.likes?.length);
+    } else if (sortBy === "comments") {
+      sortedPosts.sort(
+        (a, b) => b.commentCount.commentCount - a.commentCount.commentCount
+      );
+    }
+    return sortedPosts;
+  };
+
   return (
     <>
-      {" "}
       <AdminHeader />
       <AdminSideBar />
-      <div className="flex">
-        <div className="flex-grow">
+      <div className="flex justify-center">
+        <div className="w-[87%] ml-[13vw] mt-[4vh] ">
           <h1 className="text-3xl font-semibold mb-4">All Posts</h1>
-          <div className="overflow-x-auto]">
-            <table className="mt-[4.9vh] ml-[13vw] w-[87vw] divide-y divide-gray-200">
+          <div className="flex items-center justify-center  gap-2 mb-4">
+            <select
+              value={sortBy}
+              onChange={handleSortChange}
+              className="border rounded-md px-2 py-1"
+            >
+              <option value="">Sort By</option>
+              <option value="date">Date</option>
+              <option value="likes">Likes</option>
+              <option value="comments">Comments</option>
+            </select>
+            <input
+              type="text"
+              value={searchQuery}
+              placeholder="Search..."
+              className="border rounded-md px-2 py-1"
+            />
+          </div>
+          <div className="">
+            <table className="w-[100%] divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
                   <th
@@ -69,27 +108,17 @@ const AdminPosts = () => {
                   >
                     Comment Count
                   </th>
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Posted Date
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {posts.map((post,index) => (
-                  <tr key={index}>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <img src={post.image} alt="Post" className="h-16 w-16" />
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {post.userId.username}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {post.caption}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {post.likes.length}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      {post.blocked}
-                    </td>
-                  </tr>
+                {getSortedPosts().map((post, index) => (
+                  <PostsRow post={post} key={index} />
                 ))}
               </tbody>
             </table>
@@ -97,13 +126,14 @@ const AdminPosts = () => {
           <div className="flex justify-between mt-4">
             <button
               onClick={handlePrevPage}
-              className="bg-blue-500 text-white px-4 py-2 ml-[13.5%] rounded-md mr-2"
+              disabled={currentPage === 1}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
             >
               Previous
             </button>
             <button
               onClick={handleNextPage}
-              className="bg-blue-500 text-white px-4 mr-[1%] py-2 rounded-md"
+              className="bg-blue-500 text-white px-4 py-2 rounded-md"
             >
               Next
             </button>

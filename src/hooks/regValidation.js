@@ -1,4 +1,4 @@
-const checkEmail = (email) => {
+export const checkEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   return emailRegex.test(email);
@@ -52,14 +52,21 @@ export const regValidate = async ({
   password,
   password2,
   setErr,
-  
 }) => {
   return new Promise(async (resolve, reject) => {
     try {
+      // Check for whitespaces in password
+      if (/\s/.test(password)) {
+        setErr("Password should not contain whitespaces");
+        resolve(false);
+        return;
+      }
+
       const empty = checkEmpty(email, username, password, fName, lName);
       if (!empty.flag) {
         setErr(empty.setErr);
         resolve(false);
+        return;
       }
 
       let flag = false;
@@ -94,4 +101,58 @@ export const regValidate = async ({
       resolve(false);
     }
   });
+};
+
+export const passwordValidate = (
+  passwordValue,
+  setErr,
+  setPoorPassword,
+  setWeakPassword,
+  setStrongPassword
+) => {
+  const passwordLength = passwordValue.length;
+  const poorRegExp = /[a-z]/;
+  const weakRegExp = /(?=.*?[0-9])/;
+  const strongRegExp = /(?=.*?[#?!@$%^&*-])/;
+  const whitespaceRegExp = /^$|\s+/;
+  const poorPassword = poorRegExp.test(passwordValue);
+  const weakPassword = weakRegExp.test(passwordValue);
+  const strongPassword = strongRegExp.test(passwordValue);
+  const whiteSpace = whitespaceRegExp.test(passwordValue);
+
+  if (passwordValue === "") {
+    setErr("Password is Empty");
+  } else {
+    // to check whitespace
+    if (whiteSpace) {
+      setErr("Whitespaces are not allowed");
+      return;
+    }
+    // to check poor password
+    if (
+      passwordLength <= 3 &&
+      (poorPassword || weakPassword || strongPassword)
+    ) {
+      setPoorPassword(true);
+      setErr("Poor");
+    }
+    // to check weak password
+    if (
+      passwordLength >= 4 &&
+      poorPassword &&
+      (weakPassword || strongPassword)
+    ) {
+      setWeakPassword(true);
+      setErr("Weak");
+    } else {
+      setWeakPassword(false);
+    }
+    // to check strong Password
+    if (passwordLength >= 6 && poorPassword && weakPassword && strongPassword) {
+      setStrongPassword(true);
+      setErr("Strong");
+    } else {
+      setStrongPassword(false);
+    }
+  }
 };

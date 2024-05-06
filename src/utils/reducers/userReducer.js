@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { userAuth } from "../../const/localStorage";
+import { refreshToken, userAuth } from "../../const/localStorage";
 import { authUrl } from "../../const/routes";
 import { apiCall } from "../../services/User/apiCalls";
 
@@ -12,6 +12,8 @@ const userSlice = createSlice({
     validUser: isValidUser,
     following: [],
     followers: [],
+    chatRooms: [],
+    currentRoom: currentRoom
   },
   reducers: {
     setReduxUser: (state, action) => {
@@ -26,12 +28,28 @@ const userSlice = createSlice({
       state.validUser = false;
       localStorage.removeItem(userAuth);
     },
+    updateSavedPosts: (state, action) => {
+      if (state?.userData?.savedPosts?.includes(action.payload)) {
+        state.userData.savedPosts = state.userData.savedPosts.filter(
+          (postId) => postId !== action.payload
+        );
+      } else {
+        state.userData.savedPosts.push(action.payload);
+      }
+    },
     setFollowing: (state, action) => {
       state.following = action.payload;
     },
 
     setFollowers: (state, action) => {
       state.followers = action.payload;
+    },
+
+    logOut: (state, action) => {
+      state.userData = null;
+      state.validUser = false;
+      localStorage.removeItem(userAuth);
+      localStorage.removeItem(refreshToken);
     },
   },
 });
@@ -76,6 +94,8 @@ export const {
   updateCurrentRoom,
   setFollowing,
   setFollowers,
+  updateSavedPosts,
+  logOut,
 } = userSlice.actions;
 
 export default userSlice.reducer;

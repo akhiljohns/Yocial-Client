@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import {
+  fetchUserDetails,
   getConnections,
   postLogin,
   postMail,
@@ -14,6 +15,8 @@ import {
   setReduxUser,
 } from "../../../utils/reducers/userReducer";
 import { Spinner } from "flowbite-react";
+import { successToast } from "../../../hooks/toast";
+import { setUserPosts } from "../../../utils/reducers/postReducer";
 
 function Login() {
   const navigate = useNavigate();
@@ -30,7 +33,7 @@ function Login() {
     if (user && userData) {
       navigate("/");
     }
-  }, [navigate]);
+  }, [user, userData, navigate]);
 
   const setCredentials = () => {
     if (!credential) {
@@ -66,7 +69,7 @@ function Login() {
     postMail(userData).then((response) => {
       setLoading(false);
 
-      alert(response.message);
+      successToast(response.message);
       window.location.reload("/login");
     });
   };
@@ -80,25 +83,32 @@ function Login() {
     postLogin(userData)
       .then((response) => {
         if (response.status === 200) {
+          // To set the user in the redux store
+          let userId = response.user._id;
           localStorage.setItem(userAuth, response.tokens.accessToken);
           localStorage.setItem(refreshToken, response.tokens.refreshToken);
           dispatch(setReduxUser({ userData: response.user, validUser: true }));
-          
-          getConnections(response.user._id).then((response) => {
-            dispatch(setFollowers(response.connection.followersCount));
-            dispatch(setFollowing(response.connection.followingCount));
-            setLoading(false);
-            navigate("/");
+          // To set the user's connections in the redux store
+          getConnections(userId).then((response) => {
+            dispatch(setFollowers(response.connection.followers));
+            dispatch(setFollowing(response.connection.following));
+            // To set the user's posts in the redux store
+            fetchUserDetails(userId).then((response) => {
+              dispatch(setUserPosts(response?.posts));
+              // Navigating to homepage after login
+              setLoading(false);
+              navigate("/");
+            });
           });
         }
       })
-      .catch( (error) => {
-         setLoading(false);
-         setVerify(false);
+      .catch((error) => {
+        setLoading(false);
+        setVerify(false);
         if (error?.userVerified === false) {
-           setVerify(true);
-           setError(error.message);
-          } else {
+          setVerify(true);
+          setError(error.message);
+        } else {
           setError(error.message);
         }
       });
@@ -132,7 +142,7 @@ function Login() {
               Password
             </label>
             <input
-              maxLength={6}
+              maxLength={60}
               required
               placeholder="Password"
               type="password"

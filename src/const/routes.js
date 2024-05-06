@@ -10,12 +10,13 @@ export const userUrl = {
   // fetch | search user data
   fetchUser: "/user/fetch-users",
   getCredentials: "/user/userdetails",
-  searchUser: (key) => `/user/search/${key}`,
+  searchUser: (key) => `/user/fetch/users/${key}`,
   fetchByUsername: (username) => `/user/fetch/username/${username}`,
   fetchByEmail: (email) => `/user/fetch-user/email/${email}`,
 
   //saved posts
   savePost: (userId, postId) => `/user/${userId}/save/post/${postId}`,
+  fetchSavedPost: (userId) => `/user/savedposts/${userId}`,
   removeSave: (userId, postId) => `/user/${userId}/save/post/remove/${postId}`,
 
   //connection
@@ -25,7 +26,8 @@ export const userUrl = {
   getConnections: (userId) => `/user/fetch/connection/${userId}`,
 
   //update user
-  updateData: (username) => `/user/update/user/${username}`,
+  updateProfile: `/user/update/profile`,
+  updateAvatar: `/user/update/avatar`,
 
   //report
   report: (userId, username) => `/user/report/user/${userId}/${username}`,
@@ -47,7 +49,6 @@ export const userUrl = {
   suggestions: (userId) => `/user/fetch-suggested-users/${userId}`,
 };
 
-
 export const adminUrl = {
   login: "/admin/login",
   //fetch users with pagination and search
@@ -65,10 +66,11 @@ export const adminUrl = {
   fetchSinglePost: (postId) => `/admin/fetch-single-post/${postId}`,
 
   //block a post
-  blockPost: (postId) => `/admin/post/block/${postId}`
+  blockPost: (postId) => `/admin/post/block/${postId}`,
+
+  // fetch single posts comment count
+  fetchCommentCount: (postId) => `/admin/fetch-comment-count/${postId}`,
 };
-
-
 
 export const postUrl = {
   create: "/post/create-post",
@@ -78,17 +80,18 @@ export const postUrl = {
 
   getSinglePost: (postId) => `/post/fetch-single-post/${postId}`,
 
+  getUserPosts: "/post/fetchUserPosts",
+
   getUserDetails: "/post/fetchUserDetails",
 
   //delete post
   deletePost: (postId) => `/post/delete/post/${postId}`,
 
   //likes
-  likePost: "/post/like-post",
-  unlikePost: "/post/unlike-post",
+  likeunlikePost: (data) => `/post/like-unlike/${data.postId}/${data.userId}`,
 
   //comments
-  fetchComments: (postId) => `/post/fetch-comments/${postId}`,
+  fetchComments: (data) => `/post/fetch-comments/${data.postId}/${data.type}`,
   fetchReplies: (commentId) => `/post/comments/replies/${commentId}`,
   addComment: "/post/add-comment",
   addReply: (commentId) => `/post/comments/reply-to/${commentId}`,
@@ -104,29 +107,29 @@ export const postUrl = {
   getAll: `/post/get-every-posts`,
 };
 
-
 export const authUrl = {
-    authUser: "/auth/user",
-    authAdmin: "/auth/admin",
+  authUser: "/auth/user",
+  authAdmin: "/auth/admin",
 
-    sendOtp: "/auth/sent-verification",
-    verifyOtp: "/auth/verify-otpToken",
+  sendOtp: "/auth/sent-verification",
+  verifyOtp: "/auth/verify-otpToken",
 
-    sendMail:"/auth/send-verification"
-    
+  sendMail: "/auth/send-verification",
+  updateEmail: "/auth/update/email",
+  verifyEmail: ({ id, token, type }) =>
+    `/auth/change-email/${id}/${token}/${type}`,
 };
 
-
-
-
 export const messageUrl = {
-    getChatRoom: (firstId, secondId) => `/messages/inbox/room/${firstId}/${secondId}`,
-    
-    getMessages: (roomId) => `/messages/inbox/${roomId}`,
+  getChatRoom: (firstId, secondId) =>
+    `/messages/inbox/room/${firstId}/${secondId}`,
 
-    newMessage: (roomId) => `messages/inbox/new-message/${roomId}`,
+  getMessages: (roomId) => `/messages/inbox/${roomId}`,
 
-    getRoomFromUser: (userId) => `/messages/inbox/get-room/userID/${userId}`,
+  newMessage: (roomId) => `messages/inbox/new-message/${roomId}`,
 
-    getRooms: (firstId, secondId)=> `/messages/inbox/room/fetch/${firstId}/${secondId}`,
+  getRoomFromUser: (userId) => `/messages/inbox/get-room/userID/${userId}`,
+
+  getRooms: (firstId, secondId) =>
+    `/messages/inbox/room/fetch/${firstId}/${secondId}`,
 };

@@ -2,3 +2,23 @@
   border-right: 3px solid #FF5A1F;
   /* Adjust the width and color as per your requirement */
 }
+
+.image-preview {
+  width: 200px;
+  /* set the desired width */
+  height: 200px;
+  /* set the desired height */
+  overflow: hidden;
+  /* optional: hide any overflow if the image is larger */
+  margin-top: 10px;
+  /* optional: adjust the margin as needed */
+}
+
+.image-preview img {
+  width: 100%;
+  /* ensure the image takes up 100% of the container */
+  height: 100%;
+  /* ensure the image takes up 100% of the container */
+  object-fit: cover;
+  /* optional: maintain aspect ratio and cover the container */
+}

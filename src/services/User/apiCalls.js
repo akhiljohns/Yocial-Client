@@ -2,16 +2,15 @@ import { api } from "./api";
 import { refreshToken, userAuth } from "../../const/localStorage";
 import axios from "axios";
 import { BASE_URL } from "../../const/url";
-import {persistor} from "../../utils/store"
+import { persistor } from "../../utils/store";
 import { Navigate } from "react-router-dom";
 
-
-
-export const clearUser = () => {
- localStorage.removeItem('userAuth');
- localStorage.removeItem('refreshToken');
- persistor.purge(); 
-window.location.reload("/login")
+export const clearUser = async () => {
+  localStorage.removeItem("userAuth");
+  localStorage.removeItem("refreshToken");
+  persistor.purge();
+  //  localStorage.clear()
+  window.location.href = "/login";
 };
 
 export const apiCall = async (method, url, data) => {
@@ -35,43 +34,47 @@ export const apiCall = async (method, url, data) => {
         response = await api.delete(url, data).catch((err) => {
           error = err;
         });
-      } else if (method === "put"){
+      } else if (method === "put") {
         response = await api.put(url, data).catch((err) => {
           error = err;
-        })
+        });
       }
-      
-      if(response){
+
+      if (response) {
         resolve(response.data);
-      } else if (error) { 
-
-        if(error?.response?.status === 403 || 422){
-
-          if(error?.response?.data?.error_code === "FORBIDDEN_LOGIN" || "Unauthorized_verify"){
-           reject(error.response.data)
+      } else if (error) {
+        if (
+          error?.response?.status === 403 ||
+          error?.response?.status === 422
+        ) {
+          if (
+            error?.response?.data?.error_code === "FORBIDDEN_LOGIN" ||
+            "Unauthorized_verify"
+          ) {
+            // clearUser()
+            reject(error.response.data);
           }
-        } else if(error?.response?.status === 401){
-          refreshAccessToken(error).then((response)=> {
-            if(response?.success){
-              resolve(response?.success?.data)
-            } else {
-              reject(response?.failed?.response?.data)
-            }
-          }).catch((error)=>{
-              clearUser()
-          })
+        } else if (error?.response?.status === 401) {
+          refreshAccessToken(error)
+            .then((response) => {
+              if (response?.success) {
+                resolve(response?.success?.data);
+              } else {
+                reject(response?.failed?.response?.data);
+              }
+            })
+            .catch((error) => {
+              clearUser();
+            });
         }
-        
-          reject(error?.response?.data);
-        
+
+        reject(error?.response?.data);
       }
     } catch (err) {
-        reject(err);
+      reject(err);
     }
   });
 };
-
-
 
 const refreshAccessToken = async (error) => {
   try {
@@ -84,34 +87,32 @@ const refreshAccessToken = async (error) => {
         return new Promise(async (resolve, reject) => {
           try {
             // refreshing the access token
-            const response = await axios.post(
-              `${BASE_URL}/api/auth/user/refresh-token`,
-              null,
-              {
+            const response = await axios
+              .post(`${BASE_URL}/api/auth/user/refresh-token`, null, {
                 headers: {
                   Authorization: tokenRefresh,
                 },
-              }
-            ).catch((err) => {
-              reject(err);
-            });
+              })
+              .catch((err) => {
+                reject(err);
+              });
 
             if (response) {
               const newAccessToken = response.data.newToken;
               localStorage.setItem(userAuth, newAccessToken);
 
               // calling the original request
-              error.config.headers['Authorization'] = newAccessToken;
+              error.config.headers["Authorization"] = newAccessToken;
 
               axios(error.config)
                 .then((response) => {
-                  resolve({success: response});
+                  window.location.reload();
+                  resolve({ success: response });
                 })
                 .catch((error) => {
-                  resolve({failed: error});
+                  resolve({ failed: error });
                 });
             }
-
           } catch (refreshError) {
             reject(refreshError);
           }

@@ -26,8 +26,6 @@ const adminApiCalls = async (method, url, data) => {
         });
       }
 
-
-      
       if (response) {
         resolve(response.data);
       } else if (error) {
@@ -37,8 +35,8 @@ const adminApiCalls = async (method, url, data) => {
               resolve(response.data);
             })
             .catch((error) => {
-              if(error?.response?.status === 401){
-                clearAdmin()
+              if (error?.response?.status === 401) {
+                clearAdmin();
               } else {
                 reject(error);
               }
@@ -47,13 +45,11 @@ const adminApiCalls = async (method, url, data) => {
           reject(error?.response?.data);
         }
       }
-
     } catch (err) {
       reject(err);
     }
   });
 };
-
 
 const refreshAccessToken = async (error) => {
   try {
@@ -67,15 +63,11 @@ const refreshAccessToken = async (error) => {
           try {
             //refreshing the access token
             const response = await axios
-              .post(
-                `${BASE_URL}/api/auth/admin/refresh-token`,
-                null,
-                {
-                  headers: {
-                    Authorization: tokenRefresh,
-                  },
-                }
-              )
+              .post(`${BASE_URL}/api/auth/admin/refresh-token`, null, {
+                headers: {
+                  Authorization: tokenRefresh,
+                },
+              })
               .catch((err) => {
                 reject(err);
               });
@@ -95,35 +87,23 @@ const refreshAccessToken = async (error) => {
                 });
             }
           } catch (refreshError) {
-            clearAdmin()
+            clearAdmin();
           }
         });
       } else {
         // No refresh token available
-        clearAdmin()
+        clearAdmin();
       }
     }
   } catch (error) {
-    clearAdmin()
+    clearAdmin();
   }
 };
-
-
 
 export const clearAdmin = () => {
   localStorage.removeItem(adminAuth);
   localStorage.removeItem(adminRefresh);
   window.location.reload("/admin/login");
 };
-
-
-
-
-
-
-
-
-
-
 
 export default adminApiCalls;

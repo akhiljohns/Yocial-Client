@@ -1,0 +1,87 @@
+/* *, *::before, *::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+} */
+
+.fimage-container {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: 1fr auto;
+  grid-template-areas: 
+    "image sidebar"
+    "slider sidebar";
+  width: 50%;
+  background-color: #DADADA;
+}
+
+.main-image {
+  grid-area: image;
+  width: 100%;
+  height: 100%;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  margin-top: 30px;
+}
+
+.fim-sidebar {
+  grid-area: sidebar;
+  background-color: hsl(0, 100%, 99%) ;
+  border-left: 1px solid black;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.sidebar-item {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  color: black;
+  background-color: hsl(0, 0%, 100%);
+  padding: 1rem;
+  position: relative;
+  transition: background-color 150ms;
+}
+
+.sidebar-item:hover, .sidebar-item:focus {
+  background-color: hsl(32, 100%, 50%);
+}
+
+.sidebar-item.active {
+  background-color: hsl(32, 100%, 50%);
+}
+
+.sidebar-item::after {
+  content: '';
+  position: absolute;
+  width: 80%;
+  left: 10%;
+  bottom: 0;
+  height: 1px;
+  background-color: hsl(0, 0%, 0%);
+}
+
+.sidebar-item:last-child::after {
+  display: none;
+}
+
+.slider-container {
+  grid-area: slider;
+  margin-top: 2rem;
+  padding: 2rem;
+}
+
+.slider {
+  width: 100%;
+  cursor: pointer;
+}
+
+.img-sub-button:hover{
+  cursor: pointer;
+  background-color: black;
+  color: white;
+}

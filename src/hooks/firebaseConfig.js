@@ -12,11 +12,10 @@
 //     appId: process.env.FIREBASE_APP_ID,
 //     measurementId: process.env.FIREBASE_MEASUREMENT_ID
 //   };
-  
+
 //   // Initialize Firebase
 //   const app = initializeApp(firebaseConfig);
 //   const analytics = getAnalytics(app);
-
 
 // export const provider = new GoogleAuthProvider();
 // export const auth = getAuth();

@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Flip, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 /////////////////////////USER PAGES/////////////////////////
 import Login from "../pages/User/Login/Login";
@@ -8,6 +10,11 @@ import Register from "../pages/User/Register/Register";
 import UserHome from "../pages/User/Home/Home";
 import Protect from "../components/Protect/UserProtect";
 import Profile from "../pages/User/Profile/Profile";
+import EditProfile from "../pages/User/EditProfile/EditProfile";
+import AuthEmail from "../components/user/EditProfile/AuthEmail";
+import SavedPosts from "../pages/User/SavedPosts/SavedPosts";
+import SearchUsers from "../pages/User/Search/SearchUsers";
+import MessageBox from "../pages/User/Message/MessageBox";
 
 /////////////////////////ADMIN PAGES/////////////////////////
 import AdminLogin from "../pages/Admin/Login/AdminLogin";
@@ -29,6 +36,13 @@ const AppRouter = () => {
             </Protect>
           }
         />
+        <Route path="/editprofile/:username" element={<EditProfile />} />
+        <Route path="/:username" element={<EditProfile />} />
+        <Route path="/savedposts" element={<SavedPosts />} />
+        <Route path="/searchusers" element={<SearchUsers />} />
+        <Route path="/auth/verify/:id/:token/:type" element={<AuthEmail />} />
+        <Route path="/chat" element={<MessageBox />} />
+
         <Route path="*" element={<Error />} />
         <Route
           path="/"
@@ -45,6 +59,12 @@ const AppRouter = () => {
         
         <Route path="/admin/home"  element={<AdminProtect> <AdminHome /> </AdminProtect>}/>
       </Routes>
+      <ToastContainer
+        pauseOnFocusLoss={false}
+        newestOnTop
+        rtl={false}
+        transition={Flip}
+      />
     </Router>
   );
 };

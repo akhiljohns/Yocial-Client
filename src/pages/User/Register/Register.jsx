@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { regValidate } from "../../../hooks/regValidation";
+import { passwordValidate, regValidate } from "../../../hooks/regValidation";
 import { postRegister } from "../../../services/User/apiMethods";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { errorToast, successToast } from "../../../hooks/toast";
+import StrengthMeter from "../../../components/user/Options/PasswordStregth";
 
 function Register() {
   const [fName, setFname] = useState("");
@@ -14,8 +16,23 @@ function Register() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [poorPassword, setPoorPassword] = useState(false);
+  const [weakPassword, setWeakPassword] = useState(false);
+  const [strongPassword, setStrongPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+
   const navigate = useNavigate();
   const user = useSelector((state) => state?.user?.validUser);
+
+  const passCheck = (pass) => {
+    passwordValidate(
+      pass,
+      setPasswordError,
+      setPoorPassword,
+      setWeakPassword,
+      setStrongPassword
+    );
+  };
 
   useEffect(() => {
     if (user) {
@@ -42,13 +59,12 @@ function Register() {
         password,
         password2,
       };
-
       if (await regValidate({ ...userData, setErr: setError })) {
         postRegister(userData)
           .then((response) => {
             setLoading(false);
             if (response.status === 200) {
-              alert(response.message);
+              successToast(response.message);
               navigate("/login");
             } else {
               setLoading(false);
@@ -63,9 +79,8 @@ function Register() {
         setLoading(false);
       }
     } catch (error) {
-      alert("kk");
       setLoading(false);
-      setError("Something went wrong, Try after some time");
+      errorToast(error.message || "Something went wrong, Try after some time");
     }
   };
   return (
@@ -89,6 +104,7 @@ function Register() {
               onChange={(e) => {
                 setFname(e.target.value.trim());
               }}
+              disabled={loading}
             />
           </div>
           <div className="mb-4 w-1/2">
@@ -97,6 +113,7 @@ function Register() {
             </label>
             <input
               required
+              disabled={loading}
               placeholder="Last Name"
               type="text"
               id="lname"
@@ -114,6 +131,7 @@ function Register() {
           </label>
           <input
             required
+            disabled={loading}
             placeholder="Username"
             type="text"
             id="username"
@@ -132,6 +150,7 @@ function Register() {
             required
             placeholder="Email"
             type="text"
+            disabled={loading}
             id="email"
             name="email"
             className="w-full border p-2 rounded"
@@ -146,8 +165,9 @@ function Register() {
               Password
             </label>
             <input
-              maxLength={6}
+              maxLength={60}
               required
+              disabled={loading}
               placeholder="Password"
               type="password"
               id="password"
@@ -155,16 +175,19 @@ function Register() {
               className="w-full border p-2 rounded"
               onChange={(e) => {
                 setpassword(e.target.value.trim());
+                passCheck(e.target.value);
               }}
             />
           </div>
+
           <div className="mb-6">
             <label className="text-white" htmlFor="password2">
               Confirm Password
             </label>
             <input
-              maxLength={6}
+              maxLength={60}
               required
+              disabled={loading}
               placeholder="Confirm Password"
               type="password"
               id="password2"
@@ -176,10 +199,20 @@ function Register() {
             />
           </div>
         </div>
+        {password ? (
+          <div className="mt-2 flex justify-items-start">
+            <StrengthMeter
+              poorPassword={poorPassword}
+              weakPassword={weakPassword}
+              strongPassword={strongPassword}
+              passwordError={passwordError}
+            />
+          </div>
+        ) : null}
         {loading ? (
           <div className="py-1 w-full flex justify-center items-center">
-            <div className="w-12 h-12 border-4 border-dotted border-white border-solid rounded-full animate-spin">
-              <div className="w-6 h-6 border-4 border-dotted border-orange-500 border-solid rounded-full animate-spin-reverse mx-auto"></div>
+            <div className="w-12 h-12 border-4 border-dotted border-white rounded-full animate-spin">
+              <div className="w-6 h-6 border-4 border-dotted border-orange-500 rounded-full animate-spin-reverse mx-auto"></div>
             </div>
           </div>
         ) : null}

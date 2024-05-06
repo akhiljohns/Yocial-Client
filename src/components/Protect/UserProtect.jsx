@@ -8,13 +8,11 @@ function UserProtect({ children }) {
 
   const userData = useSelector((state) => state?.user?.userData);
 
-  useEffect(() => {
-    if (!user || !userData) {
-      navigate("/login")
-    }
-  });
-
-    return children
+  if (user && userData) {
+    return children;
+  } else {
+    return navigate("/login");
+  }
 }
 
 export default UserProtect;
