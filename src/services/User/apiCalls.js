@@ -6,74 +6,38 @@ import { persistor } from "../../utils/store";
 import { Navigate } from "react-router-dom";
 
 export const clearUser = async () => {
-  localStorage.removeItem("userAuth");
-  localStorage.removeItem("refreshToken");
-  persistor.purge();
-  //  localStorage.clear()
+  localStorage.removeItem(userAuth);
+  localStorage.removeItem(refreshToken);
+  // Clearing the store, if applicable
+  // persistor.purge();
   window.location.href = "/login";
 };
 
 export const apiCall = async (method, url, data) => {
   return await new Promise(async (resolve, reject) => {
     try {
-      let response, error;
+      const source = axios.CancelToken.source();
 
-      if (method === "post") {
-        response = await api.post(url, data).catch((err) => {
-          error = err;
-        });
-      } else if (method === "get") {
-        response = await api.get(url, data).catch((err) => {
-          error = err;
-        });
-      } else if (method === "patch") {
-        response = await api.patch(url, data).catch((err) => {
-          error = err;
-        });
-      } else if (method === "delete") {
-        response = await api.delete(url, data).catch((err) => {
-          error = err;
-        });
-      } else if (method === "put") {
-        response = await api.put(url, data).catch((err) => {
-          error = err;
-        });
+      let response = await api({
+        method: method,
+        url: url,
+        data: data,
+        cancelToken: source.token,
+      });
+
+      resolve(response.data);
+    } catch (error) {
+      if (axios.isCancel(error)) {
+        console.log("Request canceled", error.message);
+      } else {
+        reject(error);
       }
-
-      if (response) {
-        resolve(response.data);
-      } else if (error) {
-        if (
-          error?.response?.status === 403 ||
-          error?.response?.status === 422
-        ) {
-          if (
-            error?.response?.data?.error_code === "FORBIDDEN_LOGIN" ||
-            "Unauthorized_verify"
-          ) {
-            // clearUser()
-            reject(error.response.data);
-          }
-        } else if (error?.response?.status === 401) {
-          refreshAccessToken(error)
-            .then((response) => {
-              if (response?.success) {
-                resolve(response?.success?.data);
-              } else {
-                reject(response?.failed?.response?.data);
-              }
-            })
-            .catch((error) => {
-              clearUser();
-            });
-        }
-
-        reject(error?.response?.data);
-      }
-    } catch (err) {
-      reject(err);
     }
   });
+};
+
+export const cancelRequest = (source) => {
+  source.cancel("Request canceled by the user");
 };
 
 const refreshAccessToken = async (error) => {
