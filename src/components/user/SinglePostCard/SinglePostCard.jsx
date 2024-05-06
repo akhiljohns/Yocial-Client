@@ -5,10 +5,11 @@ import {
   likeunlikePost,
   removeSavedPost,
   savePost,
+  reportPost,
 } from "../../../services/User/apiMethods";
 import { timeAgo } from "../../../hooks/timeCalculator";
 import { editLoadedPost } from "../../../utils/reducers/postReducer";
-import { errorToast } from "../../../hooks/toast";
+import { errorToast, successToast } from "../../../hooks/toast";
 import { updateSavedPosts } from "../../../utils/reducers/userReducer";
 import PostModal from "../Comments/PostModal";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +23,9 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
   const [commentCount, setCommentCount] = useState(0);
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
-
+  const [reportModalOpen, setReportModalOpen] = useState(false);
+  const [reportReason, setReportReason] = useState("");
+  const [errorMessage,setErrorMessage] = useState(false);
   useEffect(() => {
     if (post && post.createdAt) {
       fetchComments(post?._id, "count").then((res) => {
@@ -42,27 +45,33 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
     setLiked(!liked);
   };
 
-  // const saveOrRemovePost = () => {
-  //   if (saved) {
-  //     setSaved(false);
-  //     removeSavedPost(user?._id, post?._id)
-  //       .then((res) => {
-  //         dispatch(updateSavedPosts(res?.post?._id));
-  //       })
-  //       .catch((err) => {
-  //         errorToast(err);
-  //       });
-  //   } else {
-  //     setSaved(true);
-  //     savePost(user?._id, post?._id)
-  //       .then((res) => {
-  //         dispatch(updateSavedPosts(res?.post?._id));
-  //       })
-  //       .catch((err) => {
-  //         errorToast(err);
-  //       });
-  //   }
-  // };
+  const openReportModal = () => {
+    setReportModalOpen(true);
+  };
+
+  const closeReportModal = () => {
+    setReportModalOpen(false);
+    setReportReason("");
+  };
+
+  const submitReport = () => {
+    const trimmedReason = reportReason.trim();
+
+    // Check if the trimmed reason is empty
+    if (!trimmedReason) {
+      setErrorMessage("Please enter a reason for reporting.");
+      return;
+    }
+    reportPost(user?._id, user?.username, post?._id, reportReason)
+      .then((res) => {
+        closeReportModal();
+        setErrorMessage(false);
+        successToast("Post Report has been Submitted");
+      })
+      .catch((err) => {
+        errorToast(err);
+      });
+  };
 
   const showLikes = (likes) => {
     setLikePost(likes);
@@ -71,11 +80,11 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
   const seeProfile = (username) => {
     navigate(`/profile/${username}`);
   };
+
   return (
     <div className="bg-white p-5 rounded-lg shadow-md max-w-md w-full ">
       <div className="flex items-center justify-between mb-4">
         {/* User Info */}
-
         <div
           onClick={() => seeProfile(post?.userId?.username)}
           className="flex items-center space-x-2  cursor-pointer"
@@ -96,9 +105,12 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
             <p className="text-gray-400 text-sm">{time}</p>
           </div>
         </div>
-        {/* Three-dot menu */}
-        <div className="text-gray-500 cursor-pointer">
-          <button className="hover:bg-gray-50 rounded-full p-1">
+        {/* Report Icon */}
+        <div className="text-gray-500 hover:text-red-500 cursor-pointer">
+          <button
+            className="hover:bg-gray-50 rounded-full p-1"
+            onClick={openReportModal}
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -109,10 +121,46 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
-            ></svg>
+            >
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12" y2="16" />
+            </svg>
           </button>
         </div>
       </div>
+      {/* Report Modal */}
+      {reportModalOpen && (
+        <div className="absolute top-0 left-0 flex justify-center items-center w-full h-full bg-gray-900 bg-opacity-50 z-50">
+          <div className="bg-white p-5 rounded-lg shadow-md max-w-md w-full ">
+            <h2 className="text-lg font-semibold mb-3">Report Post</h2>
+            {/* Error Message */}
+            {errorMessage && (
+              <p className="text-red-500 mb-3">{errorMessage}</p>
+            )}
+            <textarea
+              className="w-full h-24 border rounded-md p-2 mb-3"
+              placeholder="Enter reason for reporting..."
+              value={reportReason}
+              onChange={(e) => setReportReason(e.target.value)}
+            ></textarea>
+            <div className="flex justify-end">
+              <button
+                className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"
+                onClick={closeReportModal}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-blue-500 text-white px-4 py-2 rounded-md"
+                onClick={submitReport}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="mb-4">
         <p className="text-gray-800">{post?.caption}</p>
       </div>
