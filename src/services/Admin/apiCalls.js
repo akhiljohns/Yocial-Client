@@ -3,25 +3,25 @@ import { adminAuth, adminRefresh } from "../../const/localStorage";
 import { adminApi } from "./api";
 import { BASE_URL } from "../../const/url";
 
-const adminApiCalls = async (method, url, data, cancelTokenSource) => {
+const adminApiCalls = async (method, url, data) => {
   return new Promise(async (resolve, reject) => {
     try {
       let response, error;
 
       if (method === "post") {
-        response = await adminApi.post(url, data, { cancelToken: cancelTokenSource.token }).catch((err) => {
+        response = await adminApi.post(url, data).catch((err) => {
           error = err;
         });
       } else if (method === "get") {
-        response = await adminApi.get(url, { params: data, cancelToken: cancelTokenSource.token }).catch((err) => {
+        response = await adminApi.get(url, data).catch((err) => {
           error = err;
         });
       } else if (method === "patch") {
-        response = await adminApi.patch(url, data, { cancelToken: cancelTokenSource.token }).catch((err) => {
+        response = await adminApi.patch(url, data).catch((err) => {
           error = err;
         });
       } else if (method === "delete") {
-        response = await adminApi.delete(url, { data, cancelToken: cancelTokenSource.token }).catch((err) => {
+        response = await adminApi.delete(url, data).catch((err) => {
           error = err;
         });
       }
@@ -67,7 +67,7 @@ const refreshAccessToken = async (error) => {
                 headers: {
                   Authorization: tokenRefresh,
                 },
-              }, { cancelToken: error.config.cancelToken })
+              })
               .catch((err) => {
                 reject(err);
               });
