@@ -4,20 +4,24 @@ import AdminSideBar from "../../../components/admin/Sidebar/AdminSideBar";
 import { fetchPosts } from "../../../services/Admin/apiMethods";
 import PostsRow from "./PostsRow";
 import { errorToast } from "../../../hooks/toast";
+
 const AdminPosts = () => {
   const [posts, setPosts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage] = useState(5); // Number of posts per page
+  const [sortBy, setSortBy] = useState(""); // Sorting option
+  const [filterBy, setFilterBy] = useState(""); // Filtering option
+  const [searchQuery, setSearchQuery] = useState(""); // Search query
 
   useEffect(() => {
-    fetchPosts(currentPage, perPage) // Fetch posts with pagination parameters
+    fetchPosts(currentPage, perPage, sortBy, filterBy, searchQuery) // Fetch posts with pagination, sorting, filtering, and search parameters
       .then((response) => {
         setPosts(response.posts);
       })
       .catch((error) => {
         errorToast(error);
       });
-  }, [currentPage, perPage]);
+  }, [currentPage, perPage, sortBy, filterBy, searchQuery]);
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
@@ -27,47 +31,70 @@ const AdminPosts = () => {
     setCurrentPage(currentPage - 1);
   };
 
+  // Handler for sorting option change
+  const handleSortChange = (event) => {
+    setSortBy(event.target.value);
+  };
+
+  // Handler for filtering option change
+  const handleFilterChange = (event) => {
+    setFilterBy(event.target.value);
+  };
+
+  // Handler for search query change
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
   return (
     <>
-      {" "}
       <AdminHeader />
       <AdminSideBar />
-      <div className="flex">
-        <div className="flex-grow">
+      <div className="flex justify-center">
+        <div className="w-[87%] ml-[13vw] mt-[4vh] ">
           <h1 className="text-3xl font-semibold mb-4">All Posts</h1>
-          <div className="overflow-x-auto]">
-            <table className="mt-[4.9vh] ml-[13vw] w-[87vw] divide-y divide-gray-200">
+          {/* UI for sorting, filtering, and search */}
+          <div className="flex items-center justify-center  gap-2 mb-4">
+            <select
+              value={sortBy}
+              onChange={handleSortChange}
+              className="border rounded-md px-2 py-1"
+            >
+              <option value="">Sort By</option>
+              <option value="date">Date</option>
+              <option value="likes">Likes</option>
+              <option value="comments">Comments</option>
+            </select>
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              placeholder="Search..."
+              className="border rounded-md px-2 py-1"
+            />
+          </div>
+          <div className="">
+            {/* Table to display posts */}
+            <table className="w-[100%] divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Post Image
                   </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Post Owner
                   </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Post Caption
                   </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Like Count
                   </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Comment Count
+                  </th>
+                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    Posted Date
                   </th>
                 </tr>
               </thead>
@@ -81,13 +108,14 @@ const AdminPosts = () => {
           <div className="flex justify-between mt-4">
             <button
               onClick={handlePrevPage}
-              className="bg-blue-500 text-white px-4 py-2 ml-[13.5%] rounded-md mr-2"
+              disabled={currentPage === 1}
+              className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
             >
               Previous
             </button>
             <button
               onClick={handleNextPage}
-              className="bg-blue-500 text-white px-4 mr-[1%] py-2 rounded-md"
+              className="bg-blue-500 text-white px-4 py-2 rounded-md"
             >
               Next
             </button>
