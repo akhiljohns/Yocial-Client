@@ -24,12 +24,12 @@ const AdminSideBar = () => {
         >
           Posts
         </button>
-        {/* <button
-          onClick={() => navigate("/admin/")}
+        <button
+          onClick={() => navigate("/admin/reports")}
           className="py-2 px-4 my-2 bg-blue-500 text-white rounded hover:bg-blue-700"
         >
-          Posts
-        </button> */}
+          Reports
+        </button>
         {/* Add more buttons here */}
       </div>
     </div>

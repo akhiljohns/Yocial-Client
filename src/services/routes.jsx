@@ -22,6 +22,7 @@ import AdminHome from "../pages/Admin/Home/AdminHome";
 import AdminProtect from "../components/Protect/AdminProtect";
 import AdminUsers from "../pages/Admin/Users/AdminUsers";
 import AdminPosts from "../pages/Admin/Posts/Posts";
+import AdminReports from "../pages/Admin/Reports/Reports";
 const AppRouter = () => {
   return (
     <Router>
@@ -56,6 +57,7 @@ const AppRouter = () => {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/admin/users" element={<AdminUsers />} />
         <Route path="/admin/posts" element={<AdminPosts />} />
+        <Route path="/admin/reports" element={<AdminReports />} />
         
         <Route path="/admin/home"  element={<AdminProtect> <AdminHome /> </AdminProtect>}/>
       </Routes>
