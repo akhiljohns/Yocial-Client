@@ -10,18 +10,17 @@ const AdminPosts = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage] = useState(5); // Number of posts per page
   const [sortBy, setSortBy] = useState(""); // Sorting option
-  const [filterBy, setFilterBy] = useState(""); // Filtering option
   const [searchQuery, setSearchQuery] = useState(""); // Search query
 
   useEffect(() => {
-    fetchPosts(currentPage, perPage)
+    fetchPosts(currentPage, perPage, sortBy)
       .then((response) => {
         setPosts(response.posts);
       })
       .catch((error) => {
         errorToast(error);
       });
-  }, [currentPage, perPage, sortBy, filterBy, searchQuery]);
+  }, [currentPage, perPage, sortBy]);
 
   const handleNextPage = () => {
     setCurrentPage(currentPage + 1);
@@ -35,8 +34,22 @@ const AdminPosts = () => {
     setSortBy(event.target.value);
   };
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
   const getSortedPosts = () => {
     let sortedPosts = [...posts];
+  
+    // Search functionality
+    if (searchQuery) {
+      const searchTerm = searchQuery.toLowerCase();
+      sortedPosts = sortedPosts.filter(post =>
+        post.caption && post.caption.toLowerCase().includes(searchTerm)
+      );
+    }
+  
+    // Sorting functionality
     if (sortBy === "date") {
       sortedPosts.sort((a, b) => (a.date > b.date ? 1 : -1));
     } else if (sortBy === "likes") {
@@ -46,8 +59,10 @@ const AdminPosts = () => {
         (a, b) => b.commentCount.commentCount - a.commentCount.commentCount
       );
     }
+  
     return sortedPosts;
   };
+    
 
   return (
     <>
@@ -56,7 +71,7 @@ const AdminPosts = () => {
       <div className="flex justify-center">
         <div className="w-[87%] ml-[13vw] mt-[4vh] ">
           <h1 className="text-3xl font-semibold mb-4">All Posts</h1>
-          <div className="flex items-center justify-center  gap-2 mb-4">
+          <div className="flex items-center justify-center gap-2 mb-4">
             <select
               value={sortBy}
               onChange={handleSortChange}
@@ -70,6 +85,7 @@ const AdminPosts = () => {
             <input
               type="text"
               value={searchQuery}
+              onChange={handleSearchChange}
               placeholder="Search..."
               className="border rounded-md px-2 py-1"
             />
