@@ -18,7 +18,7 @@ function MessageBox() {
   const [chatRoom, setChatRoom] = useState();
   const user = useSelector((state) => state?.user?.userData);
   const isValid = useSelector((state) => state?.user?.validUser);
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [reciever, setReciever] = useState();
 
   useEffect(() => {
