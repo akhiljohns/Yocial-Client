@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { fetchCommentCount } from "../../../services/Admin/apiMethods";
+import { convertDateTime } from "../../../hooks/timeAgo";
 
 function PostsRow({ post, index }) {
   return (
@@ -11,9 +12,11 @@ function PostsRow({ post, index }) {
         <td className="px-6 py-4 whitespace-nowrap">{post.userId.username}</td>
         <td className="px-6 py-4 whitespace-nowrap">{post.caption}</td>
         <td className="px-6 py-4 whitespace-nowrap">{post.likes.length}</td>
-        <td className="px-6 py-4 whitespace-nowrap">{post.likes.length}</td>
         <td className="px-6 py-4 whitespace-nowrap">
           {post.commentCount.commentCount}
+        </td>
+        <td className="px-6 py-4 whitespace-nowrap">
+          {convertDateTime(post.createdAt)}
         </td>
       </tr>
     </>

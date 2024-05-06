@@ -14,7 +14,7 @@ const AdminPosts = () => {
   const [searchQuery, setSearchQuery] = useState(""); // Search query
 
   useEffect(() => {
-    fetchPosts(currentPage, perPage, sortBy, filterBy, searchQuery) // Fetch posts with pagination, sorting, filtering, and search parameters
+    fetchPosts(currentPage, perPage)
       .then((response) => {
         setPosts(response.posts);
       })
@@ -31,19 +31,22 @@ const AdminPosts = () => {
     setCurrentPage(currentPage - 1);
   };
 
-  // Handler for sorting option change
   const handleSortChange = (event) => {
     setSortBy(event.target.value);
   };
 
-  // Handler for filtering option change
-  const handleFilterChange = (event) => {
-    setFilterBy(event.target.value);
-  };
-
-  // Handler for search query change
-  const handleSearchChange = (event) => {
-    setSearchQuery(event.target.value);
+  const getSortedPosts = () => {
+    let sortedPosts = [...posts];
+    if (sortBy === "date") {
+      sortedPosts.sort((a, b) => (a.date > b.date ? 1 : -1));
+    } else if (sortBy === "likes") {
+      sortedPosts.sort((a, b) => b.likes?.length - a.likes?.length);
+    } else if (sortBy === "comments") {
+      sortedPosts.sort(
+        (a, b) => b.commentCount.commentCount - a.commentCount.commentCount
+      );
+    }
+    return sortedPosts;
   };
 
   return (
@@ -53,7 +56,6 @@ const AdminPosts = () => {
       <div className="flex justify-center">
         <div className="w-[87%] ml-[13vw] mt-[4vh] ">
           <h1 className="text-3xl font-semibold mb-4">All Posts</h1>
-          {/* UI for sorting, filtering, and search */}
           <div className="flex items-center justify-center  gap-2 mb-4">
             <select
               value={sortBy}
@@ -68,38 +70,54 @@ const AdminPosts = () => {
             <input
               type="text"
               value={searchQuery}
-              onChange={handleSearchChange}
               placeholder="Search..."
               className="border rounded-md px-2 py-1"
             />
           </div>
           <div className="">
-            {/* Table to display posts */}
             <table className="w-[100%] divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     Post Image
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     Post Owner
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     Post Caption
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     Like Count
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     Comment Count
                   </th>
-                  <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     Posted Date
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {posts.map((post, index) => (
+                {getSortedPosts().map((post, index) => (
                   <PostsRow post={post} key={index} />
                 ))}
               </tbody>
