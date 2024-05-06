@@ -3,25 +3,25 @@ import { adminAuth, adminRefresh } from "../../const/localStorage";
 import { adminApi } from "./api";
 import { BASE_URL } from "../../const/url";
 
-const adminApiCalls = async (method, url, data) => {
+const adminApiCalls = async (method, url, data, cancelToken) => {
   return new Promise(async (resolve, reject) => {
     try {
       let response, error;
 
       if (method === "post") {
-        response = await adminApi.post(url, data).catch((err) => {
+        response = await adminApi.post(url, data, { cancelToken }).catch((err) => {
           error = err;
         });
       } else if (method === "get") {
-        response = await adminApi.get(url, data).catch((err) => {
+        response = await adminApi.get(url, { ...data, cancelToken }).catch((err) => {
           error = err;
         });
       } else if (method === "patch") {
-        response = await adminApi.patch(url, data).catch((err) => {
+        response = await adminApi.patch(url, data, { cancelToken }).catch((err) => {
           error = err;
         });
       } else if (method === "delete") {
-        response = await adminApi.delete(url, data).catch((err) => {
+        response = await adminApi.delete(url, { ...data, cancelToken }).catch((err) => {
           error = err;
         });
       }

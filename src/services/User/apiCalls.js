@@ -5,6 +5,10 @@ import { BASE_URL } from "../../const/url";
 import { persistor } from "../../utils/store";
 import { Navigate } from "react-router-dom";
 
+export const createCancelToken = () => {
+  return axios.CancelToken.source();
+};
+
 export const clearUser = async () => {
   localStorage.removeItem("userAuth");
   localStorage.removeItem("refreshToken");
@@ -13,29 +17,29 @@ export const clearUser = async () => {
   window.location.href = "/login";
 };
 
-export const apiCall = async (method, url, data) => {
+export const apiCall = async (method, url, data, cancelToken) => {
   return await new Promise(async (resolve, reject) => {
     try {
       let response, error;
 
       if (method === "post") {
-        response = await api.post(url, data).catch((err) => {
+        response = await api.post(url, data, { cancelToken }).catch((err) => {
           error = err;
         });
       } else if (method === "get") {
-        response = await api.get(url, data).catch((err) => {
+        response = await api.get(url, { ...data, cancelToken }).catch((err) => {
           error = err;
         });
       } else if (method === "patch") {
-        response = await api.patch(url, data).catch((err) => {
+        response = await api.patch(url, data, { cancelToken }).catch((err) => {
           error = err;
         });
       } else if (method === "delete") {
-        response = await api.delete(url, data).catch((err) => {
+        response = await api.delete(url, { ...data, cancelToken }).catch((err) => {
           error = err;
         });
       } else if (method === "put") {
-        response = await api.put(url, data).catch((err) => {
+        response = await api.put(url, data, { cancelToken }).catch((err) => {
           error = err;
         });
       }
