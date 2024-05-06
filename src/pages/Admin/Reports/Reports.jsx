@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import AdminHeader from "../../../components/admin/Header/AdminHeader";
 import AdminSideBar from "../../../components/admin/Sidebar/AdminSideBar";
-import { fetchPosts } from "../../../services/Admin/apiMethods";
-import PostsRow from "./ReportsRow";
+import { getPostReports } from "../../../services/Admin/apiMethods";
 import { errorToast } from "../../../hooks/toast";
+import ReportsRow from "./ReportsRow";
 
 const AdminReports = () => {
-  const [posts, setPosts] = useState([]);
+  const [reports, setReports] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [perPage] = useState(5); // Number of posts per page
   const [sortBy, setSortBy] = useState(""); // Sorting option
@@ -14,9 +14,9 @@ const AdminReports = () => {
   const [searchQuery, setSearchQuery] = useState(""); // Search query
 
   useEffect(() => {
-    fetchPosts(currentPage, perPage)
+    getPostReports(perPage, searchQuery, currentPage)
       .then((response) => {
-        setPosts(response.posts);
+        setReports(response.posts);
       })
       .catch((error) => {
         errorToast(error);
@@ -35,7 +35,7 @@ const AdminReports = () => {
     setSortBy(event.target.value);
   };
 
-  const getSortedPosts = () => {
+  const getPostReports = () => {
     let sortedPosts = [...posts];
     if (sortBy === "date") {
       sortedPosts.sort((a, b) => (a.date > b.date ? 1 : -1));
@@ -55,7 +55,7 @@ const AdminReports = () => {
       <AdminSideBar />
       <div className="flex justify-center">
         <div className="w-[87%] ml-[13vw] mt-[4vh] ">
-          <h1 className="text-3xl font-semibold mb-4">All Posts</h1>
+          <h1 className="text-3xl font-semibold mb-4">All Reports</h1>
           <div className="flex items-center justify-center  gap-2 mb-4">
             <select
               value={sortBy}
@@ -100,25 +100,25 @@ const AdminReports = () => {
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Like Count
+                    Report Reason
                   </th>
                   <th
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Comment Count
+                    Reporter
                   </th>
                   <th
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Posted Date
+                    Reported Date
                   </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {getSortedPosts().map((post, index) => (
-                  <PostsRow post={post} key={index} />
+                {getPostReports().map((report, index) => (
+                  <ReportsRow report={report} key={index} />
                 ))}
               </tbody>
             </table>
