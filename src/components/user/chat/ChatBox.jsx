@@ -56,6 +56,10 @@ function ChatBox({reciever, chatRoom, setChatRoom,setIsModalOpen,isModalOpen}) {
     );
   },[])
 
+const handleVideoCall=()=>{
+console.log("video call")
+}
+
   return (
     <>
       <div className="w-full h-[47rem] opacity-90 md:h-full rounded-lg relative flex flex-col md:border-white md:border-2">
@@ -68,8 +72,8 @@ function ChatBox({reciever, chatRoom, setChatRoom,setIsModalOpen,isModalOpen}) {
             name={reciever?.name || user?.username}
             styleProp={"text-white font-poppins font-semi-bold"}
           />
-          <div className="ml-auto">
-            <Info size={{ width: 26, height: 26 }} color={"#fff"} />
+          <div onClick={handleVideoCall} className="ml-auto">
+            <Info  size={{ width: 26, height: 26 }} color={"#fff"} />
           </div>
         </div>
 

@@ -23,9 +23,12 @@ import AdminProtect from "../components/Protect/AdminProtect";
 import AdminUsers from "../pages/Admin/Users/AdminUsers";
 import AdminPosts from "../pages/Admin/Posts/Posts";
 import AdminReports from "../pages/Admin/Reports/Reports";
+import VideoCallInterface from "../pages/User/VideoCall/VideoCallInterface";
+import SocketHandler from "./User/SocketHandler";
 const AppRouter = () => {
   return (
     <Router>
+        <SocketHandler />
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -43,6 +46,7 @@ const AppRouter = () => {
         <Route path="/searchusers" element={<SearchUsers />} />
         <Route path="/auth/verify/:id/:token/:type" element={<AuthEmail />} />
         <Route path="/chat" element={<MessageBox />} />
+        <Route path="/room/:roomId" element={<VideoCallInterface />} />
 
         <Route path="*" element={<Error />} />
         <Route
@@ -51,7 +55,7 @@ const AppRouter = () => {
             <Protect>
               <UserHome />
             </Protect>
-          }
+        }
         />
 
         <Route path="/admin/login" element={<AdminLogin />} />

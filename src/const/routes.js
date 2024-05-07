@@ -132,6 +132,7 @@ export const messageUrl = {
   newMessage: (roomId) => `messages/inbox/new-message/${roomId}`,
 
   getRoomFromUser: (userId) => `/messages/inbox/get-room/userID/${userId}`,
+  videoCall: (callerId,receiverId) => `/messages/inbox/videocall/${callerId}/${receiverId}`,
 
   getRooms: (firstId, secondId) =>
     `/messages/inbox/room/fetch/${firstId}/${secondId}`,

@@ -736,6 +736,24 @@ export const getRoomWithUserID = (userId) => {
   });
 };
 
+// @desc    video call between two users
+// @route   GET /messages/inbox/videocall/callerId/receiverId
+// @access  Users - private
+export const startVideoCall = (callerId,receiverId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = messageUrl.videoCall(callerId,receiverId);
+      apiCall("get", url)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => reject(error));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 ///////////////////////////////////////////////////////// REPORT SECTION //////////////////////////////////////////////////////////
 // @desc    Report user
 // @route   POST /user/report/user/:userId
