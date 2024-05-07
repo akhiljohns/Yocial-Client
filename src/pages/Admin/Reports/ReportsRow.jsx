@@ -23,7 +23,6 @@ function ReportsRow({ report, index }) {
         toggelactiontaken(report._id)
           .then((res) => {
             setActionTaken(true);
-            console.log("response :>> ", response);
             setIsBlocked(false);
           })
           .catch((err) => {

@@ -9,7 +9,6 @@ function PostsRow({ post, index }) {
   const [isBlocked, setIsBlocked] = useState(false);
 
   useEffect(() => {
-    // console.log("post :>> ", post);
     post.blocked ? setIsBlocked(true) : setIsBlocked(false);
   },[post]);
 
@@ -18,8 +17,6 @@ function PostsRow({ post, index }) {
 
     blockPost(post._id)
     .then((response) => {
-        console.log('post.blocked :>> ', post.blocked);
-        console.log('reponse :>> ', response);
       })
       .catch((error) => {
         errorToast(error);

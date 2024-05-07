@@ -16,7 +16,6 @@ const AdminReports = () => {
   useEffect(() => {
     getPostReports(perPage, searchQuery, currentPage)
       .then((response) => {
-        console.log("response :>> ", response);
         setReports(response);
       })
       .catch((error) => {
