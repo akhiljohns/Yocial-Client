@@ -3,17 +3,27 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import io from "socket.io-client";
 import { BASE_URL } from "../../const/url";
+import { useSelector } from "react-redux";
 
 const SocketHandler = () => {
+  const user = useSelector((state) => state?.user?.userData);
+  const userFollowing = useSelector((state) => state?.user?.following);
+  const userFollowers = useSelector((state) => state?.user?.followers);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const socket = io.connect(BASE_URL);
 
-
-    socket.on("videoCall", (roomId) => {
-      // Redirect to the video call interface when a call event occurs
-      navigate(`/room/${roomId}`);
+    socket.on("startVideoCall", (senderId, receiverId) => {
+      if (user?._id === receiverId) {
+        if (
+          userFollowers.includes(senderId) &&
+          userFollowing.includes(senderId)
+        ) {
+          navigate(`/room/${senderId}`);
+        }
+      }
     });
 
     return () => {
@@ -21,14 +31,7 @@ const SocketHandler = () => {
     };
   }, [history]);
 
-  return null; // This component doesn't render anything
+  return null;
 };
 
 export default SocketHandler;
-
-// useEffect(() => {
-//     const socket = io.connect(BASE_URL);
-//     socket.emit("newUser", chatRoom?._id, (res) => {});
-
-//     socket.on("newMessage", (data, res) => {});
-//   }, [chatRoom]);
