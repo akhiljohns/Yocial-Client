@@ -191,6 +191,25 @@ export const blockPost = (postId) => {
     }
   });
 };
+// @desc    toggle action taken status of post report
+// @route   PATCH /admin/post/toggleactiontaken:reportId
+// @access  Admins
+export const toggelactiontaken = (reportId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = adminUrl.toggleactionstatus(reportId);
+      adminApiCalls("patch", url)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 
 // @desc    update post
 // @route   PUT /post/update-post/:postId

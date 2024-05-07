@@ -16,7 +16,7 @@ const AdminReports = () => {
   useEffect(() => {
     getPostReports(perPage, searchQuery, currentPage)
       .then((response) => {
-        console.log('response :>> ', response);
+        console.log("response :>> ", response);
         setReports(response);
       })
       .catch((error) => {
@@ -36,16 +36,22 @@ const AdminReports = () => {
     setSortBy(event.target.value);
   };
 
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
   const postReports = () => {
     let sortedPosts = [...reports];
+
+    // Search functionality
+    if (searchQuery) {
+      const searchTerm = searchQuery.toLowerCase();
+      sortedPosts = sortedPosts.filter((report) =>
+        report.details.toLowerCase().includes(searchTerm)
+      );
+    }
+
     if (sortBy === "date") {
       sortedPosts.sort((a, b) => (a.date > b.date ? 1 : -1));
-    } else if (sortBy === "likes") {
-      sortedPosts.sort((a, b) => b.likes?.length - a.likes?.length);
-    } else if (sortBy === "comments") {
-      sortedPosts.sort(
-        (a, b) => b.commentCount.commentCount - a.commentCount.commentCount
-      );
     }
     return sortedPosts;
   };
@@ -65,12 +71,11 @@ const AdminReports = () => {
             >
               <option value="">Sort By</option>
               <option value="date">Date</option>
-              <option value="likes">Likes</option>
-              <option value="comments">Comments</option>
             </select>
             <input
               type="text"
               value={searchQuery}
+              onChange={handleSearchChange}
               placeholder="Search..."
               className="border rounded-md px-2 py-1"
             />
@@ -89,7 +94,7 @@ const AdminReports = () => {
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                   Action Taken
+                    Post Owner
                   </th>
                   <th
                     scope="col"
@@ -109,7 +114,12 @@ const AdminReports = () => {
                   >
                     Reported Date
                   </th>
-                  
+                  <th
+                    scope="col"
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">

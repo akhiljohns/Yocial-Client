@@ -68,6 +68,9 @@ export const adminUrl = {
   //block a post
   blockPost: (postId) => `/admin/post/block/${postId}`,
 
+  //action status of post report
+  toggleactionstatus: (reportId) => `/admin/post/toggleactiontaken/${reportId}`,
+
   // fetch single posts comment count
   fetchCommentCount: (postId) => `/admin/fetch-comment-count/${postId}`,
 };
