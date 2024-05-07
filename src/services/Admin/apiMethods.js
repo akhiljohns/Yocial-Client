@@ -104,8 +104,9 @@ export const blockUnblockUser = (userId, status) => {
 export const getPostReports = (perPage, search, page) => {
   return new Promise((resolve, reject) => {
     try {
-      const url = `${adminUrl.postReports}?perPage=${perPage}&search=${search}&page=${page}`;
-      adminApiCalls("get", url)
+      const url = `${adminUrl.postReports}`;
+      const data = { perPage, search, page };
+      adminApiCalls("get", url,data)
         .then((response) => {
           resolve(response);
         })

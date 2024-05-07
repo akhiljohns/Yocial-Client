@@ -16,7 +16,8 @@ const AdminReports = () => {
   useEffect(() => {
     getPostReports(perPage, searchQuery, currentPage)
       .then((response) => {
-        setReports(response.posts);
+        console.log('response :>> ', response);
+        setReports(response);
       })
       .catch((error) => {
         errorToast(error);
@@ -35,8 +36,8 @@ const AdminReports = () => {
     setSortBy(event.target.value);
   };
 
-  const getPostReports = () => {
-    let sortedPosts = [...posts];
+  const postReports = () => {
+    let sortedPosts = [...reports];
     if (sortBy === "date") {
       sortedPosts.sort((a, b) => (a.date > b.date ? 1 : -1));
     } else if (sortBy === "likes") {
@@ -88,13 +89,7 @@ const AdminReports = () => {
                     scope="col"
                     className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                   >
-                    Post Owner
-                  </th>
-                  <th
-                    scope="col"
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-                  >
-                    Post Caption
+                   Action Taken
                   </th>
                   <th
                     scope="col"
@@ -114,10 +109,11 @@ const AdminReports = () => {
                   >
                     Reported Date
                   </th>
+                  
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {getPostReports().map((report, index) => (
+                {postReports().map((report, index) => (
                   <ReportsRow report={report} key={index} />
                 ))}
               </tbody>

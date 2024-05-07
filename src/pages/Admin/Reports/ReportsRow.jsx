@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { fetchCommentCount } from "../../../services/Admin/apiMethods";
+import React, { useState } from "react";
 import { convertDateTime } from "../../../hooks/timeAgo";
 
 function ReportsRow({ report, index }) {
@@ -7,16 +6,16 @@ function ReportsRow({ report, index }) {
     <>
       <tr key={index} className="hover:bg-gray-100">
         <td className="px-6 py-4 whitespace-nowrap">
-          <img src={report.image} alt="Post" className="h-16 w-16" />
+          <img src={report.reportPostUrl} alt="Post" className="h-16 w-16" />
         </td>
-        <td className="px-6 py-4 whitespace-nowrap">{post.userId.username}</td>
-        <td className="px-6 py-4 whitespace-nowrap">{post.caption}</td>
-        <td className="px-6 py-4 whitespace-nowrap">{post.likes.length}</td>
+        <td className="px-6 py-4 whitespace-nowrap">{report.actionTaken.toString()}</td>
+        <td className="px-6 py-4 whitespace-nowrap">{report.reason}</td>
+        <td className="px-6 py-4 whitespace-nowrap">{report.details}</td>
         <td className="px-6 py-4 whitespace-nowrap">
-          {post.commentCount.commentCount}
+        {report.reporterUsername}
         </td>
         <td className="px-6 py-4 whitespace-nowrap">
-          {convertDateTime(post.createdAt)}
+          {convertDateTime(report.createdAt)}
         </td>
       </tr>
     </>
