@@ -762,7 +762,7 @@ export const reportUser = (userId, username, targetId, details) => {
 // @desc    Report user
 // @route   POST /user/report/user/:userId
 // @access  Registerd users
-export const reportPost = (userId, username, targetId, reason, postImageUrl) => {
+export const reportPost = (userId, username, targetId, reason, postImageUrl ,postOwner) => {
   return new Promise((resolve, reject) => {
     try {
       const url = postUrl.report(userId, username);
@@ -770,6 +770,7 @@ export const reportPost = (userId, username, targetId, reason, postImageUrl) => 
         targetId: targetId,
         reason: reason,
         postImageUrl: postImageUrl,
+        postOwner:postOwner
       };
       apiCall("post", url, data)
         .then((response) => {
