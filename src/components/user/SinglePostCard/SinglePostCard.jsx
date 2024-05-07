@@ -62,7 +62,7 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
       setErrorMessage("Please enter a reason for reporting.");
       return;
     }
-    reportPost(user?._id, user?.username, post?._id, reportReason,post?.image)
+    reportPost(user?._id, user?.username, post?._id, reportReason,post?.image ,post?.userId?.username)
       .then((res) => {
         closeReportModal();
         setErrorMessage(false);
