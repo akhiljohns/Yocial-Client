@@ -4,17 +4,16 @@ import { useNavigate } from "react-router-dom";
 
 function AdminProtect({ children }) {
   const navigate = useNavigate();
-  const isValid = useSelector((state) => state?.admin?.validAdmin);
-
-  const adminData = useSelector((state) => state?.admin?.adminData);
+  const user = useSelector((state) => state?.user?.validUser);
+  const userData = useSelector((state) => state?.user?.userData);
 
   useEffect(() => {
-    if (!isValid || !adminData) {
-      navigate("/admin/login")
+    if (!user || userData.role !== "admin") { // Adjusted condition here
+      navigate("/login");
     }
-  });
+  }, [user, userData, navigate]); // Added dependencies to useEffect
 
-    return children
+  return user && userData.role === "admin" ? children : null; // Render children only if user is admin
 }
 
 export default AdminProtect;

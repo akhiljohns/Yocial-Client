@@ -54,10 +54,10 @@ const AppRouter = () => {
           }
         />
 
-        <Route path="/admin/login" element={<AdminLogin />} />
-        <Route path="/admin/users" element={<AdminUsers />} />
-        <Route path="/admin/posts" element={<AdminPosts />} />
-        <Route path="/admin/reports" element={<AdminReports />} />
+        {/* <Route path="/admin/login" element={<AdminProtect> <AdminLogin /></AdminProtect>} /> */}
+        <Route path="/admin/users" element={<AdminProtect> <AdminUsers /></AdminProtect>} />
+        <Route path="/admin/posts" element={<AdminProtect> <AdminPosts /></AdminProtect>} />
+        <Route path="/admin/reports" element={<AdminProtect> <AdminReports /></AdminProtect>} />
         
         <Route path="/admin/home"  element={<AdminProtect> <AdminHome /> </AdminProtect>}/>
       </Routes>

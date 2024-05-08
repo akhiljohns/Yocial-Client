@@ -1,5 +1,5 @@
 import axios from "axios";
-import { adminAuth } from "../../const/localStorage";
+import { adminAuth, userAuth } from "../../const/localStorage";
 import { BASE_URL } from "../../const/url";
 
 export const adminApi = axios.create({
@@ -8,7 +8,7 @@ export const adminApi = axios.create({
 
 adminApi.interceptors.request.use(
   (config) => {
-    config.headers["Authorization"] = localStorage.getItem(adminAuth);
+    config.headers["Authorization"] = localStorage.getItem(userAuth);
     return config;
   },
   (error) => {
