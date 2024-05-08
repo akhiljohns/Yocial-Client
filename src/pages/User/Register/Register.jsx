@@ -83,6 +83,12 @@ function Register() {
       errorToast(error.message || "Something went wrong, Try after some time");
     }
   };
+
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSubmit();
+    }
+  };
   return (
     <div className="flex items-center justify-center h-screen bg-black">
       <div className="w-full max-w-md bg-black p-8 rounded shadow-sm shadow-white">
@@ -104,6 +110,7 @@ function Register() {
               onChange={(e) => {
                 setFname(e.target.value.trim());
               }}
+              onKeyDown={handleKeyDown}
               disabled={loading}
             />
           </div>
@@ -122,6 +129,7 @@ function Register() {
               onChange={(e) => {
                 setLname(e.target.value.trim());
               }}
+              onKeyDown={handleKeyDown}
             />
           </div>
         </div>
@@ -140,6 +148,7 @@ function Register() {
             onChange={(e) => {
               setUsername(e.target.value.trim());
             }}
+            onKeyDown={handleKeyDown}
           />
         </div>
         <div className="mb-4">
@@ -157,6 +166,7 @@ function Register() {
             onChange={(e) => {
               setEmail(e.target.value.trim());
             }}
+            onKeyDown={handleKeyDown}
           />
         </div>
         <div className="flex gap-2">
@@ -177,6 +187,7 @@ function Register() {
                 setpassword(e.target.value.trim());
                 passCheck(e.target.value);
               }}
+              onKeyDown={handleKeyDown}
             />
           </div>
 
@@ -196,6 +207,7 @@ function Register() {
               onChange={(e) => {
                 setPassword2(e.target.value.trim());
               }}
+              onKeyDown={handleKeyDown}
             />
           </div>
         </div>

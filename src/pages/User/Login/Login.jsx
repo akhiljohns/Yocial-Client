@@ -114,6 +114,11 @@ function Login() {
       });
   };
 
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      handleSubmit();
+    }
+  };
   return (
     <>
       <div className="flex items-center justify-center h-screen bg-black">
@@ -132,6 +137,7 @@ function Login() {
               id="credential"
               name="credential"
               className="w-full border p-2 rounded"
+              onKeyDown={handleKeyDown}
               onChange={(e) => {
                 setCredential(e.target.value.trim());
               }}
@@ -149,6 +155,7 @@ function Login() {
               id="password"
               name="password"
               className="w-full border p-2 rounded"
+              onKeyDown={handleKeyDown}
               onChange={(e) => {
                 setPassword(e.target.value.trim());
               }}
