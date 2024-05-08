@@ -200,7 +200,7 @@ function Register() {
               required
               disabled={loading}
               placeholder="Confirm Password"
-              type="password"
+              type="text"
               id="password2"
               name="password2"
               className="w-full border p-2 rounded"
