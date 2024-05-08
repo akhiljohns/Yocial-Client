@@ -1,5 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { convertDateTime } from "../../../hooks/timeAgo";
+import {
+  blockPost,
+  toggelactiontaken,
+} from "../../../services/Admin/apiMethods";
+import { errorToast } from "../../../hooks/toast";
 
 function ReportsRow({ report, index }) {
   const [isBlocked, setIsBlocked] = useState(false);
@@ -12,13 +17,12 @@ function ReportsRow({ report, index }) {
 
   const handleBlock = () => {
     // Implement block functionality here
-    setIsBlocked(true);
+    setIsBlocked((prevIsBlocked) => !prevIsBlocked);
     blockPost(report.targetId._id)
       .then((response) => {
         toggelactiontaken(report._id)
           .then((res) => {
             setActionTaken(true);
-            setIsBlocked(false);
           })
           .catch((err) => {
             errorToast(err);
@@ -41,16 +45,21 @@ function ReportsRow({ report, index }) {
         {convertDateTime(report.createdAt)}
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-        {!actionTaken ? (
-          <button
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+      {!isBlocked ? (
+            <button
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
+              onClick={handleBlock}
+            >
+              BLOCK
+            </button>
+          ) : (
+            <button
+            className="bg-green-600 hover:bg-green-400 text-white px-4 py-2 rounded-md"
             onClick={handleBlock}
           >
-            BLOCK
+            UNBLOCK
           </button>
-        ) : (
-          <span className="text-gray-500">Blocked</span>
-        )}
+          )}
       </td>
     </tr>
   );
