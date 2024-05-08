@@ -24,10 +24,12 @@ function Login() {
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const user = useSelector((state) => state?.user?.validUser);
-  const userData = useSelector((state) => state?.user?.userData);
   const [verify, setVerify] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+
+  const user = useSelector((state) => state?.user?.validUser);
+  const userData = useSelector((state) => state?.user?.userData);
 
   useEffect(() => {
     if (user && userData) {
@@ -50,13 +52,6 @@ function Login() {
       password,
       credential,
     };
-    // if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(credential)) {
-    //   userData.email = credential;
-    // } else if (/^\d+$/.test(credential)) {
-    //   userData.phone = credential;
-    // } else if (/^[a-zA-Z0-9_-]+$/.test(credential)) {
-    //   userData.username = credential;
-    // }
     return userData;
   };
 
@@ -68,11 +63,11 @@ function Login() {
     };
     postMail(userData).then((response) => {
       setLoading(false);
-
       successToast(response.message);
       window.location.reload("/login");
     });
   };
+
   const handleSubmit = async () => {
     setLoading(true);
 
@@ -83,19 +78,15 @@ function Login() {
     postLogin(userData)
       .then((response) => {
         if (response.status === 200) {
-          // To set the user in the redux store
           let userId = response.user._id;
           localStorage.setItem(userAuth, response.tokens.accessToken);
           localStorage.setItem(refreshToken, response.tokens.refreshToken);
           dispatch(setReduxUser({ userData: response.user, validUser: true }));
-          // To set the user's connections in the redux store
           getConnections(userId).then((response) => {
             dispatch(setFollowers(response.connection.followers));
             dispatch(setFollowing(response.connection.following));
-            // To set the user's posts in the redux store
             fetchUserDetails(userId).then((response) => {
               dispatch(setUserPosts(response?.posts));
-              // Navigating to homepage after login
               setLoading(false);
               navigate("/");
             });
@@ -119,6 +110,11 @@ function Login() {
       handleSubmit();
     }
   };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   return (
     <>
       <div className="flex items-center justify-center h-screen bg-black">
@@ -147,20 +143,41 @@ function Login() {
             <label className="text-white" htmlFor="password">
               Password
             </label>
-            <input
-              maxLength={60}
-              required
-              placeholder="Password"
-              type="password"
-              id="password"
-              name="password"
-              className="w-full border p-2 rounded"
-              onKeyDown={handleKeyDown}
-              onChange={(e) => {
-                setPassword(e.target.value.trim());
-              }}
-            />
+            <div className="relative">
+              <input
+                maxLength={60}
+                required
+                placeholder="Password"
+                type={showPassword ? "text" : "password"}
+                id="password"
+                name="password"
+                className="w-full border p-2 rounded"
+                onKeyDown={handleKeyDown}
+                onChange={(e) => {
+                  setPassword(e.target.value.trim());
+                }}
+              />
+              <span
+                className="absolute right-2 top-2 cursor-pointer text-white z-50"
+                onClick={togglePasswordVisibility}
+              >
+                {showPassword ? (
+                  <i className="far fa-eye-slash"></i>
+                ) : (
+                  <i className="far fa-eye"></i>
+                )}
+              </span>
+            </div>
           </div>
+          <div className="text-white text-sm mb-4">
+            <button
+              className="text-blue-500 hover:underline"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? "Hide" : "Show"} Password
+            </button>
+          </div>
+
           {error && (
             <div className="text-red-600 text-sm font-medium text-center">
               {error}
