@@ -14,7 +14,7 @@ import { updateSavedPosts } from "../../../utils/reducers/userReducer";
 import PostModal from "../Comments/PostModal";
 import { useNavigate } from "react-router-dom";
 import SavePostButton from "../Elements/loaders/SavePostButton";
-
+import ReportIcon from "../Icons/ReportIcon";
 const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user?.userData);
@@ -25,7 +25,7 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
   const [saved, setSaved] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
   const [reportReason, setReportReason] = useState("");
-  const [errorMessage,setErrorMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
   useEffect(() => {
     if (post && post.createdAt) {
       fetchComments(post?._id, "count").then((res) => {
@@ -62,7 +62,14 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
       setErrorMessage("Please enter a reason for reporting.");
       return;
     }
-    reportPost(user?._id, user?.username, post?._id, reportReason,post?.image ,post?.userId?.username)
+    reportPost(
+      user?._id,
+      user?.username,
+      post?._id,
+      reportReason,
+      post?.image,
+      post?.userId?.username
+    )
       .then((res) => {
         closeReportModal();
         setErrorMessage(false);
@@ -106,28 +113,7 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
           </div>
         </div>
         {/* Report Icon */}
-        <div className="text-gray-500 hover:text-red-500 cursor-pointer">
-          <button
-            className="hover:bg-gray-50 rounded-full p-1"
-            onClick={openReportModal}
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="8" x2="12" y2="12" />
-              <line x1="12" y1="16" x2="12" y2="16" />
-            </svg>
-          </button>
-        </div>
+        <ReportIcon doFunction={openReportModal} />
       </div>
       {/* Report Modal */}
       {reportModalOpen && (
