@@ -41,7 +41,6 @@ const AppRouter = () => {
           }
         />
         <Route path="/editprofile/:username" element={<EditProfile />} />
-        <Route path="/:username" element={<EditProfile />} />
         <Route path="/savedposts" element={<SavedPosts />} />
         <Route path="/searchusers" element={<SearchUsers />} />
         <Route path="/auth/verify/:id/:token/:type" element={<AuthEmail />} />
