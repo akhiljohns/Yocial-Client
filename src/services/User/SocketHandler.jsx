@@ -5,6 +5,12 @@ import io from "socket.io-client";
 import { BASE_URL } from "../../const/url";
 import { useSelector } from "react-redux";
 
+
+export const emitSocketEvent = (event, userId, callback) => {
+  const socket = io.connect(BASE_URL);
+  socket.emit(event, userId, callback);
+}
+
 const SocketHandler = () => {
   const user = useSelector((state) => state?.user?.userData);
   const userFollowing = useSelector((state) => state?.user?.following);

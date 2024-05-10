@@ -4,22 +4,25 @@ import { verifyUserEmail } from "../../../services/User/apiMethods";
 import { useDispatch, useSelector } from "react-redux";
 import { updateReduxUser } from "../../../utils/reducers/userReducer";
 import { errorToast, successToast } from "../../../hooks/toast";
+import { emitSocketEvent } from "../../../services/User/SocketHandler";
 
 function AuthEmail() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [verified, setVerified] = useState(false);
-  const user = useSelector((state) => state?.user?.userData);
+  const user = useSelector((state) => state?.user);
   const { id, token, type } = useParams();
 
   useEffect(() => {
     verifyUserEmail({ id, token, type })
       .then((response) => {
+        emitSocketEvent('emailupdate', id, (res) => {
+        });
         if (user) {
+          console.log(response,user)
           dispatch(updateReduxUser(response?.user));
         }
-        successToast("Verification mail has been sent.");
         setVerified(true);
       })
       .catch((err) => {
