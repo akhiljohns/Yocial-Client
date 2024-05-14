@@ -20,7 +20,6 @@ function AuthEmail() {
         emitSocketEvent('emailupdate', id, (res) => {
         });
         if (user) {
-          console.log(response,user)
           dispatch(updateReduxUser(response?.user));
         }
         setVerified(true);
