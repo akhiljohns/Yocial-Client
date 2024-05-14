@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-const UserCard = ({ user, seeProfile }) => {
+const UserCard = ({ user, seeProfile, style }) => {
   return (
     <>
       <div
@@ -13,8 +13,8 @@ const UserCard = ({ user, seeProfile }) => {
           padding: "10px",
           margin: "10px",
           backgroundColor: "#dedfe0",
-          width: "700px",
-          height: "80px",
+          width: style.width || "700px",
+          height: style.height || "80px",
         }}
       >
         <img
