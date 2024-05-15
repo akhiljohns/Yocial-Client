@@ -35,10 +35,9 @@ const postSlice = createSlice({
       state.editPost = "";
     },
     editUserPost: (state, action) => {
-
       state.posts = state.posts.map((post) => {
-          return post._id === action.payload?._id? action.payload: post
-      })
+        return post._id === action.payload?._id ? action.payload : post;
+      });
     },
 
     removeDeletedPost: (state, action) => {
@@ -62,6 +61,12 @@ const postSlice = createSlice({
       if (action?.payload?.length < 5) {
         state.lastPost = true;
       }
+    },
+    resetLoadedPosts: (state, action) => {
+      if (action?.payload?.length <= 0) {
+        state.lastPost = true;
+      }
+      state.loadedPosts = [action?.payload];
     },
     editLoadedPost: (state, action) => {
       state.loadedPosts = state?.loadedPosts?.map((post) => {
@@ -96,6 +101,7 @@ export const {
   editUserPost,
   editLoadedPost,
   removeDeletedPost,
+  resetLoadedPosts,
 } = postSlice.actions;
 
 export default postSlice.reducer;
