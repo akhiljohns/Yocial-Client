@@ -33,6 +33,7 @@ function CreatePostModal({
   const [imagePreview, setImagePreview] = useState(null);
   const [selectedImg, setSelectedImg] = useState(false); // State to manage the selected image
   const [loading, setLoading] = useState(false);
+  const [btnDisabled, setBtnDisabled] = useState(false);
 
   const [imageFilterActive, setImageFilterActive] = useState(false);
   const [filteredImage, setFilteredImage] = useState(null);
@@ -86,7 +87,7 @@ function CreatePostModal({
 
   const handleSubmit = async () => {
     setLoading(true);
-
+    setBtnDisabled(true);
     let imageUrl = "";
     if (type === "createPost" || type === "avatar") {
       const imageData = await handleCloudinary();
@@ -96,6 +97,7 @@ function CreatePostModal({
     if (type === "createPost") {
       if (!image) {
         setLoading(false);
+        setBtnDisabled(false);
         setErr("Please select an image");
         return;
       }
@@ -110,6 +112,7 @@ function CreatePostModal({
         .then(handlePostResponse)
         .catch((error) => {
           setLoading(false);
+          setBtnDisabled(false)
           errorToast(error?.message);
           setErr(error?.message);
         });
@@ -128,24 +131,27 @@ function CreatePostModal({
             closeModal();
           } else {
             setLoading(false);
+            setBtnDisabled(false)
             infoToast(response?.message);
           }
         })
         .catch((error) => {
           setLoading(false);
+          setBtnDisabled(false)
           errorToast(error?.message);
           setErr(error?.message);
         });
-    } else if (type === "editPost") {
-      const data = {
-        postId: userPost?._id,
-        caption: caption,
-      };
-
-      postUpdatePost(data)
+      } else if (type === "editPost") {
+        const data = {
+          postId: userPost?._id,
+          caption: caption,
+        };
+        
+        postUpdatePost(data)
         .then(handlePostResponse)
         .catch((error) => {
           setLoading(false);
+          setBtnDisabled(false)
           errorToast(error?.message);
           setErr(error?.message);
         });
@@ -219,6 +225,7 @@ function CreatePostModal({
               setImagePreview={setImagePreview}
               setSelectedImg={setSelectedImg}
               disabled={loading}
+              setBtnDisabled={setBtnDisabled}
             />
           )}
         </div>
@@ -249,7 +256,7 @@ function CreatePostModal({
         <button
           className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           onClick={handleSubmit}
-          disabled={loading}
+          disabled={btnDisabled}
         >
           Submit
         </button>
@@ -257,7 +264,7 @@ function CreatePostModal({
         <button
           className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           onClick={closeModal}
-          disabled={loading}
+          disabled={btnDisabled}
         >
           Cancel
         </button>

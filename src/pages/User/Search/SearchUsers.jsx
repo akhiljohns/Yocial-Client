@@ -86,7 +86,12 @@ function SearchUsers() {
           {/* Display user cards */}
           <div className="mt-16">
             {users.map((user, index) => (
-              <UserCard seeProfile={seeProfile} user={user} key={index} />
+              <UserCard
+                seeProfile={seeProfile}
+                user={user}
+                key={index}
+                style={{ width: "700px", height: "80px" }}
+              />
             ))}
           </div>
         </div>

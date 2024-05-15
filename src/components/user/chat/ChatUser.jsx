@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import ProfilePic from "../profiles/ProfilePic";
 import NameField from "../profiles/NameField";
 import { useDispatch, useSelector } from "react-redux";
 import { getTimeDifference } from "../../../hooks/timeAgo";
 import { getRoomWithIds, getUser } from "../../../services/User/apiMethods";
+import io from "socket.io-client"; // Assuming you're using Socket.IO
+import { BASE_URL } from "../../../const/url";
 
 function ChatUser({ userId, doFunction }) {
   const dispatch = useDispatch();
@@ -11,9 +13,30 @@ function ChatUser({ userId, doFunction }) {
   const [online, setOnline] = useState(false);
   const [user, setUser] = useState();
   const currentRoom = useSelector((state) => state?.user?.currentRoom);
-
   const [room, setRoom] = useState();
   const [time, setTime] = useState();
+
+  useEffect(() => {
+    const socket = io.connect(BASE_URL);
+
+    socket.on("recieveMessage", (message) => {
+      alert("hj")
+      // Update the room state with the new message if it's for the current room
+      if (message.roomId === room?._id) {
+        setRoom((prevRoom) => ({
+          ...prevRoom,
+          lastMessage: message.content,
+          lastMessageTime: new Date(),
+        }));
+        setTime(getTimeDifference(new Date()));
+      }
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [room?._id]);
+
 
   useEffect(() => {
     getRoomWithIds(userId, currentUser?._id).then((response) => {

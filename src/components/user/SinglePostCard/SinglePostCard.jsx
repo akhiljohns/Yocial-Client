@@ -14,7 +14,8 @@ import { updateSavedPosts } from "../../../utils/reducers/userReducer";
 import PostModal from "../Comments/PostModal";
 import { useNavigate } from "react-router-dom";
 import SavePostButton from "../Elements/loaders/SavePostButton";
-
+import ReportIcon from "../Icons/ReportIcon";
+import "./style.css"
 const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user?.userData);
@@ -25,7 +26,7 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
   const [saved, setSaved] = useState(false);
   const [reportModalOpen, setReportModalOpen] = useState(false);
   const [reportReason, setReportReason] = useState("");
-  const [errorMessage,setErrorMessage] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
   useEffect(() => {
     if (post && post.createdAt) {
       fetchComments(post?._id, "count").then((res) => {
@@ -62,7 +63,14 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
       setErrorMessage("Please enter a reason for reporting.");
       return;
     }
-    reportPost(user?._id, user?.username, post?._id, reportReason,post?.image ,post?.userId?.username)
+    reportPost(
+      user?._id,
+      user?.username,
+      post?._id,
+      reportReason,
+      post?.image,
+      post?.userId?.username
+    )
       .then((res) => {
         closeReportModal();
         setErrorMessage(false);
@@ -105,14 +113,24 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
             <p className="text-gray-400 text-sm">{time}</p>
           </div>
         </div>
-        {/* Report Icon */}
-        <div className="text-gray-500 hover:text-red-500 cursor-pointer">
-          <button
-            className="hover:bg-gray-50 rounded-full p-1"
-            onClick={openReportModal}
-          >
+         {/* Dropdown Menu */}
+  <div className="dropdown">
+    <div className="text-gray-500 cursor-pointer">
+      <button className="hover:bg-gray-50 rounded-full p-1">
+        {/* Three-dot icon SVG */}
+      </button>
+    </div>
+    <div className="dropdown-content">
+      <button >Action 1</button>
+      <button >Action 2</button>
+      <button >Action 3</button>
+    </div>
+  </div>
+        {/* Three-dot menu */}
+        <div className="text-gray-500 cursor-pointer">
+          <button className="hover:bg-gray-50 rounded-full p-1">
             <svg
-              xmlns="http://www.w3.org/2000/svg"
+              xmlns="http://www.w3.org/2000/svg" 
               width="24"
               height="24"
               viewBox="0 0 24 24"
@@ -122,12 +140,14 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="8" x2="12" y2="12" />
-              <line x1="12" y1="16" x2="12" y2="16" />
+              <circle cx="12" cy="7" r="1" />
+              <circle cx="12" cy="12" r="1" />
+              <circle cx="12" cy="17" r="1" />
             </svg>
           </button>
         </div>
+        {/* Report Icon */}
+        {/* <ReportIcon doFunction={openReportModal} /> */}
       </div>
       {/* Report Modal */}
       {reportModalOpen && (
