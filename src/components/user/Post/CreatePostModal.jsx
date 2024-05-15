@@ -209,8 +209,8 @@ function CreatePostModal({
           setImageFilterActive={setImageFilterActive}
         />
       )}
-      <div className="p-6text-center">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">
+      <div className="p-5 text-center">
+        <h2 className="text-3xl font-extrabold text-gray-800 mb-4 ml-[40%] text-center items-center">
           {type === "editPost"
             ? "Edit Post"
             : type === "createPost"
@@ -253,6 +253,8 @@ function CreatePostModal({
             />
           </div>
         )}
+        <div className="flex justify-evenly items-center">
+
         <button
           className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
           onClick={handleSubmit}
@@ -268,6 +270,8 @@ function CreatePostModal({
         >
           Cancel
         </button>
+        </div>
+
         {err && <p className="text-red-500 text-center">{err}</p>}
       </div>
       {type === "avatar" ? (
