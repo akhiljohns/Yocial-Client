@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { blockUser, unblockUser } from "../../../services/User/apiMethods";
+import {
+  blockUser,
+  getAllPosts,
+  unblockUser,
+} from "../../../services/User/apiMethods";
 import { updateReduxUser } from "../../../utils/reducers/userReducer";
+import { resetLoadedPosts } from "../../../utils/reducers/postReducer";
 
 function BlockBtn({ user, color, width, height }) {
   const dispatch = useDispatch();
@@ -10,29 +15,18 @@ function BlockBtn({ user, color, width, height }) {
   const [error, setError] = useState("");
 
   useEffect(() => {
-      if (currentUser) {
-          if (currentUser._id !== user?._id) {
-              setBlockedUsers(currentUser.blockedUsers || []);
-            }
-        }
-    }, [currentUser]);
-  
+    if (currentUser) {
+      if (currentUser._id !== user?._id) {
+        setBlockedUsers(currentUser.blockedUsers || []);
+      }
+    }
+  }, [currentUser]);
 
   const block = () => {
     blockUser(currentUser?._id, user?._id)
       .then((response) => {
-          dispatch(updateReduxUser(response.user))
-          setBlockedUsers(response.blockedUsers);
-    })
-    .catch((error) => {
-        setError(error?.message);
-    });
-};
-
-const unblock = () => {
-    unblockUser(currentUser?._id, user?._id)
-    .then((response) => {
-        dispatch(updateReduxUser(response.user))
+        updateLoadedPosts();
+        dispatch(updateReduxUser(response.user));
         setBlockedUsers(response.blockedUsers);
       })
       .catch((error) => {
@@ -40,6 +34,27 @@ const unblock = () => {
       });
   };
 
+  const unblock = () => {
+    unblockUser(currentUser?._id, user?._id)
+      .then((response) => {
+        updateLoadedPosts();
+        dispatch(updateReduxUser(response.user));
+        setBlockedUsers(response.blockedUsers);
+      })
+      .catch((error) => {
+        setError(error?.message);
+      });
+  };
+
+  const updateLoadedPosts = () => {
+    getAllPosts(1)
+      .then((response) => {
+        dispatch(resetLoadedPosts(response.posts));
+      })
+      .catch((error) => {
+        console.log("Failed To update Posts", error);
+      });
+  };
   return (
     <>
       {!blockedUsers.includes(user?._id) ? (

@@ -120,10 +120,10 @@ const UserHome = () => {
             id="posts-container"
             className="p-2 w-1/2 h-screen flex flex-col items-center gap-10 pt-24 overflow-auto no-scrollbar"
           >
-            {loadedPosts &&
+            {loadedPosts && loadedPosts.length > 1 &&
               loadedPosts?.map((post, index) => {
                 return (
-                  <SinglePostCard
+                  <SinglePostCard 
                     post={post}
                     key={index}
                     setLikePost={setLikePost}

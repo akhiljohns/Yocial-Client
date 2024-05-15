@@ -24,14 +24,14 @@ const Profile = () => {
   const [following, setFollowing] = useState(0);
   const [listModal, setListModal] = useState(false);
   const [usersList, setUsersList] = useState([]);
-  const [listType, setListType] = useState('');
+  const [listType, setListType] = useState("");
   const { username } = useParams();
 
   const [imageSrc, setImageSrc] = useState("");
   const [caption, setCaption] = useState("");
   const [postId, setPostId] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
-
+  const [userBlocked, setUserBlocked] = useState(null);
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
 
   const openModal = () => setModalOpen(true);
@@ -70,6 +70,14 @@ const Profile = () => {
         .catch((error) => setError(error?.message));
     }
   }, [dispatch, user]);
+
+  useEffect(() => {
+    if (userData?.blockedUsers?.includes(user?._id)) {
+      setUserBlocked(true);
+    } else {
+      setUserBlocked(false);
+    }
+  }, [userData, user]);
 
   const newLocalPost = (newPost) => {
     try {
@@ -112,21 +120,23 @@ const Profile = () => {
       console.error("Error updating post caption:", error);
     }
   };
-
   const openListsModal = (type) => {
+    if (userBlocked) {
+      return false;
+    }
     if (type === "followers") {
       if (followers.length == []) {
         return;
       }
       setUsersList(followers);
-      setListType('Followers')
+      setListType("Followers");
       setListModal(true);
     } else if (type === "following") {
       if (following.length == []) {
         return;
       }
       setUsersList(following);
-      setListType('Following')
+      setListType("Following");
       setListModal(true);
     }
   };
@@ -147,7 +157,11 @@ const Profile = () => {
           <div className="">
             <div className="flex items-center justify-center">
               <img
-                src={user?.profilePic}
+                src={
+                  !userBlocked
+                    ? user?.profilePic
+                    : "https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o="
+                }
                 alt="User Profile"
                 className="rounded-full h-20 w-20 mr-4 img-thumbnail"
               />
@@ -163,42 +177,46 @@ const Profile = () => {
               <div className="flex gap-3 justify-center items-center py-1">
                 <div className="flex flex-col gap-1 items-center">
                   <p className="small text-muted mb-0">Posts</p>
-                  <p className="mb-1 h5">{posts?.length || 0}</p>
+                  <p className="mb-1 h5">
+                    {!userBlocked ? posts?.length || 0 : 0}
+                  </p>
                 </div>
                 <div
                   onClick={() => openListsModal("followers")}
                   className="flex flex-col gap-1 items-center cursor-pointer"
                 >
                   <p className="small text-muted mb-0">Followers</p>
-                  <p className="mb-1 h5">{followers.length || 0}</p>
+                  <p className="mb-1 h5">
+                    {!userBlocked ? followers.length || 0 : 0}
+                  </p>
                 </div>
                 <div
                   onClick={() => openListsModal("following")}
                   className="flex flex-col gap-1 items-center cursor-pointer"
                 >
                   <p className="small text-muted mb-0">Following</p>
-                  <p className="mb-1 h5">{following.length || 0}</p>
+                  <p className="mb-1 h5">
+                    {!userBlocked ? following.length || 0 : 0}
+                  </p>
                 </div>
               </div>
             </div>
             {!owner && (
-              <div className="flex flex-col items-center justify-center mt-2" >
+              <div className="flex flex-col items-center justify-center mt-2">
                 <ConnectionBtn
                   color={"white"}
                   user={user}
                   setFollowers={setFollowers}
                 />
                 <div className="flex gap-3 mt-2">
-
-                <BlockBtn  user={user} color={"white"} />
+                  <BlockBtn user={user} color={"white"} />
                 </div>
               </div>
             )}
-
           </div>
 
           {/* User Posts */}
-          {posts && (
+          {!userBlocked && (
             <div className="text-white p-4 bg-black">
               <div className="grid grid-cols-4 gap-5">
                 {posts.map((post) => (
@@ -224,10 +242,21 @@ const Profile = () => {
               </div>
             </div>
           )}
+
           {!posts && (
             <div className="bg-black rounded-lg shadow-lg p-5 w-full flex items-center justify-center">
               <div className="text-center">
                 <p className="text-white">No posts available.</p>
+              </div>
+            </div>
+          )}
+
+          {userBlocked && (
+            <div className="bg-black rounded-lg shadow-lg mt-12 p-5 w-full flex items-center justify-center">
+              <div className="text-center">
+                <p className="text-red-600 font-extrabold text-3xl">
+                  This User Is Blocked
+                </p>
               </div>
             </div>
           )}
