@@ -943,3 +943,41 @@ export const getEveryPosts = (page) => {
     }
   });
 };
+
+////////////////////BLOCK RELATED////////////////////
+
+// @desc    Block User
+// @route   GET /user/block/
+// @access  Registered users
+export const blockUser = (userId,blockUserId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = userUrl.blockUser(userId,blockUserId);
+      apiCall("get", url)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => reject(err));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// @desc    unblock User
+// @route   GET /user/unblock/
+// @access  Registered users
+export const unblockUser = (userId,unblockUserId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = userUrl.unblockUser(userId,unblockUserId);
+      apiCall("get", url)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => reject(err));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};

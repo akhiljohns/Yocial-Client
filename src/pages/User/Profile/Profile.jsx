@@ -12,6 +12,7 @@ import CreatePostModal from "../../../components/user/Post/CreatePostModal.jsx";
 import ConnectionBtn from "../../../components/user/Options/ConnectionBtn.jsx";
 import UserListsModal from "../../../components/user/Modals/UserListsModal.jsx";
 import UserList from "../../../components/user/Modals/UserList.jsx";
+import BlockBtn from "./BlockBtn.jsx";
 const Profile = () => {
   const dispatch = useDispatch();
 
@@ -181,14 +182,19 @@ const Profile = () => {
               </div>
             </div>
             {!owner && (
-              <div className="flex flex-col items-center justify-center mt-2">
+              <div className="flex flex-col items-center justify-center mt-2" >
                 <ConnectionBtn
                   color={"white"}
                   user={user}
                   setFollowers={setFollowers}
                 />
+                <div className="flex gap-3 mt-2">
+
+                <BlockBtn  user={user} color={"white"} />
+                </div>
               </div>
             )}
+
           </div>
 
           {/* User Posts */}

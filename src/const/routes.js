@@ -47,6 +47,11 @@ export const userUrl = {
   logOut: (userId) => `/user/logout/${userId}`,
 
   suggestions: (userId) => `/user/fetch-suggested-users/${userId}`,
+
+  blockUser: (userId, blockUserId) => `/user/${userId}/block/${blockUserId}`,
+
+  unblockUser: (userId, unblockUserId) =>
+    `/user/${userId}/unblock/${unblockUserId}`,
 };
 
 export const adminUrl = {
@@ -132,7 +137,8 @@ export const messageUrl = {
   newMessage: (roomId) => `messages/inbox/new-message/${roomId}`,
 
   getRoomFromUser: (userId) => `/messages/inbox/get-room/userID/${userId}`,
-  videoCall: (callerId,receiverId) => `/messages/inbox/videocall/${callerId}/${receiverId}`,
+  videoCall: (callerId, receiverId) =>
+    `/messages/inbox/videocall/${callerId}/${receiverId}`,
 
   getRooms: (firstId, secondId) =>
     `/messages/inbox/room/fetch/${firstId}/${secondId}`,
