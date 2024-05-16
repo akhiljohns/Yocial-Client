@@ -53,8 +53,8 @@ const AdminPosts = () => {
     <>
       <AdminHeader />
       <AdminSideBar />
-      <div className="flex justify-center">
-        <div className="w-[87%] ml-[13vw] mt-[4vh] ">
+      <div className="flex justify-center h-[100vh] overflow-hidden">
+        <div className="w-[87%] ml-[13vw] mt-[4vh] flex flex-col gap-5">
           <h1 className="text-3xl font-semibold mb-4">All Posts</h1>
           <div className="flex items-center justify-center  gap-2 mb-4">
             <select
@@ -74,7 +74,9 @@ const AdminPosts = () => {
               className="border rounded-md px-2 py-1"
             />
           </div>
-          <div className="">
+          <div className="flex-1 h-[200px] flex flex-col gap-5 relative">
+            
+            <div className="bg-white flex-1">
             <table className="w-[100%] divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -122,22 +124,29 @@ const AdminPosts = () => {
                 ))}
               </tbody>
             </table>
+            </div>
+
+
+
+            <div className="flex justify-center items-center w-full bottom-10 px-10">
+              <div className="flex gap-5">
+              <button
+                onClick={handlePrevPage}
+                disabled={currentPage === 1}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md"
+              >
+                Previous
+              </button>
+              <button
+                onClick={handleNextPage}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md"
+              >
+                Next
+              </button>
+              </div>
           </div>
-          <div className="flex justify-between mt-4">
-            <button
-              onClick={handlePrevPage}
-              disabled={currentPage === 1}
-              className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
-            >
-              Previous
-            </button>
-            <button
-              onClick={handleNextPage}
-              className="bg-blue-500 text-white px-4 py-2 rounded-md"
-            >
-              Next
-            </button>
           </div>
+          
         </div>
       </div>
     </>
