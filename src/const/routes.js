@@ -24,6 +24,7 @@ export const userUrl = {
   unfollowUser: (userId, followeeId) =>
     `/user/${userId}/unfollow/${followeeId}`,
   getConnections: (userId) => `/user/fetch/connection/${userId}`,
+  getSuggestions: (userId) => `/user/getmutuals/${userId}`,
 
   //update user
   updateProfile: `/user/update/profile`,

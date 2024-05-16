@@ -198,6 +198,21 @@ export const fetchUserPosts = (userId) => {
     }
   });
 };
+//@dec      Fetch a user's mutual suggestions
+//method    GET
+export const fetchSuggestedUsers = (userId) => {
+  return new Promise((resolve, reject) => {
+    try {
+      apiCall("get", userUrl.getSuggestions(userId))
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((error) => reject(error));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
 
 // @desc    Fetch posts count
 // @route   GET /post/fetch-count
