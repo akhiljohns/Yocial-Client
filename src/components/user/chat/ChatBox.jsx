@@ -10,6 +10,7 @@ import { io } from "socket.io-client";
 import MessageArea from "./MessageArea";
 import { BASE_URL } from "../../../const/url";
 import { useNavigate } from "react-router-dom";
+import CreatePostModal from "../Post/CreatePostModal";
 
 function ChatBox({
   reciever,
@@ -106,6 +107,9 @@ function ChatBox({
           />
         </div>
       </div>
+
+
+      
     </>
   );
 }

@@ -48,7 +48,7 @@ function MessageBox() {
     <>
       <Header />
       <UserSideBar />
-      <div className="fixed z-50 w-[88vw] ml-[12vw] mt-[10vh] h-[90vh] hidden p-5 md:flex gap-6">
+      <div className="fixed w-[88vw] ml-[12vw] mt-[10vh] h-[90vh] hidden p-5 md:flex gap-6">
         <ChatList setReciever={setReciever} />
         {chatRoom && reciever ? (
           <ChatBox
@@ -68,24 +68,8 @@ function MessageBox() {
             </span>
           </div>
         )}
+
       </div>
-
-      <div className="w-full h-fit p-1 flex items-center md:hidden gap-6 justify-center">
-        {chatRoom && reciever ? (
-          <ChatBox
-            reciever={reciever}
-            chatRoom={chatRoom}
-            setChatRoom={setChatRoom}
-            setIsModalOpen={setIsModalOpen}
-            isModalOpen={isModalOpen}
-
-          />
-        ) : (
-          <ChatList setReciever={setReciever} />
-        )}
-      </div>
-
-      <div className="">
         {isModalOpen && (
           <CreatePostModal
             isModalOpen={isModalOpen}
@@ -95,7 +79,6 @@ function MessageBox() {
             imagePreview={false}
           />
         )}
-      </div>
     </>
   );
 }

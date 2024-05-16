@@ -10,6 +10,7 @@ import {
 } from "../../../utils/reducers/userReducer";
 import EmojiIcn from "../Icons/EmojiIcn";
 import TypeBoxSVG from "./TypeBoxSVG";
+import CreatePostModal from "../Post/CreatePostModal";
 function TypeBox({
   chatRoom,
   setMessages,
@@ -142,6 +143,11 @@ function TypeBox({
           </div>
         )}
       </div>
+
+
+
+
+      
     </>
   );
 }
