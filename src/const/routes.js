@@ -114,6 +114,15 @@ export const postUrl = {
 
   //toget evry posts 20 per req.
   getAll: `/post/get-every-posts`,
+
+  //send new notifcation
+  sendNotification: `/post/newnotification`,
+
+  //fetch user notifcations
+  fetchNotif: `/post/fetch-notifications`,
+
+  //change notifcation status
+  changeNotifStatus: `/post/notification/status`,
 };
 
 export const authUrl = {

@@ -15,7 +15,8 @@ import PostModal from "../Comments/PostModal";
 import { useNavigate } from "react-router-dom";
 import SavePostButton from "../Elements/loaders/SavePostButton";
 import ReportIcon from "../Icons/ReportIcon";
-import "./style.css"
+import "./style.css";
+import { emitPostInteraction } from "../../../services/User/SocketHandler";
 const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user?.userData);
@@ -42,6 +43,13 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
   const likeunlike = () => {
     likeunlikePost(user?._id, post?._id).then((res) => {
       dispatch(editLoadedPost(res.post));
+      if (res?.post?.likes.includes(user._id)) {
+        emitPostInteraction("postInteraction", {
+          userId: user?._id,
+          username: user.username,
+          message: "liked Your post",
+        });
+      }
     });
     setLiked(!liked);
   };
@@ -113,24 +121,24 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
             <p className="text-gray-400 text-sm">{time}</p>
           </div>
         </div>
-         {/* Dropdown Menu */}
-  <div className="dropdown">
-    <div className="text-gray-500 cursor-pointer">
-      <button className="hover:bg-gray-50 rounded-full p-1">
-        {/* Three-dot icon SVG */}
-      </button>
-    </div>
-    <div className="dropdown-content">
-      <button >Action 1</button>
-      <button >Action 2</button>
-      <button >Action 3</button>
-    </div>
-  </div>
+        {/* Dropdown Menu */}
+        <div className="dropdown">
+          <div className="text-gray-500 cursor-pointer">
+            <button className="hover:bg-gray-50 rounded-full p-1">
+              {/* Three-dot icon SVG */}
+            </button>
+          </div>
+          <div className="dropdown-content">
+            <button>Action 1</button>
+            <button>Action 2</button>
+            <button>Action 3</button>
+          </div>
+        </div>
         {/* Three-dot menu */}
         <div className="text-gray-500 cursor-pointer">
           <button className="hover:bg-gray-50 rounded-full p-1">
             <svg
-              xmlns="http://www.w3.org/2000/svg" 
+              xmlns="http://www.w3.org/2000/svg"
               width="24"
               height="24"
               viewBox="0 0 24 24"

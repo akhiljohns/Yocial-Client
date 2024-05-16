@@ -754,10 +754,10 @@ export const getRoomWithUserID = (userId) => {
 // @desc    video call between two users
 // @route   GET /messages/inbox/videocall/callerId/receiverId
 // @access  Users - private
-export const startVideoCall = (callerId,receiverId) => {
+export const startVideoCall = (callerId, receiverId) => {
   return new Promise((resolve, reject) => {
     try {
-      const url = messageUrl.videoCall(callerId,receiverId);
+      const url = messageUrl.videoCall(callerId, receiverId);
       apiCall("get", url)
         .then((response) => {
           resolve(response);
@@ -795,7 +795,14 @@ export const reportUser = (userId, username, targetId, details) => {
 // @desc    Report user
 // @route   POST /user/report/user/:userId
 // @access  Registerd users
-export const reportPost = (userId, username, targetId, reason, postImageUrl ,postOwner) => {
+export const reportPost = (
+  userId,
+  username,
+  targetId,
+  reason,
+  postImageUrl,
+  postOwner
+) => {
   return new Promise((resolve, reject) => {
     try {
       const url = postUrl.report(userId, username);
@@ -803,7 +810,7 @@ export const reportPost = (userId, username, targetId, reason, postImageUrl ,pos
         targetId: targetId,
         reason: reason,
         postImageUrl: postImageUrl,
-        postOwner:postOwner
+        postOwner: postOwner,
       };
       apiCall("post", url, data)
         .then((response) => {
@@ -831,49 +838,6 @@ export const registerFcmToken = (userId, token) => {
     } catch (error) {
       reject(error);
     }
-  });
-};
-
-// @desc    Fetch notifications
-// @route   /user/:userId/notifications
-// @access  Registerd users
-export const fetchNotifications = (userId) => {
-  return new Promise((resolve, reject) => {
-    const url = userUrl.getNotes(userId);
-
-    apiCall("get", url)
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((error) => reject(error));
-  });
-};
-
-// @desc    Read notification
-// @route   PATCH /user/notifications/read/:notificationId
-// @access  Registerd users
-export const readNotification = (notifyId) => {
-  return new Promise((resolve, reject) => {
-    const url = userUrl.readNote(notifyId);
-    apiCall("patch", url)
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((error) => reject(error));
-  });
-};
-
-// @desc    Delete notification
-// @route   DELETE /user/notifications/delete/:userId
-// @access  Registerd users
-export const deleteNotifications = (userId) => {
-  return new Promise((resolve, reject) => {
-    const url = userUrl.deleteNotes(userId);
-    apiCall("delete", url)
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((error) => reject(error));
   });
 };
 
@@ -964,10 +928,10 @@ export const getEveryPosts = (page) => {
 // @desc    Block User
 // @route   GET /user/block/
 // @access  Registered users
-export const blockUser = (userId,blockUserId) => {
+export const blockUser = (userId, blockUserId) => {
   return new Promise((resolve, reject) => {
     try {
-      const url = userUrl.blockUser(userId,blockUserId);
+      const url = userUrl.blockUser(userId, blockUserId);
       apiCall("get", url)
         .then((response) => {
           resolve(response);
@@ -982,11 +946,71 @@ export const blockUser = (userId,blockUserId) => {
 // @desc    unblock User
 // @route   GET /user/unblock/
 // @access  Registered users
-export const unblockUser = (userId,unblockUserId) => {
+export const unblockUser = (userId, unblockUserId) => {
   return new Promise((resolve, reject) => {
     try {
-      const url = userUrl.unblockUser(userId,unblockUserId);
+      const url = userUrl.unblockUser(userId, unblockUserId);
       apiCall("get", url)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => reject(err));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// @desc    Save notification
+// @route   POST /post/newnotification/
+// @access  Registerd users
+export const saveNewNotif = ({
+  userId,
+  postId,
+  fromUserId,
+  message,
+  fromUser,
+}) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${postUrl.sendNotification}`;
+      apiCall("post", url, {
+        userId,
+        postId,
+        fromUserId,
+        message,
+        fromUser,
+      })
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => reject(err));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const fetchNotifications = ({ userId }) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${postUrl.fetchNotif}/${userId}`;
+      apiCall("get", url)
+        .then((response) => {
+          resolve(response);
+        })
+        .catch((err) => reject(err));
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+export const changeNotifStatus = ({ notificationId }) => {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = `${postUrl.changeNotifStatus}`;
+      apiCall("post", url)
         .then((response) => {
           resolve(response);
         })
