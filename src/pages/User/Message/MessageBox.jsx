@@ -20,6 +20,7 @@ function MessageBox() {
   const isValid = useSelector((state) => state?.user?.validUser);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reciever, setReciever] = useState();
+  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     if (reciever) {
@@ -57,6 +58,8 @@ function MessageBox() {
             setChatRoom={setChatRoom}
             setIsModalOpen={setIsModalOpen}
             isModalOpen={isModalOpen}
+            messages={messages}
+            setMessages={setMessages}
           />
         ) : (
           <div className="w-full h-full flex border-2 border-white rounded-lg flex-col justify-center items-center gap-3">
@@ -77,6 +80,9 @@ function MessageBox() {
             type={"chatimage"}
             userProfilePic={user?.profilePic}
             imagePreview={false}
+            chatRoom={chatRoom}
+            messages={messages}
+            setMessages={setMessages}
           />
         )}
     </>

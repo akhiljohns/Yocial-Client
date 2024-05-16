@@ -16,18 +16,9 @@
       }
     }, [messages]);
 
-    // useEffect(() => {
-    //   socket.on("userTyping", ({ typing, senderId }, callback) => {
-    //     if (senderId !== user?._id) {
-    //       setIsTyping(typing);
-    //     }
-    //   });
-    // });
-
     useEffect(() => {
       socket.on("recieveMessage", (newMessage, callback) => {
         setMessages((prevMessage) => [...prevMessage, newMessage]);
-        // dispatch(updateReduxChatRoom(newMessage?.senderId))
       });
     }, [socket]);
 
@@ -35,7 +26,6 @@
       <>
         <div
           className={`bg-no-repeat bg-cover w-full h-[39rem] md:h-[51rem] px-5 py-16 bg-[#000000a8] flex flex-col gap-3 overflow-auto no-scrollbar`}
-          // style={{ background: `url(${theme ? theme : "blue"})` }}
           ref={chatBoxRef}
         >
           {messages.map((message, index) => {
