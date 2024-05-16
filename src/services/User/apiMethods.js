@@ -964,13 +964,13 @@ export const unblockUser = (userId, unblockUserId) => {
 // @desc    Save notification
 // @route   POST /post/newnotification/
 // @access  Registerd users
-export const saveNewNotif = ({
+export const saveNewNotif = (
   userId,
   postId,
   fromUserId,
   message,
   fromUser,
-}) => {
+) => {
   return new Promise((resolve, reject) => {
     try {
       const url = `${postUrl.sendNotification}`;
