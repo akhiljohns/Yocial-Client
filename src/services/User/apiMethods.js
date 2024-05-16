@@ -991,7 +991,7 @@ export const saveNewNotif = ({
   });
 };
 
-export const fetchNotifications = ({ userId }) => {
+export const fetchNotifications = (userId ) => {
   return new Promise((resolve, reject) => {
     try {
       const url = `${postUrl.fetchNotif}/${userId}`;
@@ -1018,5 +1018,19 @@ export const changeNotifStatus = ({ notificationId }) => {
     } catch (error) {
       reject(error);
     }
+  });
+};
+
+// @desc    Delete notification
+// @route   DELETE /user/notifications/delete/:userId
+// @access  Registerd users
+export const deleteNotifications = (userId) => {
+  return new Promise((resolve, reject) => {
+    const url = userUrl.deleteNotes(userId);
+    apiCall("delete", url)
+      .then((response) => {
+        resolve(response);
+      })
+      .catch((error) => reject(error));
   });
 };

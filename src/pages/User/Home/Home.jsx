@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
+  fetchNotifications,
   fetchSuggestedUsers,
   fetchUserPosts,
   getAllPosts,
@@ -23,6 +24,7 @@ import { errorToast } from "../../../hooks/toast";
 import UserList from "../../../components/user/Modals/UserList";
 import UserListsModal from "../../../components/user/Modals/UserListsModal";
 import UserCard from "../Search/UserCard";
+import { setReduxNotifications } from "../../../utils/reducers/notificationReducer";
 
 const UserHome = () => {
   //likes
@@ -107,6 +109,16 @@ const UserHome = () => {
         });
     }
   }, []);
+
+  useEffect(() => {
+    fetchNotifications(userData?._id)
+    .then((response) => {
+        dispatch(setReduxNotifications({ notifications: response.notifications }));
+      })
+      .catch((error) => {
+        errorToast(error.message)
+      });
+  });
 
   useEffect(() => {
     window.addEventListener("beforeunload", () => {
