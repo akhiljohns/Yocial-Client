@@ -6,6 +6,7 @@ import {
   removeSavedPost,
   savePost,
   reportPost,
+  saveNewNotif,
 } from "../../../services/User/apiMethods";
 import { timeAgo } from "../../../hooks/timeCalculator";
 import { editLoadedPost } from "../../../utils/reducers/postReducer";
@@ -42,12 +43,21 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
 
   const likeunlike = () => {
     likeunlikePost(user?._id, post?._id).then((res) => {
+      console.log("res :>> ", res);
       dispatch(editLoadedPost(res.post));
       if (res?.post?.likes.includes(user._id)) {
-        emitPostInteraction("postInteraction", {
-          userId: user?._id,
-          username: user.username,
-          message: "liked Your post",
+        saveNewNotif(
+          post?.userId._id,
+          post?._id,
+          user?._id,
+          "liked your post",
+          user?.username
+        ).then((resp) => {
+          emitPostInteraction("postInteraction", {
+            userId: user?._id,
+            username: user.username,
+            message: "liked Your post",
+          });
         });
       }
     });

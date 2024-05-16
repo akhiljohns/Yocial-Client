@@ -4,16 +4,15 @@ import ProfileField from "./ProfileField";
 function UserList({ userIds, closeModal }) {
   return (
     <div
-      className="p-6 overflow-y-auto"
-      style={{ maxHeight: "calc(100vh - 100px)" }}
+      className="overflow-y-auto overflow-x-hidden flex flex-col gap-5 w-full"
     >
-      <ul className="my-4 space-y-3  cursor-pointer">
+      {/* <ul className="my-4 space-y-3 h-fit cursor-pointer overflow-auto"> */}
         {userIds?.map((id, index) => (
           <>
             <ProfileField closeModal={closeModal} userId={id} key={id} />
           </>
         ))}
-      </ul>
+      {/* </ul> */}
     </div>
   );
 }
