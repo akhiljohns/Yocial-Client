@@ -13,7 +13,8 @@ const userSlice = createSlice({
     following: [],
     followers: [],
     chatRooms: [],
-    currentRoom: currentRoom
+    currentRoom: currentRoom,
+    chatImage:0
   },
   reducers: {
     setReduxUser: (state, action) => {
@@ -22,6 +23,9 @@ const userSlice = createSlice({
     },
     updateReduxUser: (state, action) => {
       state.userData = action.payload;
+    },
+    updateChatImage: (state, action) => {
+      state.chatImage = action.payload;
     },
     removeReduxUser: (state, action) => {
       state.userData = null;
@@ -96,6 +100,7 @@ export const {
   setFollowers,
   updateSavedPosts,
   logOut,
+  updateChatImage
 } = userSlice.actions;
 
 export default userSlice.reducer;

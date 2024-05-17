@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   postCreatePost,
   postUpdatePost,
+  sendMessage,
   updateUserAvatar,
 } from "../../../services/User/apiMethods";
 import Modal from "react-modal";
@@ -14,7 +15,12 @@ import { Spinner } from "flowbite-react";
 import { errorToast, successToast } from "../../../hooks/toast";
 import { addNewPost, editUserPost } from "../../../utils/reducers/postReducer";
 import CharacterCountIndicator from "../Options/CharacterCount";
-import { updateReduxUser } from "../../../utils/reducers/userReducer";
+import {
+  updateReduxUser,
+  updateChatImage,
+} from "../../../utils/reducers/userReducer";
+import { BASE_URL } from "../../../const/url";
+import { io } from "socket.io-client";
 const ImageFilter = React.lazy(() => import("../ImageFilter/ImageFilter"));
 
 function CreatePostModal({
@@ -22,6 +28,10 @@ function CreatePostModal({
   setIsModalOpen,
   type,
   editPostCaption,
+  chatRoom,
+  messages,
+  setMessages,
+  socket,
 }) {
   Modal.setAppElement("#root");
   const dispatch = useDispatch();
@@ -40,6 +50,7 @@ function CreatePostModal({
 
   const navigate = useNavigate();
   const userData = useSelector((state) => state?.user?.userData);
+  const chatImage = useSelector((state) => state?.user?.chatImage);
   const userPost = useSelector((state) => state?.userPosts?.editPost);
   let postData;
 
@@ -86,10 +97,14 @@ function CreatePostModal({
   };
 
   const handleSubmit = async () => {
+    if (!imagePreview || !image) {
+      setErr("Please select an image");
+      return;
+    }
     setLoading(true);
     setBtnDisabled(true);
     let imageUrl = "";
-    if (type === "createPost" || type === "avatar") {
+    if (type === "createPost" || type === "avatar" || type === "chatimage") {
       const imageData = await handleCloudinary();
       imageUrl = imageData.secure_url;
     }
@@ -112,7 +127,7 @@ function CreatePostModal({
         .then(handlePostResponse)
         .catch((error) => {
           setLoading(false);
-          setBtnDisabled(false)
+          setBtnDisabled(false);
           errorToast(error?.message);
           setErr(error?.message);
         });
@@ -131,33 +146,59 @@ function CreatePostModal({
             closeModal();
           } else {
             setLoading(false);
-            setBtnDisabled(false)
+            setBtnDisabled(false);
             infoToast(response?.message);
           }
         })
         .catch((error) => {
           setLoading(false);
-          setBtnDisabled(false)
+          setBtnDisabled(false);
           errorToast(error?.message);
           setErr(error?.message);
         });
-      } else if (type === "editPost") {
-        const data = {
-          postId: userPost?._id,
-          caption: caption,
-        };
-        
-        postUpdatePost(data)
+    } else if (type === "editPost") {
+      const data = {
+        postId: userPost?._id,
+        caption: caption,
+      };
+
+      postUpdatePost(data)
         .then(handlePostResponse)
         .catch((error) => {
           setLoading(false);
-          setBtnDisabled(false)
+          setBtnDisabled(false);
+          errorToast(error?.message);
+          setErr(error?.message);
+        });
+    } else if (type === "chatimage") {
+      sendMessage(chatRoom?._id, imageUrl, userData?._id)
+        .then((response) => {
+          setMessages([...messages, response]);
+
+          // Use the socket instance passed as a prop
+          socket.emit(
+            "sendMessage",
+            chatRoom?._id,
+            response,
+            userData?._id,
+            (res) => {
+              // Handle the response from the server
+            }
+          );
+
+          clearComponent();
+          closeModal();
+        })
+        .catch((error) => {
+          // Handle the error
+          console.error("Error sending message:", error);
+          setLoading(false);
+          setBtnDisabled(false);
           errorToast(error?.message);
           setErr(error?.message);
         });
     }
   };
-
   const closeModal = () => {
     setIsModalOpen(false);
     clearComponent();
@@ -215,6 +256,8 @@ function CreatePostModal({
             ? "Edit Post"
             : type === "createPost"
             ? "Create Post"
+            : type === "chatimage"
+            ? "Upload Image"
             : "Edit Avatar"}
         </h2>
         <div className="mb-4">
@@ -229,7 +272,7 @@ function CreatePostModal({
             />
           )}
         </div>
-        {type !== "avatar" && (
+        {type !== "avatar" && type !== "chatimage" && (
           <div className="mb-4">
             <input
               type="text"
@@ -254,22 +297,21 @@ function CreatePostModal({
           </div>
         )}
         <div className="flex justify-evenly items-center">
-
-        <button
-          className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          onClick={handleSubmit}
-          disabled={btnDisabled}
-        >
-          Submit
-        </button>
-        <br />
-        <button
-          className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-          onClick={closeModal}
-          disabled={btnDisabled}
-        >
-          Cancel
-        </button>
+          <button
+            className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            onClick={handleSubmit}
+            disabled={btnDisabled}
+          >
+            Submit
+          </button>
+          <br />
+          <button
+            className="bg-black hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            onClick={closeModal}
+            disabled={btnDisabled}
+          >
+            Cancel
+          </button>
         </div>
 
         {err && <p className="text-red-500 text-center">{err}</p>}
