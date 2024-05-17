@@ -964,13 +964,7 @@ export const unblockUser = (userId, unblockUserId) => {
 // @desc    Save notification
 // @route   POST /post/newnotification/
 // @access  Registerd users
-export const saveNewNotif = (
-  userId,
-  postId,
-  fromUserId,
-  message,
-  fromUser,
-) => {
+export const saveNewNotif = (userId, postId, fromUserId, message, fromUser) => {
   return new Promise((resolve, reject) => {
     try {
       const url = `${postUrl.sendNotification}`;
@@ -991,7 +985,7 @@ export const saveNewNotif = (
   });
 };
 
-export const fetchNotifications = (userId ) => {
+export const fetchNotifications = (userId) => {
   return new Promise((resolve, reject) => {
     try {
       const url = `${postUrl.fetchNotif}/${userId}`;
@@ -1026,11 +1020,15 @@ export const changeNotifStatus = ({ notificationId }) => {
 // @access  Registerd users
 export const deleteNotifications = (userId) => {
   return new Promise((resolve, reject) => {
-    const url = userUrl.deleteNotes(userId);
+    const url = postUrl.deleteNotes(userId);
     apiCall("delete", url)
       .then((response) => {
+        console.log(response);
         resolve(response);
       })
-      .catch((error) => reject(error));
+      .catch((error) => {
+        console.log(error);
+        reject(error);
+      });
   });
 };

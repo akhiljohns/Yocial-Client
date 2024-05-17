@@ -1,8 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import UserList from "./UserList";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Notes from "../Notification/Notes";
 import NotifUserList from "../Notification/NotifUserList";
+import { deleteNotifications } from "../../../services/User/apiMethods";
+import { clearReduxNotifications } from "../../../utils/reducers/notificationReducer";
+import { successToast, errorToast } from "../../../hooks/toast";
+
 function UserListsModal({
   type,
   userIds,
@@ -10,11 +14,25 @@ function UserListsModal({
   choice,
   toggleModalHandler,
 }) {
+  const [notifEmpty, setNotifEmpty] = useState(false);
+  const dispatch = useDispatch();
   const user = useSelector((state) => state?.user?.userData);
 
-  const notifications = useSelector(
+  let notifications = useSelector(
     (state) => state?.notification?.notifications
   );
+
+  const deleteNotifs = () => {
+    deleteNotifications(user._id).then((response) => {
+      if (response.status === 200) {
+        dispatch(clearReduxNotifications());
+        successToast("Notifications deleted");
+        setNotifEmpty(true);
+      } else {
+        errorToast("Error deleting notifications");
+      }
+    });
+  };
 
   return (
     <>
@@ -53,33 +71,30 @@ function UserListsModal({
               <span className="sr-only">Close modal</span>
             </button>
           </div>
-          {!notifications ? (
-            <h1 className="text-center text-black font-extrabold text-3xl]">
+          {(notifEmpty || !notifications || notifications.length === 0) ? (
+            <h1 className="text-center text-black font-extrabold text-3xl">
               No Notifications
             </h1>
           ) : (
-            ""
-          )}
-          {choice === "notification" &&
-            notifications &&
-            notifications.length > 0 && (
+            choice === "notification" && (
               <>
-              <div className="w-full h-[85%] overflow-auto">
-                {notifications.map((notification) => (
-                  <Notes key={notification?._id} notification={notification} />
-                  // <NotifUserList key={notification?._id} notification={notification} />
+                <div className="w-full h-[85%] overflow-auto">
+                  {notifications.map((notification) => (
+                    <Notes key={notification?._id} notification={notification} />
+                  ))}
+                </div>
 
-                ))}
-              </div>
-
-              <div className="w-full flex items-center px-2 py-3">
-                <button className="ml-auto text-black text-sm hover:font-semibold">Mark all as read</button>
-              </div>
-              
+                <div className="w-full flex items-center px-2 py-3">
+                  <button
+                    onClick={deleteNotifs}
+                    className="ml-auto text-black text-sm hover:font-semibold"
+                  >
+                    Mark all as read
+                  </button>
+                </div>
               </>
-
-
-            )}
+            )
+          )}
           {choice !== "notification" && (
             <UserList closeModal={toggleModal} userIds={userIds} />
           )}
