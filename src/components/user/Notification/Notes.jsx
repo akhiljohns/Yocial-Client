@@ -1,27 +1,28 @@
-import React, { useEffect, useState } from 'react'
-import { getUser } from '../../../services/User/apiMethods';
-import { getTimeDifference } from '../../../hooks/timeAgo';
+import React, { useEffect, useState } from "react";
+import { getUser } from "../../../services/User/apiMethods";
+import { getTimeDifference } from "../../../hooks/timeAgo";
 
-function Notes({notification}) {
+function Notes({ notification }) {
+  const [error, setError] = useState("");
+  const [fromUser, setFromUser] = useState();
+  const [time, setTime] = useState("");
 
-    const [error, setError] = useState('');
-    const [fromUser, setFromUser] = useState();
-    const [time, setTime] = useState('');
+  useEffect(() => {
+    if (notification) {
+      getUser(notification?.from?._id)
+        .then((response) => {
+          setFromUser(response.user[0]);
+        })
+        .catch((error) => {
+          setError(error?.message);
+        });
+    }
+  }, [notification]);
 
-    useEffect(()=> {
-        if(notification){
-            getUser(notification?.from?._id).then((response)=> {
-                setFromUser(response.user[0])
-            }).catch((error)=> {
-                setError(error?.message)
-            })
-        }
-    }, [notification])
-
-    useEffect(()=> {
-        const diff = getTimeDifference(notification?.createdAt)
-        setTime(diff);
-    }, [notification])
+  useEffect(() => {
+    const diff = getTimeDifference(notification?.createdAt);
+    setTime(diff);
+  }, [notification]);
 
   return (
     <>
@@ -53,4 +54,4 @@ function Notes({notification}) {
   );
 }
 
-export default Notes
+export default Notes;

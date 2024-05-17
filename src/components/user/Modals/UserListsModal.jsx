@@ -1,7 +1,19 @@
 import React from "react";
 import UserList from "./UserList";
+import { useSelector } from "react-redux";
+import Notes from "../Notification/Notes";
+function UserListsModal({
+  type,
+  userIds,
+  toggleModal,
+  choice,
+  toggleModalHandler,
+}) {
+  const user = useSelector((state) => state?.user?.userData);
 
-function UserListsModal({type,userIds,toggleModal}) {
+  const notifications = useSelector(
+    (state) => state?.notification?.notifications
+  );
   return (
     <>
       <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-gray-950 bg-opacity-50">
@@ -12,7 +24,7 @@ function UserListsModal({type,userIds,toggleModal}) {
           <div className="flex justify-center w-full">
             <div className="px-6 py-4 border-b rounded-t dark:border-gray-600">
               <h3 className="text-lg font-semibold text-gray-900 lg:text-xl dark:text-white">
-                {type}
+                {choice !== "notification" ? { type } : "Notifications"}
               </h3>
             </div>
 
@@ -39,8 +51,14 @@ function UserListsModal({type,userIds,toggleModal}) {
               <span className="sr-only">Close modal</span>
             </button>
           </div>
-
+          {notifications.map((notification) => {
+            return (
+              <Notes key={notification?._id} notification={notification} />
+            );
+          })}
+          {choice !== "notification" && (
             <UserList closeModal={toggleModal} userIds={userIds} />
+          )}
         </div>
       </div>
     </>
