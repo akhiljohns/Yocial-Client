@@ -53,13 +53,22 @@ function UserListsModal({
               <span className="sr-only">Close modal</span>
             </button>
           </div>
-          {choice === "notification" && notifications.length > 0 && (
-            <div>
-              {notifications.map((notification) => (
-                <Notes key={notification?._id} notification={notification} />
-              ))}
-            </div>
+          {!notifications ? (
+            <h1 className="text-center text-black font-extrabold text-3xl]">
+              No Notifications
+            </h1>
+          ) : (
+            ""
           )}
+          {choice === "notification" &&
+            notifications &&
+            notifications.length > 0 && (
+              <div>
+                {notifications.map((notification) => (
+                  <Notes key={notification?._id} notification={notification} />
+                ))}
+              </div>
+            )}
           {choice !== "notification" && (
             <UserList closeModal={toggleModal} userIds={userIds} />
           )}
