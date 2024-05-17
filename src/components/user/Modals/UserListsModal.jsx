@@ -2,7 +2,7 @@ import React from "react";
 import UserList from "./UserList";
 import { useSelector } from "react-redux";
 import Notes from "../Notification/Notes";
-
+import NotifUserList from "../Notification/NotifUserList";
 function UserListsModal({
   type,
   userIds,
@@ -66,6 +66,8 @@ function UserListsModal({
               <div>
                 {notifications.map((notification) => (
                   <Notes key={notification?._id} notification={notification} />
+                  // <NotifUserList key={notification?._id} notification={notification} />
+
                 ))}
               </div>
             )}

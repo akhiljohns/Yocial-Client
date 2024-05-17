@@ -29,7 +29,7 @@ function Notes({ notification }) {
       <li
         className={`py-3 sm:py-4 ${
           notification?.isRead ? "" : "bg-[#69686838]"
-        } px-3 rounded cursor-pointer hover:bg-[#69686873]`}
+        } px-3 rounded cursor-pointer overflow-y-auto overflow-x-hidden flex flex-col gap-5 w-full hover:bg-[#69686873]`}
       >
         <div className="flex items-center space-x-4">
           <div className="flex-shrink-0">
