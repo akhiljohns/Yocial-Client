@@ -19,6 +19,8 @@ import {
   updateReduxUser,
   updateChatImage,
 } from "../../../utils/reducers/userReducer";
+import { BASE_URL } from "../../../const/url";
+import { io } from "socket.io-client";
 const ImageFilter = React.lazy(() => import("../ImageFilter/ImageFilter"));
 
 function CreatePostModal({
@@ -29,6 +31,7 @@ function CreatePostModal({
   chatRoom,
   messages,
   setMessages,
+  socket,
 }) {
   Modal.setAppElement("#root");
   const dispatch = useDispatch();
@@ -168,14 +171,34 @@ function CreatePostModal({
           setErr(error?.message);
         });
     } else if (type === "chatimage") {
-      sendMessage(chatRoom?._id, imageUrl, userData?._id).then((response) => {
-        setMessages([...messages, response]);
-        clearComponent();
-        closeModal();
-      });
+      sendMessage(chatRoom?._id, imageUrl, userData?._id)
+        .then((response) => {
+          setMessages([...messages, response]);
+
+          // Use the socket instance passed as a prop
+          socket.emit(
+            "sendMessage",
+            chatRoom?._id,
+            response,
+            userData?._id,
+            (res) => {
+              // Handle the response from the server
+            }
+          );
+
+          clearComponent();
+          closeModal();
+        })
+        .catch((error) => {
+          // Handle the error
+          console.error("Error sending message:", error);
+          setLoading(false);
+          setBtnDisabled(false);
+          errorToast(error?.message);
+          setErr(error?.message);
+        });
     }
   };
-
   const closeModal = () => {
     setIsModalOpen(false);
     clearComponent();

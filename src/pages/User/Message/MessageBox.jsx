@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import ChatList from "../../../components/user/chat/ChatList";
 import ChatBox from "../../../components/user/chat/ChatBox";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,6 +22,10 @@ function MessageBox() {
   const [reciever, setReciever] = useState();
   const [messages, setMessages] = useState([]);
 
+  const socket = useMemo(() => {
+    return io.connect(BASE_URL);
+  }, []);
+
   useEffect(() => {
     if (reciever) {
       setUpChatRoom(user?._id, reciever?._id)
@@ -39,7 +43,6 @@ function MessageBox() {
   }, [user, reciever, navigate, dispatch]);
 
   useEffect(() => {
-    const socket = io.connect(BASE_URL);
     socket.emit("newUser", chatRoom?._id, (res) => {});
 
     socket.on("newMessage", (data, res) => {});
@@ -83,6 +86,7 @@ function MessageBox() {
             chatRoom={chatRoom}
             messages={messages}
             setMessages={setMessages}
+            socket={socket}
           />
         )}
     </>

@@ -38,7 +38,6 @@ function ChatBox({
 
   useEffect(() => {
     try {
-      console.log('chatImage :>> ', chatImage);
       if (reciever && chatRoom) {
         getMessages(chatRoom?._id)
           .then((messages) => {

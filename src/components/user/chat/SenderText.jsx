@@ -2,13 +2,13 @@ import React from "react";
 
 function SenderText({ message }) {
   const isCloudinaryImage = message?.textMessage.includes(
-    "https://res.cloudinary.com/"
+    import.meta.env.VITE_CLODINARY_IMAGE_URL
   );
 
   return (
     <>
       {isCloudinaryImage ? (
-        <div className="flex justify-end">
+        <div className="flex justify-start">
           <div className="bg-gray-200 p-2 rounded-md w-[18%] max-w-xs h-auto">
             <img src={message.textMessage} alt="Cloudinary Image" />
           </div>

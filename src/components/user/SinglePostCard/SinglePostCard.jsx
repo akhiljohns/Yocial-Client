@@ -43,7 +43,6 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
 
   const likeunlike = () => {
     likeunlikePost(user?._id, post?._id).then((res) => {
-      console.log("res :>> ", res);
       dispatch(editLoadedPost(res.post));
       if (res?.post?.likes.includes(user._id)) {
         saveNewNotif(
