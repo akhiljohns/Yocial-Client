@@ -63,13 +63,22 @@ function UserListsModal({
           {choice === "notification" &&
             notifications &&
             notifications.length > 0 && (
-              <div>
+              <>
+              <div className="w-full h-[85%] overflow-auto">
                 {notifications.map((notification) => (
                   <Notes key={notification?._id} notification={notification} />
                   // <NotifUserList key={notification?._id} notification={notification} />
 
                 ))}
               </div>
+
+              <div className="w-full flex items-center px-2 py-3">
+                <button className="ml-auto text-black text-sm hover:font-semibold">Mark all as read</button>
+              </div>
+              
+              </>
+
+
             )}
           {choice !== "notification" && (
             <UserList closeModal={toggleModal} userIds={userIds} />

@@ -26,8 +26,8 @@ function Notes({ notification }) {
 
   return (
     <>
-      <li
-        className={`py-3 sm:py-4 ${
+      <div
+        className={`py-3 sm:py-4 mb-2 ${
           notification?.isRead ? "" : "bg-[#69686838]"
         } px-3 rounded cursor-pointer overflow-y-auto overflow-x-hidden flex flex-col gap-5 w-full hover:bg-[#69686873]`}
       >
@@ -49,7 +49,7 @@ function Notes({ notification }) {
             {time}
           </div>
         </div>
-      </li>
+      </div>
     </>
   );
 }
