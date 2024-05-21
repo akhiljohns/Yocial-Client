@@ -9,8 +9,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AdminHeader from "../../../components/admin/Header/AdminHeader";
 import AdminSideBar from "../../../components/admin/Sidebar/AdminSideBar";
+import { emitUserBlock } from "../../../services/User/SocketHandler";
 
-const UserRow = ({ user }) => (
+const UserRow = ({ user, handleToggleBlock }) => (
   <tr key={user._id}>
     <td className="flex items-center">
       <img src={user.profilePic} alt="" className="w-8 h-8 rounded-full mr-2" />
@@ -70,6 +71,9 @@ const AdminUsers = () => {
   const handleToggleBlock = (userId, blocked) => {
     blockUnblockUser(userId, !blocked)
       .then((response) => {
+        if(!blocked){
+          emitUserBlock("blockuser",userId)
+        }
         const updatedUsers = users.map((user) =>
           user._id === response.user._id ? response.user : user
         );
@@ -118,7 +122,7 @@ const AdminUsers = () => {
                 </thead>
                 <tbody>
                   {users.map((user) => (
-                    <UserRow key={user._id} user={user} />
+                    <UserRow key={user._id} user={user} handleToggleBlock={handleToggleBlock} />
                   ))}
                 </tbody>
               </table>

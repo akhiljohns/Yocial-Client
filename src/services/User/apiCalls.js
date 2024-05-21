@@ -13,7 +13,7 @@ export const clearUser = async () => {
   localStorage.removeItem("userAuth");
   localStorage.removeItem("refreshToken");
   persistor.purge();
-  //  localStorage.clear()
+  localStorage.clear()
   window.location.href = "/login";
 };
 

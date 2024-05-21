@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { infoToast, successToast } from "../../hooks/toast";
 import { addNewReduxNotification } from "../../utils/reducers/notificationReducer";
 import { fetchNotifications } from "./apiMethods";
+import { clearUser } from "./apiCalls";
 
 export const emitSocketEvent = (event, userId, callback) => {
   const socket = io.connect(BASE_URL);
@@ -14,6 +15,11 @@ export const emitSocketEvent = (event, userId, callback) => {
 };
 
 export const emitPostInteraction = (event, data) => {
+  const socket = io.connect(BASE_URL);
+  socket.emit(event, data);
+};
+
+export const emitUserBlock = (event, data) => {
   const socket = io.connect(BASE_URL);
   socket.emit(event, data);
 };
@@ -45,6 +51,11 @@ const SocketHandler = () => {
         fetchNotifications(postOwner).then((response) => {
           dispatch(addNewReduxNotification(response.notifications));
         });
+      }
+    });
+    socket.on("blockUser", ({ userId }) => {
+      if (user?._id === userId) {
+        clearUser();
       }
     });
 
