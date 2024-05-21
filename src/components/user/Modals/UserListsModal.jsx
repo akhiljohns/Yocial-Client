@@ -71,7 +71,7 @@ function UserListsModal({
               <span className="sr-only">Close modal</span>
             </button>
           </div>
-          {(notifEmpty || !notifications || notifications.length === 0) ? (
+          {(notifEmpty || !notifications || notifications.length === 0) && choice== 'notification' ? (
             <h1 className="text-center text-black font-extrabold text-3xl">
               No Notifications
             </h1>
