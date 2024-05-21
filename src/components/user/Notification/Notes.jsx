@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { getUser } from "../../../services/User/apiMethods";
 import { getTimeDifference } from "../../../hooks/timeAgo";
-
+import { useNavigate } from "react-router-dom";
+import { URL } from "../../../const/url";
 function Notes({ notification }) {
   const [error, setError] = useState("");
   const [fromUser, setFromUser] = useState();
   const [time, setTime] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (notification) {
@@ -24,9 +26,17 @@ function Notes({ notification }) {
     setTime(diff);
   }, [notification]);
 
+  const showPost = () => {
+    const newUrl = `/post/${notification?.postId}`;
+    navigate(newUrl, { replace: true }, () => {
+      console.log("Navigated to:", newUrl);
+    });
+  };
+
   return (
     <>
       <div
+        onClick={showPost}
         className={`py-3 sm:py-4 mb-2 ${
           notification?.isRead ? "" : "bg-[#69686838]"
         } px-3 rounded cursor-pointer overflow-y-auto overflow-x-hidden flex flex-col gap-5 w-full hover:bg-[#69686873]`}

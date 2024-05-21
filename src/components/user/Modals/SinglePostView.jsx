@@ -43,18 +43,19 @@ const SinglePostView = ({ postId }) => {
         .then((response) => {
           setPostComments(response);
         })
-        .catch((error) => {
-        });
+        .catch((error) => {});
     }
   }, [post, postId]);
 
   useEffect(() => {
     if (post) {
-      getUser(post?.userId)
+      getUser(post?.userId?._id)
         .then((response) => {
           setPostOwner(response[0]);
         })
-        .catch((error) => {});
+        .catch((error) => {
+          console.log(error);
+        });
     }
   }, [post]);
 
