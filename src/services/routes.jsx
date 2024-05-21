@@ -15,7 +15,7 @@ import AuthEmail from "../components/user/EditProfile/AuthEmail";
 import SavedPosts from "../pages/User/SavedPosts/SavedPosts";
 import SearchUsers from "../pages/User/Search/SearchUsers";
 import MessageBox from "../pages/User/Message/MessageBox";
-
+import SinglePostPage from "../pages/User/Posts/SinglePostPage";
 /////////////////////////ADMIN PAGES/////////////////////////
 import AdminLogin from "../pages/Admin/Login/AdminLogin";
 import AdminHome from "../pages/Admin/Home/AdminHome";
@@ -45,6 +45,7 @@ const AppRouter = () => {
         <Route path="/searchusers" element={<SearchUsers />} />
         <Route path="/auth/verify/:id/:token/:type" element={<AuthEmail />} />
         <Route path="/chat" element={<MessageBox />} />
+        <Route path="/post/:postId" element={<SinglePostPage/>} />
         <Route path="/room/:roomId" element={<VideoCallInterface />} />
 
         <Route path="*" element={<Error />} />

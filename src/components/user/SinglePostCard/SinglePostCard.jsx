@@ -18,6 +18,7 @@ import SavePostButton from "../Elements/loaders/SavePostButton";
 import ReportIcon from "../Icons/ReportIcon";
 import "./style.css";
 import { emitPostInteraction } from "../../../services/User/SocketHandler";
+import { addNewReduxNotification } from "../../../utils/reducers/notificationReducer";
 const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state?.user?.userData);
@@ -53,6 +54,7 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
           user?.username
         ).then((resp) => {
           emitPostInteraction("postInteraction", {
+            postOwner:post?.userId._id,
             userId: user?._id,
             username: user.username,
             message: "liked Your post",

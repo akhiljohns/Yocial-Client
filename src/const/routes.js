@@ -39,7 +39,6 @@ export const userUrl = {
   //notification related
   getNotes: (userId) => `/user/${userId}/notifications`,
   readNote: (notifyId) => `/user/notifications/read/${notifyId}`,
-  deleteNotes: (userId) => `/user/notifications/delete/${userId}`,
 
   //password related
   reqChangePassword: "/user/password/verify/email",
@@ -95,6 +94,7 @@ export const postUrl = {
 
   //delete post
   deletePost: (postId) => `/post/delete/post/${postId}`,
+  deleteNotes: (userId) => `/post/notification/delete/${userId}`,
 
   //likes
   likeunlikePost: (data) => `/post/like-unlike/${data.postId}/${data.userId}`,

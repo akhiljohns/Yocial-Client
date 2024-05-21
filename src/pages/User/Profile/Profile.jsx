@@ -289,6 +289,7 @@ const Profile = () => {
           type={listType}
           userIds={usersList}
           toggleModal={toggleConnectionModal}
+          choice={"profile"}
         />
       )}
     </>

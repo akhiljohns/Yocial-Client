@@ -1,34 +1,45 @@
-import React, { useEffect, useState } from 'react'
-import { getUser } from '../../../services/User/apiMethods';
-import { getTimeDifference } from '../../../hooks/timeAgo';
+import React, { useEffect, useState } from "react";
+import { getUser } from "../../../services/User/apiMethods";
+import { getTimeDifference } from "../../../hooks/timeAgo";
+import { useNavigate } from "react-router-dom";
+import { URL } from "../../../const/url";
+function Notes({ notification }) {
+  const [error, setError] = useState("");
+  const [fromUser, setFromUser] = useState();
+  const [time, setTime] = useState("");
+  const navigate = useNavigate();
 
-function Notes({notification}) {
+  useEffect(() => {
+    if (notification) {
+      getUser(notification?.from?._id)
+        .then((response) => {
+          setFromUser(response.user[0]);
+        })
+        .catch((error) => {
+          setError(error?.message);
+        });
+    }
+  }, [notification]);
 
-    const [error, setError] = useState('');
-    const [fromUser, setFromUser] = useState();
-    const [time, setTime] = useState('');
+  useEffect(() => {
+    const diff = getTimeDifference(notification?.createdAt);
+    setTime(diff);
+  }, [notification]);
 
-    useEffect(()=> {
-        if(notification){
-            getUser(notification?.from?._id).then((response)=> {
-                setFromUser(response.user[0])
-            }).catch((error)=> {
-                setError(error?.message)
-            })
-        }
-    }, [notification])
-
-    useEffect(()=> {
-        const diff = getTimeDifference(notification?.createdAt)
-        setTime(diff);
-    }, [notification])
+  const showPost = () => {
+    const newUrl = `/post/${notification?.postId}`;
+    navigate(newUrl, { replace: true }, () => {
+      console.log("Navigated to:", newUrl);
+    });
+  };
 
   return (
     <>
-      <li
-        className={`py-3 sm:py-4 ${
+      <div
+        onClick={showPost}
+        className={`py-3 sm:py-4 mb-2 ${
           notification?.isRead ? "" : "bg-[#69686838]"
-        } px-3 rounded cursor-pointer hover:bg-[#69686873]`}
+        } px-3 rounded cursor-pointer overflow-y-auto overflow-x-hidden flex flex-col gap-5 w-full hover:bg-[#69686873]`}
       >
         <div className="flex items-center space-x-4">
           <div className="flex-shrink-0">
@@ -48,9 +59,9 @@ function Notes({notification}) {
             {time}
           </div>
         </div>
-      </li>
+      </div>
     </>
   );
 }
 
-export default Notes
+export default Notes;

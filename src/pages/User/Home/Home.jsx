@@ -194,6 +194,7 @@ const UserHome = () => {
           type={"Likes"}
           userIds={likePost}
           toggleModal={toggleLikesModal}
+          choice={"Likes"}
         />
       )}
     </div>

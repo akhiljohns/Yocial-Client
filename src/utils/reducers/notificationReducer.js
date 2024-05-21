@@ -12,7 +12,7 @@ const notificationSlice = createSlice({
       state.notifications = action.payload.notifications;
     },
     addNewReduxNotification: (state, action) => {
-      state.notifications.unshift(action.payload.notification);
+      state.notifications = action.payload;
     },
     clearReduxNotifications: (state, action) => {
       state.notifications = [];
@@ -20,6 +20,10 @@ const notificationSlice = createSlice({
   },
 });
 
-export const { setReduxNotifications, addNewReduxNotification, clearReduxNotifications } = notificationSlice.actions;
+export const {
+  setReduxNotifications,
+  addNewReduxNotification,
+  clearReduxNotifications,
+} = notificationSlice.actions;
 
 export default notificationSlice.reducer;
