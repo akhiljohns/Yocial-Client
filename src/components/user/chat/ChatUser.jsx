@@ -76,7 +76,7 @@ function ChatUser({ userId, doFunction }) {
       className="flex items-center gap-5 border-2 p-2 rounded-lg select-none relative bg-slate-400 opacity-70 cursor-pointer"
       onClick={() => doFunction(user)}
     >
-      <div className="relative aspect-square rounded-full w-fit h-fit">
+      <div className="relative aspect-square rounded-full w-fit h-fit z-50">
         <ProfilePic
           image={
             user?.profilePic ||

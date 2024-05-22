@@ -133,10 +133,9 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
           </div>
         </div>
         {/* Dropdown Menu */}
-        <div className="dropdown">
+        {/* <div className="dropdown">
           <div className="text-gray-500 cursor-pointer">
             <button className="hover:bg-gray-50 rounded-full p-1">
-              {/* Three-dot icon SVG */}
             </button>
           </div>
           <div className="dropdown-content">
@@ -144,9 +143,9 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
             <button>Action 2</button>
             <button>Action 3</button>
           </div>
-        </div>
+        </div> */}
         {/* Three-dot menu */}
-        <div className="text-gray-500 cursor-pointer">
+        {/* <div className="text-gray-500 cursor-pointer">
           <button className="hover:bg-gray-50 rounded-full p-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -164,9 +163,9 @@ const SinglePostCard = ({ post, setLikePost, toggleLikesModal }) => {
               <circle cx="12" cy="17" r="1" />
             </svg>
           </button>
-        </div>
+        </div> */}
         {/* Report Icon */}
-        {/* <ReportIcon doFunction={openReportModal} /> */}
+        <ReportIcon doFunction={openReportModal} />
       </div>
       {/* Report Modal */}
       {reportModalOpen && (
