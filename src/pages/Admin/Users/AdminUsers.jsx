@@ -98,7 +98,7 @@ const AdminUsers = () => {
     <>
       <AdminHeader choice={"profile"} />
       <AdminSideBar />
-      <div className="flex justify-center bg-red-200 pl-[200px] pt-20 h-[100vh] overflow-y-clip">
+      <div className="flex justify-center bg-black pl-[200px] pt-20 h-[100vh] overflow-y-clip">
         <div className="max-w-4xl">
           <div className="main-box bg-white p-6 rounded shadow-md h-full overflow-hidden">
             <div className="table-responsive h-full overflow-auto">
