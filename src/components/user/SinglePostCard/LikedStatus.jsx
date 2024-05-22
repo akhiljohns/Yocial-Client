@@ -14,7 +14,7 @@ function LikedStatus({ showLikes, postLikes, userId }) {
                   postLikes.length > 1
                     ? `and ${postLikes?.length - 1} other`
                     : ""
-                } liked this post`
+                } liked this post`  
               : postLikes?.length === 1
               ? `One person liked this post`
               : `${postLikes?.length} people liked this post`}
