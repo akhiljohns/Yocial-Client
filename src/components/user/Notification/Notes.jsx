@@ -26,17 +26,10 @@ function Notes({ notification }) {
     setTime(diff);
   }, [notification]);
 
-  const showPost = () => {
-    const newUrl = `/post/${notification?.postId}`;
-    navigate(newUrl, { replace: true }, () => {
-      console.log("Navigated to:", newUrl);
-    });
-  };
-
   return (
     <>
       <div
-        onClick={showPost}
+        onClick={()=>navigate(`/post/${notification?.postId}`)}
         className={`py-3 sm:py-4 mb-2 ${
           notification?.isRead ? "" : "bg-[#69686838]"
         } px-3 rounded cursor-pointer overflow-y-auto overflow-x-hidden flex flex-col gap-5 w-full hover:bg-[#69686873]`}
