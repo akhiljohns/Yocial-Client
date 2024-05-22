@@ -161,6 +161,7 @@ const AdminPosts = () => {
               </button>
               <button
                 onClick={handleNextPage}
+                disabled={posts.length < 5 ? true : false}
                 className="bg-blue-500 text-white px-4 py-2 rounded-md"
               >
                 Next
