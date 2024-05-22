@@ -182,7 +182,7 @@ const Profile = () => {
                   </p>
                 </div>
                 <div
-                  onClick={() => openListsModal("followers")}
+                  onClick={() => followers.length > 0 ?  openListsModal("followers"):""}
                   className="flex flex-col gap-1 items-center cursor-pointer"
                 >
                   <p className="small text-muted mb-0">Followers</p>
@@ -191,7 +191,7 @@ const Profile = () => {
                   </p>
                 </div>
                 <div
-                  onClick={() => openListsModal("following")}
+                  onClick={() => following.length > 0 ? openListsModal("following") : ""}
                   className="flex flex-col gap-1 items-center cursor-pointer"
                 >
                   <p className="small text-muted mb-0">Following</p>
