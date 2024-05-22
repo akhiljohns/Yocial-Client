@@ -87,6 +87,9 @@ function CreatePostModal({
       clearComponent();
       closeModal();
       navigate("/login");
+    } else if (response.status === 400) {
+      setErr(response.message);
+      errorToast(response.message);
     } else {
       setErr(response.message);
     }
