@@ -133,7 +133,7 @@ export const postCreatePost = (postData) => {
           resolve(response);
         })
         .catch((error) => {
-          reject({ status: 500, message: error.response });
+          reject({ status: error.status || 500, message: error.message || "something went wrong" });
         });
     } catch (error) {
       reject({ status: 500, message: error.response });
