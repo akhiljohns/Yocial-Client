@@ -11,16 +11,16 @@ function ReportsRow({ report, index }) {
   const [actionTaken, setActionTaken] = useState(false);
 
   useEffect(() => {
-    report.targetId.blocked ? setIsBlocked(true) : setIsBlocked(false);
-    report.actionTaken ? setActionTaken(true) : setActionTaken(false);
+    report?.targetId?.blocked ? setIsBlocked(true) : setIsBlocked(false);
+    report?.actionTaken ? setActionTaken(true) : setActionTaken(false);
   }, [report]);
 
   const handleBlock = () => {
     // Implement block functionality here
     setIsBlocked((prevIsBlocked) => !prevIsBlocked);
-    blockPost(report.targetId._id)
+    blockPost(report?.targetId?._id)
       .then((response) => {
-        toggelactiontaken(report._id)
+        toggelactiontaken(report?._id)
           .then((res) => {
             setActionTaken(true);
           })
@@ -45,7 +45,7 @@ function ReportsRow({ report, index }) {
         {convertDateTime(report.createdAt)}
       </td>
       <td className="px-6 py-4 whitespace-nowrap">
-      {!isBlocked ? (
+      {isBlocked ? (
             <button
               className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md"
               onClick={handleBlock}
