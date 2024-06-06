@@ -2,4 +2,4 @@
 export const URL = "http://localhost:3000";
 
 //for server
-export const BASE_URL = "https://yocial.akhiljohns.site";
+export const BASE_URL = "http://yocial.akhiljohns.site";
