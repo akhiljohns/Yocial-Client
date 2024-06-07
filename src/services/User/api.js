@@ -3,7 +3,7 @@ import { userAuth } from "../../const/localStorage";
 import { BASE_URL } from "../../const/url";
 
 export const api = axios.create({
-  baseURL: `${BASE_URL}/api`,
+  baseURL: `${BASE_URL}`,
 });
 
 api.interceptors.request.use(
