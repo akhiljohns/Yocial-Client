@@ -3,7 +3,7 @@ import { adminAuth, userAuth } from "../../const/localStorage";
 import { BASE_URL } from "../../const/url";
 
 export const adminApi = axios.create({
-  baseURL: `${BASE_URL}/api`,
+  baseURL: `${BASE_URL}`,
 });
 
 adminApi.interceptors.request.use(
