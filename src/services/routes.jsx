@@ -52,9 +52,7 @@ const AppRouter = () => {
         <Route
           path="/"
           element={
-            <Protect>
               <UserHome />
-            </Protect>
         }
         />
 
