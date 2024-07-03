@@ -178,6 +178,12 @@ function Login() {
             </button>
           </div>
 
+          {/* Demo Credentials */}
+          <div className="text-white text-center text-sm mb-4 bg-gray-900">
+            <p>Demo Username : demouser1</p>
+            <p>Demo Password : demouser@1</p>
+          </div>
+
           {error && (
             <div className="text-red-600 text-sm font-medium text-center">
               {error}
