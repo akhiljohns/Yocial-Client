@@ -25,6 +25,7 @@ import UserList from "../../../components/user/Modals/UserList";
 import UserListsModal from "../../../components/user/Modals/UserListsModal";
 import UserCard from "../Search/UserCard";
 import { setReduxNotifications } from "../../../utils/reducers/notificationReducer";
+import MobileBottomBar from "../../../components/user/Sidebar/MobileBottomBar";
 
 const UserHome = () => {
   //likes
@@ -112,11 +113,13 @@ const UserHome = () => {
 
   useEffect(() => {
     fetchNotifications(userData?._id)
-    .then((response) => {
-        dispatch(setReduxNotifications({ notifications: response.notifications }));
+      .then((response) => {
+        dispatch(
+          setReduxNotifications({ notifications: response.notifications })
+        );
       })
       .catch((error) => {
-        errorToast(error.message)
+        errorToast(error.message);
       });
   });
 
@@ -138,6 +141,7 @@ const UserHome = () => {
       <div className="flex-1 relative flex justify-center">
         <Header choice={"profile"} />
         <UserSideBar />
+
         <div className="w-full flex items-center justify-center">
           <div
             id="posts-container"
@@ -145,7 +149,9 @@ const UserHome = () => {
           >
             <div className="hidden md:block   fixed mt-[1%] ml-[66%]">
               <div className="text-black p-4 rounded-lg shadow-lg w-80">
-                <h3 className="text-lg font-semibold mb-2 text-white text-center">Suggested Users</h3>
+                <h3 className="text-lg font-semibold mb-2 text-white text-center">
+                  Suggested Users
+                </h3>
                 <div className="divide-y divide-white">
                   {suggestedUsers && suggestedUsers.length > 0 ? (
                     suggestedUsers.map((user, index) => (
@@ -197,6 +203,7 @@ const UserHome = () => {
           choice={"Likes"}
         />
       )}
+      <MobileBottomBar />
     </div>
   );
 };
