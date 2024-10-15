@@ -25,7 +25,7 @@ const UserSideBar = () => {
 
   return (
     <div
-      className="h-screen absolute left-0 top-0 z-10 bg-black user-sidebar"
+      className="hidden md:block h-screen absolute left-0 top-0 z-10 bg-black user-sidebar"
       style={{ width: "200px" }}
     >
       <div className="flex flex-col h-full justify-center items-center">
