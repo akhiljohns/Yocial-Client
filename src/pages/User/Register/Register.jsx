@@ -90,166 +90,92 @@ function Register() {
     }
   };
   return (
-    <div className="flex items-center justify-center h-screen bg-black">
-      <div className="w-full max-w-md bg-black p-8 rounded shadow-sm shadow-white">
-        <h1 className="text-2xl font-semibold mb-6 text-center text-white">
-          Register
-        </h1>
-        <div className="flex gap-2">
-          <div className="mb-4 w-1/2">
-            <label className="text-white" htmlFor="fname">
-              First Name
-            </label>
-            <input
-              required
-              placeholder="First Name"
-              type="text"
-              id="fname"
-              name="fname"
-              className="w-full border p-2 rounded"
-              onChange={(e) => {
-                setFname(e.target.value.trim());
-              }}
-              onKeyDown={handleKeyDown}
-              disabled={loading}
-            />
-          </div>
-          <div className="mb-4 w-1/2">
-            <label className="text-white" htmlFor="lname">
-              Last Name
-            </label>
-            <input
-              required
-              disabled={loading}
-              placeholder="Last Name"
-              type="text"
-              id="lname"
-              name="lname"
-              className="w-full border p-2 rounded"
-              onChange={(e) => {
-                setLname(e.target.value.trim());
-              }}
-              onKeyDown={handleKeyDown}
-            />
-          </div>
-        </div>
-        <div className="mb-4">
-          <label className="text-white" htmlFor="username">
-            Username
-          </label>
-          <input
-            required
-            disabled={loading}
-            placeholder="Username"
-            type="text"
-            id="username"
-            name="username"
-            className="w-full border p-2 rounded"
-            onChange={(e) => {
-              setUsername(e.target.value.trim());
-            }}
-            onKeyDown={handleKeyDown}
-          />
-        </div>
-        <div className="mb-4">
-          <label className="text-white" htmlFor="email">
-            Email
-          </label>
-          <input
-            required
-            placeholder="Email"
-            type="text"
-            disabled={loading}
-            id="email"
-            name="email"
-            className="w-full border p-2 rounded"
-            onChange={(e) => {
-              setEmail(e.target.value.trim());
-            }}
-            onKeyDown={handleKeyDown}
-          />
-        </div>
-        <div className="flex gap-2">
-          <div className="mb-4">
-            <label className="text-white" htmlFor="password">
-              Password
-            </label>
-            <input
-              maxLength={60}
-              required
-              disabled={loading}
-              placeholder="Password"
-              type="password"
-              id="password"
-              name="password"
-              className="w-full border p-2 rounded"
-              onChange={(e) => {
-                setpassword(e.target.value.trim());
-                passCheck(e.target.value);
-              }}
-              onKeyDown={handleKeyDown}
-            />
-          </div>
-
-          <div className="mb-6">
-            <label className="text-white" htmlFor="password2">
-              Confirm Password
-            </label>
-            <input
-              maxLength={60}
-              required
-              disabled={loading}
-              placeholder="Confirm Password"
-              type="text"
-              id="password2"
-              name="password2"
-              className="w-full border p-2 rounded"
-              onChange={(e) => {
-                setPassword2(e.target.value.trim());
-              }}
-              onKeyDown={handleKeyDown}
-            />
-          </div>
-        </div>
-        {password ? (
-          <div className="mt-2 flex justify-items-start">
-            <StrengthMeter
-              poorPassword={poorPassword}
-              weakPassword={weakPassword}
-              strongPassword={strongPassword}
-              passwordError={passwordError}
-            />
-          </div>
-        ) : null}
-        {loading ? (
-          <div className="py-1 w-full flex justify-center items-center">
-            <div className="w-12 h-12 border-4 border-dotted border-white rounded-full animate-spin">
-              <div className="w-6 h-6 border-4 border-dotted border-orange-500 rounded-full animate-spin-reverse mx-auto"></div>
-            </div>
-          </div>
-        ) : null}
-
-        {error ? (
-          <div className="text-red-600 text-sm  text-center font-extralight">
-            {error}
-          </div>
-        ) : null}
-
-        <button
-          onClick={handleSubmit}
-          className="w-full text-white p-2 rounded hover:bg-blue-700"
-        >
-          Register
-        </button>
-
-        <button
-          onClick={() => navigate("/login")}
-          className="w-full mb-4 text-white p-2 mt-3 rounded hover:bg-green-700"
-        >
-          Already have an account? Login
-        </button>
+    <div class="flex items-center justify-center min-h-screen bg-black">
+  <div class="w-full max-w-sm md:max-w-md bg-black p-4 md:p-8 rounded shadow-sm shadow-white">
+    <h1 class="text-xl md:text-2xl font-semibold mb-4 md:mb-6 text-center text-white">
+      Register
+    </h1>
+    <div class="flex flex-col md:flex-row gap-2">
+      <div class="mb-4 md:w-1/2 w-full">
+        <label class="text-white text-sm md:text-base" for="fname">First Name</label>
+        <input
+          required
+          placeholder="First Name"
+          type="text"
+          id="fname"
+          name="fname"
+          class="w-full border p-2 rounded text-sm md:text-base"
+        />
+      </div>
+      <div class="mb-4 md:w-1/2 w-full">
+        <label class="text-white text-sm md:text-base" for="lname">Last Name</label>
+        <input
+          required
+          placeholder="Last Name"
+          type="text"
+          id="lname"
+          name="lname"
+          class="w-full border p-2 rounded text-sm md:text-base"
+        />
       </div>
     </div>
+    <div class="mb-4">
+      <label class="text-white text-sm md:text-base" for="username">Username</label>
+      <input
+        required
+        placeholder="Username"
+        type="text"
+        id="username"
+        name="username"
+        class="w-full border p-2 rounded text-sm md:text-base"
+      />
+    </div>
+    <div class="mb-4">
+      <label class="text-white text-sm md:text-base" for="email">Email</label>
+      <input
+        required
+        placeholder="Email"
+        type="text"
+        id="email"
+        name="email"
+        class="w-full border p-2 rounded text-sm md:text-base"
+      />
+    </div>
+    <div class="flex flex-col md:flex-row gap-2">
+      <div class="mb-4 md:w-1/2 w-full">
+        <label class="text-white text-sm md:text-base" for="password">Password</label>
+        <input
+          maxLength={60}
+          required
+          placeholder="Password"
+          type="password"
+          id="password"
+          name="password"
+          class="w-full border p-2 rounded text-sm md:text-base"
+        />
+      </div>
+      <div class="mb-4 md:w-1/2 w-full">
+        <label class="text-white text-sm md:text-base" for="password2">Confirm Password</label>
+        <input
+          maxLength={60}
+          required
+          placeholder="Confirm Password"
+          type="password"
+          id="password2"
+          name="password2"
+          class="w-full border p-2 rounded text-sm md:text-base"
+        />
+      </div>
+    </div>
+    <button class="w-full text-white p-2 rounded hover:bg-blue-700 text-sm md:text-base">
+      Register
+    </button>
+    <button class="w-full mb-4 text-white p-2 mt-3 rounded hover:bg-green-700 text-sm md:text-base">
+      Already have an account? Login
+    </button>
+  </div>
+</div>
+
   );
 }
 
