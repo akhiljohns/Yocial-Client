@@ -3,8 +3,12 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CreatePostModal from "../Post/CreatePostModal"; // Existing modal
 import UserListsModal from "../Modals/UserListsModal"; // Existing modal
-import { FaHome, FaPlusCircle, FaCommentDots, FaBookmark, FaBell } from "react-icons/fa"; // Importing Font Awesome icons
-
+import HomeIcon from '@mui/icons-material/Home';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import ChatIcon from '@mui/icons-material/Chat';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 const MobileBottomBar = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
@@ -24,38 +28,38 @@ const MobileBottomBar = () => {
       <div className="flex justify-around items-center h-16">
         <button
           onClick={() => navigate("/")}
-          className="flex flex-col items-center text-orange-500 hover:text-orange-400 transition duration-300"
+          className="flex flex-col items-center text-white hover:text-orange-500 transition duration-300"
         >
-          <FaHome className="text-2xl" />
+          <HomeIcon className="text-2xl" />
           <span className="text-xs">Home</span>
         </button>
         <button
           onClick={openModal}
-          className="flex flex-col items-center text-orange-500 hover:text-orange-400 transition duration-300"
+          className="flex flex-col items-center text-white hover:text-orange-500 transition duration-300"
         >
-          <FaPlusCircle className="text-2xl" />
+          <AddCircleIcon className="text-2xl" />
           <span className="text-xs">Create</span>
         </button>
         <button
           onClick={() => navigate("/chat")}
-          className="flex flex-col items-center text-orange-500 hover:text-orange-400 transition duration-300"
+          className="flex flex-col items-center text-white hover:text-orange-500 transition duration-300"
         >
-          <FaCommentDots className="text-2xl" />
+          <ChatIcon className="text-2xl" />
           <span className="text-xs">Chat</span>
         </button>
         <button
           onClick={() => navigate("/savedposts")}
-          className="flex flex-col items-center text-orange-500 hover:text-orange-400 transition duration-300"
+          className="flex flex-col items-center text-white hover:text-orange-500 transition duration-300"
         >
-          <FaBookmark className="text-2xl" />
+          <BookmarkIcon className="text-2xl" />
           <span className="text-xs">Saved</span>
         </button>
         <button
-          onClick={toggleModalHandler}
-          className="flex flex-col items-center text-orange-500 hover:text-orange-400 transition duration-300"
+          onClick={()=> navigate(`/profile/${userData?.username}`)}
+          className="flex flex-col items-center text-white hover:text-orange-500 transition duration-300"
         >
-          <FaBell className="text-2xl" />
-          <span className="text-xs">Notify</span>
+          <AccountCircleIcon className="text-2xl" />
+          <span className="text-xs">Profile</span>
         </button>
       </div>
 
@@ -71,7 +75,7 @@ const MobileBottomBar = () => {
         />
       )}
     </div>
-  );    
+  );
 };
 
 export default MobileBottomBar;
