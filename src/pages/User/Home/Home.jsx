@@ -141,7 +141,6 @@ const UserHome = () => {
       <div className="flex-1 relative flex justify-center">
         <Header choice={"profile"} />
         <UserSideBar />
-
         <div className="w-full flex items-center justify-center">
           <div
             id="posts-container"
