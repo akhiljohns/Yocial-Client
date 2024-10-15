@@ -1,34 +1,21 @@
-import React, { useEffect, useState } from "react";
-const UserCard = ({ user, seeProfile, style }) => {
+import React from "react";
+
+const UserCard = ({ user, seeProfile }) => {
   return (
-    <>
-      <div
-        className="cursor-pointer"
-        onClick={() => seeProfile(user?.username)}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          border: "1px solid #ccc",
-          borderRadius: "50px",
-          padding: "10px",
-          margin: "10px",
-          backgroundColor: "#dedfe0",
-          width: style.width || "700px",
-          height: style.height || "80px",
-        }}
-      >
-        <img
-          className="aspect-square w-14 rounded-full"
-          src={user.profilePic}
-          alt={user.name}
-          // style={{ aspectRatio:"square" borderRadius: "50%" }}
-        />
-        <div style={{ marginLeft: "20px", width: "100px" }}>
-          <div className="text-base font-bold">{user.username}</div>
-          <div className="text-sm font-semibold">{user.name}</div>
-        </div>
+    <div
+      className="cursor-pointer flex items-center border rounded-full p-2 my-2 bg-gray-300 sm:w-56 sm:ml-14"
+      onClick={() => seeProfile(user?.username)}
+    >
+      <img
+        className="aspect-square w-14 rounded-full"
+        src={user.profilePic}
+        alt={user.name}
+      />
+      <div className="ml-4">
+        <div className="text-base font-bold">{user.username}</div>
+        <div className="text-sm font-semibold">{user.name}</div>
       </div>
-    </>
+    </div>
   );
 };
 
