@@ -141,7 +141,7 @@ const UserHome = () => {
         <div className="w-full flex items-center justify-center">
           <div
             id="posts-container"
-            className="p-2 w-1/2 h-screen flex flex-col items-center gap-10 pt-24 overflow-auto no-scrollbar"
+            className="p-2 w-[90%] md:w-1/2 h-screen flex flex-col items-center gap-10 pt-24 overflow-auto no-scrollbar"
           >
             <div className="hidden md:block   fixed mt-[1%] ml-[66%]">
               <div className="text-black p-4 rounded-lg shadow-lg w-80">
